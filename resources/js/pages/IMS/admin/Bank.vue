@@ -81,7 +81,7 @@
                         <template v-slot:[`item.created_at`]="{ item }">
                             {{ formatDate(item.created_at) }}
                         </template>
-                        
+
                         <template v-slot:[`item.actions`]="{ item }">
                             <v-btn small color="cyan" class="mr-1">
                                 <v-icon
@@ -98,7 +98,7 @@
             </v-card>
         </v-row>
     </v-main>
-    
+
 </template>
 
 <script scope>
@@ -157,7 +157,7 @@ export default {
                     console.log(error);
                 });
         },
-        
+
         closedialog() {
             this.dialog = false;
             this.$nextTick(() => {
@@ -169,24 +169,20 @@ export default {
             return moment(value).format("DD-MM-YYYY");
         },
         editItem(item) {
-            this.editedIndex = 1
-           
+            this.editedIndex = this.banks.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
-            const {reactive, toRaw} = Vue
-            const foo = reactive({item})
-            const qux = toRaw(foo)
-            console.log(qux);
+            
         },
         savebank(){
             if(this.editedIndex > -1){
                 Object.assign(this.banks[this.editedIndex], this.editedItem)
-                console.log(this.editedItem.customer_name);
+                console.log(this.editedItem);
             }
 
 
         }
-        
+
     },
 };
 </script>
