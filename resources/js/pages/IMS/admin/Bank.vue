@@ -98,7 +98,6 @@
             </v-card>
         </v-row>
     </v-main>
-    
 </template>
 
 <script scope>
@@ -166,17 +165,14 @@ export default {
             });
         },
         formatDate(value) {
-            return moment(value).format("DD-MM-YYYY");
+            return moment(value).format("YYYY-MM-DD");
         },
         editItem(item) {
             this.editedIndex = 1
-           
             this.editedItem = Object.assign({}, item)
             this.dialog = true
-            const {reactive, toRaw} = Vue
-            const foo = reactive({item})
-            const qux = toRaw(foo)
-            console.log(qux);
+            console.log(this.editedItem)
+    
         },
         savebank(){
             if(this.editedIndex > -1){
