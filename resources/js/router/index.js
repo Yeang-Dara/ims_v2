@@ -41,6 +41,9 @@ import LeaveType from '../pages/HR/Setting/LeaveType.vue'
 import Role from '../pages/HR/Setting/Role.vue'
 import Permission from '../pages/HR/Setting/Permission.vue'
 import AdminUsers from '../pages/HR/Setting/AdminUsers.vue'
+import Bank from '../pages/IMS/admin/Bank.vue'
+import Banklocation from '../pages/IMS/admin/Banklocation.vue'
+
 const routes = [
     {
         path: '/',

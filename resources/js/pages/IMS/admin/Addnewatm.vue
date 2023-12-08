@@ -4,14 +4,6 @@
             <v-card class="rounded-0 " width="100%">
                 <v-card class="d-flex align-center rounded-0" height="65" style="padding:15px;" outlined>
                     <v-card-text style="font-size: 20px; text-align:center; color:blue;">ADD NEW MACHINE USING</v-card-text>
-                    <!-- <v-alert
-                        :value="success"
-                        type="success">Created Successfully!
-                    </v-alert>
-                    <v-alert
-                        :value="error"
-                        type="error">Invalid Input!
-                    </v-alert> -->
                 </v-card>
                 <v-card>
                     <v-card-text >

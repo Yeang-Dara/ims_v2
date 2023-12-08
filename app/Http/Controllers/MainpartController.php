@@ -38,7 +38,6 @@ class MainpartController extends ParentController
     }
     public function get($id)
     {
-        // return parent::getById($id);
         $data = DB::table('mainparts')
                     ->where('machine_id','=', $id)
                     ->orderBy('id')

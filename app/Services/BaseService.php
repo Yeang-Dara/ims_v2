@@ -34,7 +34,6 @@ class BaseService
     {
         return $this->model->create($attributes);
     }
-
     public function updateOrCreate($attributes)
     {
         if (!$attributes) {
@@ -42,7 +41,6 @@ class BaseService
         }
         return $this->model->updateOrCreate($attributes);
     }
-
     public function updateById($id, $attribute)
     {
         $modelObj = $this->getById($id);
@@ -53,7 +51,6 @@ class BaseService
         $result->update();
         return $result;
     }
-
     public function delete($id)
     {
         $result = $this->model->find($id);
@@ -74,7 +71,6 @@ class BaseService
         }
         return $query;
     }
-
     public function search($keys, $value, $query)
     {
 
