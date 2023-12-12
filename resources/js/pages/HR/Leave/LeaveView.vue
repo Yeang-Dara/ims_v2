@@ -70,83 +70,83 @@
             <v-data-table
             :headers="headers"
             :items="filteredItems"
-            :search="search"
             item-key="name"
+            :search="search"
             class="elevation-1 custom-table"
             >
-            <template v-slot:item.name="{ item }">
-                {{ item.raw.last_name }} {{ item.raw.first_name }}
+            <template v-slot:[`item.name`]="{ item }">
+                {{ item.last_name }} {{ item.first_name }}
             </template>
-            <template v-slot:item.year="{ item}">
-                {{ formatYear(item.raw.created_at) }}
+            <template v-slot:[`item.year`]="{ item}">
+                {{ formatYear(item.created_at) }}
             </template>
-            <template v-slot:item.credit_sl="{ item }">
-                <span v-if="item.raw.leave_id == 1">
-                    {{ item.raw.credit_leave }}
+            <template v-slot:[`item.credit_sl`]="{ item }">
+                <span v-if="item.leave_id == 1">
+                    {{ item.credit_leave }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.credit_al="{ item }">
-                <span v-if="item.raw.leave_id == 2">
-                    {{ item.raw.credit_leave }}
+            <template v-slot:[`item.credit_al`]="{ item }">
+                <span v-if="item.leave_id == 2">
+                    {{ item.credit_leave }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.credit_ul="{ item }">
-                <span v-if="item.raw.leave_id == 3">
-                    {{ item.raw.credit_leave }}
+            <template v-slot:[`item.credit_ul`]="{ item }">
+                <span v-if="item.leave_id == 3">
+                    {{ item.credit_leave }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.sl_token="{ item }">
-                <span v-if="item.raw.leave_id == 1" class="text-red">
-                    {{ item.raw.leaves_taken }}
+            <template v-slot:[`item.sl_token`]="{ item }">
+                <span v-if="item.leave_id == 1" class="text-red">
+                    {{ item.leaves_taken }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.al_token="{ item }">
-                <span v-if="item.raw.leave_id == 2" class="text-red">
-                    {{ item.raw.leaves_taken }}
+            <template v-slot:[`item.al_token`]="{ item }">
+                <span v-if="item.leave_id == 2" class="text-red">
+                    {{ item.leaves_taken }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.ul_token="{ item }">
-                <span v-if="item.raw.leave_id == 3" class="text-red">
-                    {{ item.raw.leaves_taken }}
+            <template v-slot:[`item.ul_token`]="{ item }">
+                <span v-if="item.leave_id == 3" class="text-red">
+                    {{ item.leaves_taken }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.sl="{ item }">
-                <span v-if="item.raw.leave_id == 1" class="text-blue">
-                    {{ item.raw.leave_balance }}
+            <template v-slot:[`item.sl`]="{ item }">
+                <span v-if="item.leave_id == 1" class="text-blue">
+                    {{ item.leave_balance }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.al="{ item }">
-                <span v-if="item.raw.leave_id == 2" class="text-blue">
-                    {{ item.raw.leave_balance }}
+            <template v-slot:[`item.al`]="{ item }">
+                <span v-if="item.leave_id == 2" class="text-blue">
+                    {{ item.leave_balance }}
                 </span>
                 <span v-else>
                     {{ 0 }}
                 </span>
             </template>
-            <template v-slot:item.ul="{ item }">
-                <span v-if="item.raw.leave_id == 3" class="text-blue">
-                    {{ item.raw.leave_balance }}
+            <template v-slot:[`item.ul`]="{ item }">
+                <span v-if="item.leave_id == 3" class="text-blue">
+                    {{ item.leave_balance }}
                 </span>
                 <span v-else>
                     {{ 0 }}
@@ -158,6 +158,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 // import Atten from '../../services/api/attendance'
 import { excelParser} from './CSVFile'
 import { generatePDF } from './PdfFileByMonth'
@@ -167,11 +168,11 @@ import { generatePDF } from './PdfFileByMonth'
     computed: {
         filteredItems() {
             if (this.search) {
-            let searchRegex = new RegExp(this.search, 'i');
-            this.attens = this.attens.filter(item => {
-                return searchRegex.test(item.last_name) || searchRegex.test(item.first_name);
-            });
-}
+                let searchRegex = new RegExp(this.search, 'i');
+                this.attens = this.attens.filter(item => {
+                    return searchRegex.test(item.last_name) || searchRegex.test(item.first_name);
+                });
+            }
             return this.attens.filter((item) => {
                 const itemDate = new Date(item.month); // or whatever the date property is named
                 const itemYear = new Date(item.created_at).getFullYear(); // extract the year from the date
@@ -189,57 +190,52 @@ import { generatePDF } from './PdfFileByMonth'
         loaded: false,
         loading: false,
         headers: [
-            [
                 {
                     title: 'Employee',
-                    key: 'em',
+                    value: 'em',
                     align: 'center',
-                    sortable: false,
-                    colspan: 3,
+                    children: [
+                        {
+                            title: 'Name',
+                            align: 'start',
+                            sortable: false,
+                            value: 'name',
+                        },
+                        { title: 'Department', align: 'center', value: 'sort_name', sortable: false, },
+                        // { title: 'Month', align: 'center', key: 'month' },
+                        { title: 'Year', align: 'center', value: 'year',sortable: false, },
+                    ],
                 },
                 {
                     title: 'Entitle Leave',
-                    key: 'leave',
+                    value: 'leave',
                     align: 'center',
-                    sortable: false,
-                    colspan: 3,
+                    children: [
+                        { title: 'SL', value: 'credit_sl' ,sortable: false,},
+                        { title: 'AL', value: 'credit_al',sortable: false, },
+                        { title: 'UL', value: 'credit_ul' ,sortable: false,},
+                    ]
                 },
                 {
                     title: 'Taken Leave',
-                    key: 'taken',
+                    value: 'taken',
                     align: 'center',
-                    sortable: false,
-                    colspan: 3,
+                    children: [
+                        { title: 'SL', value: 'sl_token',sortable: false, },
+                        { title: 'AL', value: 'al_token', sortable: false, },
+                        { title: 'UL', value: 'ul_token' , sortable: false,},
+                    ]
                 },
                 {
                     title: 'Balance',
-                    key: 'balance',
+                    value: 'balance',
                     align: 'center',
-                    sortable: false,
-                    colspan: 3,
-                    variant:"secondary"
+                    children: [
+                        { title: 'SL', value: 'sl' , sortable: false,},
+                        { title: 'AL', value: 'al' , sortable: false,},
+                        { title: 'UL', value: 'ul', sortable: false, },
+                    ]
                 },
-            ],
-            [
-                    {
-                    title: 'Name',
-                    align: 'start',
-                    sortable: false,
-                    key: 'name',
-                },
-                { title: 'Department', align: 'center', key: 'sort_name', sortable: false, },
-                // { title: 'Month', align: 'center', key: 'month' },
-                { title: 'Year', align: 'center', key: 'year',sortable: false, },
-                { title: 'SL', key: 'credit_sl' ,sortable: false,},
-                { title: 'AL', key: 'credit_al',sortable: false, },
-                { title: 'UL', key: 'credit_ul' ,sortable: false,},
-                { title: 'SL', key: 'sl_token',sortable: false, },
-                { title: 'AL', key: 'al_token', sortable: false, },
-                { title: 'UL', key: 'ul_token' , sortable: false,},
-                { title: 'SL', key: 'sl' , sortable: false,},
-                { title: 'AL', key: 'al' , sortable: false,},
-                { title: 'UL', key: 'ul', sortable: false, },
-            ]
         ],
         depts: [],
         attens: [],
@@ -254,7 +250,7 @@ import { generatePDF } from './PdfFileByMonth'
         month: '',
     }),
     mounted() {
-        // this.getAtten();
+        this.getAtten();
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth() + 1;
@@ -272,7 +268,8 @@ import { generatePDF } from './PdfFileByMonth'
         },
         generatePDFm(item) {
             console.log(item)
-            Atten.month_export(item)
+            axios.get('/api/hr/HR/attendance/month_export/'+item)
+            // Atten.month_export(item)
                 .then((response) => {
                     const data = response.data.data;
                     console.log('data', data);
@@ -286,7 +283,8 @@ import { generatePDF } from './PdfFileByMonth'
                 });
         },
         Export() {
-            Atten.leaveView()
+            // Atten.leaveView()
+            axios.get('/api/hr/HR/attendance/leave_view')
                 .then((response) => {
                     const data = response.data.data;
                     console.log(data);
@@ -299,7 +297,8 @@ import { generatePDF } from './PdfFileByMonth'
                 });
         },
         getAtten() {
-            Atten.leaveView()
+            // Atten.leaveView()
+            axios.get('/api/hr/HR/attendance/leave_view')
             .then(res => {
                 this.attens = res.data.data;
                 console.log("attendance", this.attens);

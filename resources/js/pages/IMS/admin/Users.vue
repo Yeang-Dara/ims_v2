@@ -324,10 +324,10 @@ export default {
             return moment(value).format("DD-MM-YYYY");
         },
         getUser() {
-            axios
-                .get("/api/IMS/user/all")
+            axios.post('/api/hr/HR/staff/dataTable')
+            //axios.get("/api/IMS/user/all")
                 .then((Response) => {
-                    this.users = Response.data;
+                    this.users = Response.data.data.data;
                     console.log(Response.data);
                 })
                 .catch((error) => {

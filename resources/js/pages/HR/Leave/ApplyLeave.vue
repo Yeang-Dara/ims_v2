@@ -221,22 +221,30 @@ export default {
         }
     },
     mounted() {
-        // this.getRole();
-        // this.getEmployee();
-        // this.getDirector();
-        axios.get('api/user', this.auth)
+        this.getRole();
+        this.getEmployee();
+        this.getDirector();
+        const token = localStorage.getItem("token");
+        const auth = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+        axios.get('/api/user', auth)
             .then(res => {
                 this.user = res.data
-                // console.log(this.user);
-                Atten.Remaining(this.user.id)
+                console.log(this.user);
+                axios.post('/api/hr/HR/attendance/remaining/'+ this.user.id)
+                // Atten.Remaining(this.user.id)
                 .then(res => {
                     this.remain = res.data.data
-                    // console.log("remain", this.remain)
+                    console.log("remain", this.remain)
                 })
-                leave.filterLeave(this.user.id)
+                axios.get('/api/hr/HR/leave_annual/getLeaveStaff/'+ this.user.id)
+                // leave.filterLeave(this.user.id)
                 .then(res => {
                     this.leaves = res.data
-                    // console.log("test", this.leaves)
+                    console.log("test", this.leaves)
                 }).catch(err=> {
                     console.log(err)
                 })
@@ -252,10 +260,11 @@ export default {
             this.imageFile = event.target.files[0];
         },
         getEmployee() {
-            Role.Users()
+            axios.get('/api/hr/HR/role/Users')
+            // Role.Users()
            .then(response => {
                this.users = response.data.data;
-               console.log("users", this.users);
+            //    console.log("users", this.users);
            })
            .catch(error => {
                if (error.response.status === 422) {
@@ -265,13 +274,16 @@ export default {
         },
 
         getDirector(){
-            Role.Directors().then(res => {
+            axios.get('/api/hr/HR/role/Directors')
+            // Role.Directors()
+            .then(res => {
                 this.dr = res.data.data;
             })
         },
 
         getRole() {
-           Role.listTable()
+            axios.get('/api/hr/HR/role/listTable')
+        //    Role.listTable()
            .then(response => {
                this.roles = response.data.data;
             //    console.log("role", this.roles);

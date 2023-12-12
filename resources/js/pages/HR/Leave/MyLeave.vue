@@ -29,58 +29,58 @@
           :items="filteredItems"
           class="elevation-1"
           >
-            <template v-slot:item.date_request="{ item }">
-                {{ formatDate(item.raw.date_request) }}
+            <template v-slot:[`item.date_request`]="{ item }">
+                {{ formatDate(item.date_request) }}
             </template>
-            <template v-slot:item.from_date="{ item }">
-            {{ formatDate(item.raw.from_date) }}
+            <template v-slot:[`item.from_date`]="{ item }">
+            {{ formatDate(item.from_date) }}
             </template>
-            <template v-slot:item.to_date="{ item }">
-                {{ formatDate(item.raw.to_date) }}
+            <template v-slot:[`item.to_date`]="{ item }">
+                {{ formatDate(item.to_date) }}
             </template>
-            <template v-slot:item.day="{ item }">
-                {{ item.raw.leave_duration }}
+            <template v-slot:[`item.day`]="{ item }">
+                {{ item.leave_duration }}
             </template>
-          <template v-slot:item.status = "{ item }">
-            <span v-if="item.raw.status_id == 1">
+          <template v-slot:[`item.status`] = "{ item }">
+            <span v-if="item.status_id == 1">
                 <v-chip
                 class="ma-2"
                 color="blue"
                 >
-                    {{ item.raw.status_name }}
+                    {{ item.status_name }}
                 </v-chip>
             </span>
-            <span v-if="item.raw.status_id == 2">
+            <span v-if="item.status_id == 2">
                 <v-chip
                 class="ma-2"
                 color="blue"
                 >
-                    {{ item.raw.status_name }}
+                    {{ item.status_name }}
                 </v-chip>
             </span>
-            <span v-if="item.raw.status_id == 3">
+            <span v-if="item.status_id == 3">
                 <v-chip
                 class="ma-2"
                 color="green"
                 >
-                    {{ item.raw.status_name }}
+                    {{ item.status_name }}
                 </v-chip>
             </span>
-            <span v-if="item.raw.status_id == 4">
+            <span v-if="item.status_id == 4">
                 <v-chip
                 class="ma-2"
                 color="red"
                 >
-                    {{ item.raw.status_name }}
+                    {{ item.status_name }}
                 </v-chip>
             </span>
           </template>
-                 <template v-slot:item.actions="{ item }">
+                 <template v-slot:[`item.actions`]="{ item }">
                     <v-btn
                             class="ma-2"
                             color="blue"
                             small
-                            @click="editItem(item.raw)"
+                            @click="editItem(item)"
                         >
                             Detail
                     </v-btn>
@@ -242,11 +242,18 @@
             }
           }),
           async created () {
-                await axios.get('api/user', this.auth)
+            const token = localStorage.getItem("token");
+            const auth = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+                await axios.get('/api/user', auth)
                   .then(res => {
                       this.user = res.data
-                    //   console.log(this.user)
-                      Atten.MyLeave(this.user.id)
+                       console.log(this.user)
+                       axios.get('/api/hr/HR/attendance/my_leave/'+ this.user.id)
+                    //   Atten.MyLeave(this.user.id)
                         .then(async res => {
                             this.attens = res.data.data
                             // console.log('this atten', this.attens)

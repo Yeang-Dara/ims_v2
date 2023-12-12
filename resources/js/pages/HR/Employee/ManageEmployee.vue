@@ -323,16 +323,16 @@
         <template v-slot:[`item.dept`]="{ item }">
             {{ item.sort_name }}
         </template>
-        <!-- <template v-slot:item.address="{ item }">
+        <template v-slot:[`item.address`]="{ item }">
             <span v-if="item.address.length <= 15">
               {{ item.address }}
             </span>
             <span v-else>
               {{ item.address.slice(0, 15) }}...
             </span>
-        </template> -->
-        <template v-slot:item.actions="{ item }">
-            <router-link :to="'/manageEmployee/viewDetail/'+item.user_id" class="text">
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+            <router-link :to="'/hr-sys/manageEmployee/viewDetail/'+item.user_id" class="text">
                 <v-icon size="small"
                     class="me-2"
                     color="blue"> mdi-eye
@@ -342,14 +342,14 @@
             size="small"
             class="me-2"
             color="yellow"
-            @click="editItem(item.raw)"
+            @click="editItem(item)"
             >
             mdi-pencil
             </v-icon>
             <v-icon
             size="small"
             color="red"
-            @click="deleteItemConfirm(item.raw)"
+            @click="deleteItemConfirm(item)"
             >
             mdi-delete
             </v-icon>
@@ -485,8 +485,8 @@ export default {
     },
     mounted() {
         this.getEmployee(this.params);
-        // this.FilterDept();
-        // this.FilterRole();
+        this.FilterDept();
+        this.FilterRole();
     },
     watch: {
         dialog (val) {
@@ -539,7 +539,8 @@ export default {
             this.editedItem.family_phone = formattedFamilyPhone;
         },
         generatePDF() {
-            Staff.listTable()
+            // Staff.listTable()
+            axios.post('/api/hr/HR/staff/listTable')
                 .then((response) => {
                     const data = response.data.data;
                     console.log(data);
@@ -553,7 +554,8 @@ export default {
                 });
         },
         Export() {
-            Staff.listTable()
+            axios.post('/api/hr/HR/staff/listTable')
+            // Staff.listTable()
                 .then((response) => {
                     const data = response.data.data;
                     console.log(data);
@@ -587,7 +589,9 @@ export default {
             })
         },
         FilterDept() {
-            Dept.getDept().then(res => {
+            axios.get('/api/hr/HR/department/Deptall')
+            // Dept.getDept()
+            .then(res => {
                 this.depts = res.data.data
                 // console.log("test", this.depts)
             }).catch(err=> {
@@ -595,7 +599,9 @@ export default {
             })
         },
         FilterRole() {
-            Role.listTable().then(res => {
+            axios.get('/api/hr/HR/role/listTable')
+            // Role.listTable()
+            .then(res => {
                 this.roles = res.data.data
                 // console.log("role", this.roles)
             }).catch(err=> {
@@ -609,7 +615,7 @@ export default {
           console.log(this.editedItem)
         },
         deleteItemConfirm(item) {
-            // console.log("id", item)
+            console.log("id", item)
             this.$swal({
                 title: "Are you sure?",
                 text: "Do you want to delete this item ?",
@@ -620,7 +626,8 @@ export default {
                 confirmButtonText: "Yes",
             }).then((result) => {
                 if (result.value) {
-                    Staff.deleteEmployee(item.user_id);
+                    axios.delete('/api/hr/HR/staff/delete/'+ item.user_id)
+                    // Staff.deleteEmployee(item.user_id);
                     this.$swal({
                         title: "Success",
                         text: "Deleted Successfully!",
@@ -648,7 +655,8 @@ export default {
             item = this.editedItem
             if (this.editedIndex > -1) {
                 const index = this.editedIndex
-                Staff.updateEmployee(this.editedItem.user_id, item)
+                axios.put('/api/hr/HR/staff/update/'+ this.editedItem.user_id, item)
+                // Staff.updateEmployee(this.editedItem.user_id, item)
                 .then(response =>{
                     Object.assign(this.em[index], response.data)
                     console.log("data", response.data);

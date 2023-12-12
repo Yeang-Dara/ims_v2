@@ -35,7 +35,7 @@ class UsingSeeder extends Seeder
             'type_name' => $data[16],
             'warranty_days' => $data[17],
             'bank_name' => $data[18],
-            'user_id' => $data[19],
+            // 'user_id' => $data[19],
             'status'=>$data[20],
 
           ]);

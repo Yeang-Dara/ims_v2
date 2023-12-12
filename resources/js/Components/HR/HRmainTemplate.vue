@@ -236,9 +236,9 @@ export default {
             user: {},
       }),
       computed: {
-        // activeNotificationCount() {
-        //     return this.notifications.filter(x => x.active).length;
-        // },
+        activeNotificationCount() {
+             return this.notifications.filter(x => x.active).length;
+         },
 
         modifiedNotifications() {
             const modifiedList = [];
@@ -274,11 +274,11 @@ export default {
                 if (this.user.role_id  == 2) {
                     this.$router.push('/hr-sys/applyLeave');
                 }
-                axios.get('/api/hr/HR/staff/notification/', + this.user.id)
+                axios.get('/api/hr/HR/staff/notification/' + this.user.id)
                 // Staff.Notification(this.user.id)
                 .then(res => {
                     this.notifications = res.data
-                    // console.log(this.notifications)
+                    console.log(this.notifications)
                 })
             })
             .catch(error => {

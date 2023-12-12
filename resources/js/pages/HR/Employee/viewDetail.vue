@@ -265,7 +265,7 @@ export default {
         this.id = this.$route.params.id;
         // console.log(this.id);
         // get User
-        axios.get('http://localhost:8000/api/v1/staff/getStaff/'+this.id)
+        axios.get('http://localhost:8000/api/hr/HR/staff/getStaff/'+this.id)
         .then(res => {
             this.user = res.data[0];
             // console.log('this user:', this.user);
@@ -276,14 +276,14 @@ export default {
         this.getLeave();
 
         // get leave type
-        axios.get('http://localhost:8000/api/v1/leave/listTable')
+        axios.get('http://localhost:8000/api/hr/HR/leave/listTable')
         .then(res => {
             this.leave_types = res.data.data;
         })
         this.getYear();
 
         // leave balance
-        axios.get('http://localhost:8000/api/v1/attendance/leave_blance/'+this.id)
+        axios.get('http://localhost:8000/api/hr/HR/attendance/leave_blance/'+this.id)
         .then(res => {
             // this.leave_balance = res.data.user
             // this.leave_al = res.data.leave_al[0];
@@ -298,7 +298,7 @@ this.leave_ul = res.data.leave_ul && res.data.leave_ul.length > 0 ? res.data.lea
     },
     methods: {
         generatePDF() {
-            axios.get('http://localhost:8000/api/v1/attendance/leave_blance/'+this.id)
+            axios.get('http://localhost:8000/api/hr/HR/attendance/leave_blance/'+this.id)
             .then(res => {
 
                 const data = [
@@ -319,7 +319,7 @@ this.leave_ul = res.data.leave_ul && res.data.leave_ul.length > 0 ? res.data.lea
         },
 
         getLeave () {
-            axios.get('http://localhost:8000/api/v1/leave_annual/getLeaveStaff/'+this.id)
+            axios.get('http://localhost:8000/api/hr/HR/leave_annual/getLeaveStaff/'+this.id)
             .then(res => {
                 this.leaves = res.data;
                 // console.log("leave", this.leaves);
@@ -327,7 +327,7 @@ this.leave_ul = res.data.leave_ul && res.data.leave_ul.length > 0 ? res.data.lea
         },
 
         getYear () {
-            axios.get('http://localhost:8000/api/v1/leave_annual/years')
+            axios.get('http://localhost:8000/api/hr/HR/leave_annual/years')
             .then(res => {
                 this.years = res.data
                 // console.log("year", this.years);
@@ -366,7 +366,7 @@ this.leave_ul = res.data.leave_ul && res.data.leave_ul.length > 0 ? res.data.lea
             if (this.editedIndex > -1) {
                 const index = this.editedIndex
                 // console.log(this.editedItem.id);
-                axios.put(`http://localhost:8000/api/v1/leave_annual/update/${this.editedItem.id}` , this.editedItem)
+                axios.put(`http://localhost:8000/api/hr/HR/leave_annual/update/${this.editedItem.id}` , this.editedItem)
                 .then(response =>{
                     Object.assign(this.leaves[index], response.data)
                     // console.log("data", response.data);
@@ -397,7 +397,7 @@ this.leave_ul = res.data.leave_ul && res.data.leave_ul.length > 0 ? res.data.lea
                 })
             } else {
                 // leave.createLeaveAnnual(this.editedItem)
-                axios.post('http://localhost:8000/api/v1/leave_annual/create', this.editedItem)
+                axios.post('http://localhost:8000/api/hr/HR/leave_annual/create', this.editedItem)
                 .then(res => {
                    console.log('success', res);
                    if (res.data.data == null) {
@@ -440,7 +440,7 @@ this.leave_ul = res.data.leave_ul && res.data.leave_ul.length > 0 ? res.data.lea
                 confirmButtonText: "Yes",
             }).then((result) => {
                 if (result.value) {
-                    axios.delete('http://localhost:8000/api/v1/leave_annual/delete/' + item.id)
+                    axios.delete('http://localhost:8000/api/hr/HR/leave_annual/delete/' + item.id)
                     this.$swal({
                         title: "Success",
                         text: "Create Successfully!",
