@@ -58,19 +58,19 @@
        </v-toolbar>
        <v-divider></v-divider>
      </template>
-     <template v-slot:item.actions="{ item }">
+     <template v-slot:[`item.actions`]="{ item }">
        <v-icon
          size="small"
          class="me-2"
          color="green"
-         @click="editItem(item.raw)"
+         @click="editItem(item)"
        >
          mdi-pencil
        </v-icon>
        <v-icon
          size="small"
          color="red"
-         @click="deleteItemConfirm(item.raw)"
+         @click="deleteItemConfirm(item)"
        >
          mdi-delete
        </v-icon>
@@ -81,6 +81,7 @@
  </template>
 
  <script>
+import axios from 'axios'
 //  import Leave from '../../services/api/leave'
    export default {
      data: () => ({
@@ -122,12 +123,13 @@
      },
 
      created () {
-    //    this.getLeave()
+       this.getLeave()
      },
 
      methods: {
         getLeave() {
-            Leave.listTable()
+            axios.get('/api/hr/HR/leave/listTable')
+            // Leave.listTable()
             .then(response => {
                 this.leaves = response.data.data;
                 // console.log("leaves", this.leaves);
@@ -157,7 +159,8 @@
                 confirmButtonText: "Yes",
             }).then((result) => {
                 if (result.value) {
-                    Leave.deleteLeave(item.id)
+                    axios.delete('/api/hr/HR/leave/delete/'+ item.id)
+                    // Leave.deleteLeave(item.id)
                     this.$swal({
                         title: "Success",
                         text: "Delete Successfully!",
@@ -201,7 +204,8 @@
         if (this.editedIndex > -1) {
             const index = this.editedIndex
             // console.log(this.editedItem.id);
-            Leave.updateLeave(this.editedItem.id, this.editedItem)
+            // Leave.updateLeave(this.editedItem.id, this.editedItem)
+            axios.put('/api/hr/HR/leave/update/'+ this.editedItem.id, this.editedItem)
             .then(response =>{
                 Object.assign(this.leaves[index], response.data)
                 // console.log("data", response.data);
@@ -224,7 +228,8 @@
             })
         } else {
             // console.log(this.editedItem)
-            Leave.createLeave(this.editedItem)
+            axios.post('/api/hr/HR/leave/create', this.editedItem)
+            // Leave.createLeave(this.editedItem)
             .then(res => {
                 // console.log(res);
                 if (res.data.data == null) {

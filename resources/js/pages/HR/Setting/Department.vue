@@ -63,19 +63,19 @@
                 </v-toolbar>
                 <v-divider></v-divider>
             </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon
           size="small"
           class="me-2"
           color="green"
-          @click="editItem(item.raw)"
+          @click="editItem(item)"
         >
           mdi-pencil
         </v-icon>
         <v-icon
           size="small"
           color="red"
-          @click="deleteItemConfirm(item.raw)"
+          @click="deleteItemConfirm(item)"
         >
           mdi-delete
         </v-icon>
@@ -161,7 +161,8 @@ import axios from 'axios'
                 confirmButtonText: "Yes",
             }).then((result) => {
                 if (result.value) {
-                    Dept.deleteDept(item.id)
+                    axios.delete('/api/hr/HR/department/delete/' + item.id)
+                    // Dept.deleteDept(item.id)
                     this.$swal({
                         title: "Success",
                         text: "Delete Successfully!",
@@ -205,7 +206,8 @@ import axios from 'axios'
             if (this.editedIndex > -1) {
             const index = this.editedIndex
             // console.log(this.editedItem.id);
-            Dept.updateDept(this.editedItem.id, this.editedItem)
+            axios.put('/api/hr/HR/department/update/' + this.editedItem.id, this.editedItem)
+            // Dept.updateDept(this.editedItem.id, this.editedItem)
             .then(response =>{
                 Object.assign(this.depts[index], response.data)
                 console.log("data", response.data);
@@ -228,7 +230,8 @@ import axios from 'axios'
             })
         } else {
             // console.log(this.editedItem)
-            Dept.createDept(this.editedItem)
+            // Dept.createDept(this.editedItem)
+            axios.post('/api/hr/HR/department/create' ,this.editedItem)
             .then(res => {
                 // console.log(res);
                 if (res.data.data == null) {

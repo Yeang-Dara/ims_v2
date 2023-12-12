@@ -130,22 +130,22 @@
                </v-toolbar>
                <v-divider></v-divider>
            </template>
-           <template v-slot:item.name="{ item }">
-                {{ item.raw.name }}
+           <template v-slot:[`item.name`]="{ item }">
+                {{ item.name }}
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:[`item.actions`]="{ item }">
             <v-icon
                 size="small"
                 class="me-2"
                 color="green"
-                @click="editItem(item.raw)"
+                @click="editItem(item)"
             >
                 mdi-pencil
             </v-icon>
             <v-icon
                 size="small"
                 color="red"
-                @click="deleteItemConfirm(item.raw)"
+                @click="deleteItemConfirm(item)"
             >
                 mdi-delete
             </v-icon>
@@ -156,6 +156,7 @@
  </template>
 
  <script>
+import axios from 'axios';
 // import Role from '../../services/api/role'
 // import Staff from '../../services/api/employee'
    export default {
@@ -221,7 +222,9 @@
        },
      methods: {
         FilterRole() {
-            Role.listTable().then(res => {
+            // Role.listTable()
+            axios.get('/api/hr/HR/role/listTable')
+            .then(res => {
                 this.roles = res.data.data
                 console.log("role", this.roles)
             }).catch(err=> {
@@ -229,7 +232,8 @@
             })
         },
        getRole() {
-           Role.roleUsers()
+        axios.get('/api/hr/HR/role/roleUsers')
+        //    Role.roleUsers()
            .then(response => {
                this.users = response.data.data;
                console.log("users", this.users);
@@ -273,7 +277,8 @@
                 confirmButtonText: "Yes",
             }).then((result) => {
                 if (result.value) {
-                    Staff.deleteEmployee(item.user_id);
+                    // Staff.deleteEmployee(item.user_id);
+                    axios.delete('/api/hr/HR/staff/delete/' + item.user_id)
                     this.$swal({
                         title: "Success",
                         text: "Delete Successfully!",
@@ -302,7 +307,8 @@
             if (this.editedIndex > -1) {
                 const index = this.editedIndex
                 // console.log(this.editedItem.user_id);
-                Role.updateUser(this.editedItem.user_id, item)
+                // Role.updateUser(this.editedItem.user_id, item)
+                axios.put('/api/hr/HR/role/updateUser/'+ this.editedItem.user_id, item)
                 .then(response =>{
                     Object.assign(this.users[index], response.data)
                     console.log("data", response.data);

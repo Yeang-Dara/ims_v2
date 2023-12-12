@@ -201,10 +201,10 @@
                     >{{ ('Position') }}</v-list-item>
                     <v-list-item
                     color="#536DFE"
-                            @click="changeRoute('AdminUsers', 11)"
-                            value="AdminUsers"
+                            @click="changeRoute('MasterUsers', 11)"
+                            value="MasterUsers"
                             :class="[{'active': selectedIndex === 11}, 'item-title' ]"
-                    >{{ ('Admin Users') }}</v-list-item>
+                    >{{ ('Master Users') }}</v-list-item>
                 </v-list-group>
                 </span>
         </v-list>

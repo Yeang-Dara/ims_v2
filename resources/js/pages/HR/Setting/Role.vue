@@ -58,19 +58,19 @@
                </v-toolbar>
                <v-divider></v-divider>
            </template>
-     <template v-slot:item.actions="{ item }">
+     <template v-slot:[`item.actions`]="{ item }">
        <v-icon
          size="small"
          class="me-2"
          color="green"
-         @click="editItem(item.raw)"
+         @click="editItem(item)"
        >
          mdi-pencil
        </v-icon>
        <v-icon
          size="small"
          color="red"
-         @click="deleteItemConfirm(item.raw)"
+         @click="deleteItemConfirm(item)"
        >
          mdi-delete
        </v-icon>
@@ -81,6 +81,7 @@
  </template>
 
  <script>
+import axios from 'axios'
 // import Role from '../../services/api/role'
    export default {
      data: () => ({
@@ -119,11 +120,12 @@
        },
      },
      created() {
-        //    this.getRole();
+           this.getRole();
        },
      methods: {
        getRole() {
-           Role.listTable()
+        //    Role.listTable()
+        axios.get('/api/hr/HR/role/listTable')
            .then(response => {
                this.roles = response.data.data;
             //    console.log("role", this.roles);
@@ -151,7 +153,8 @@
                confirmButtonText: "Yes",
            }).then((result) => {
                if (result.value) {
-                   Role.deleteRole(item.id)
+                axios.delete('/api/hr/HR/role/delete/' + item.id)
+                //    Role.deleteRole(item.id)
                    this.$swal({
                        title: "Success",
                        text: "Delete Successfully!",
@@ -195,7 +198,8 @@
            if (this.editedIndex > -1) {
            const index = this.editedIndex
         //    console.log(this.editedItem.id);
-           Role.updateRole(this.editedItem.id, this.editedItem)
+        //    Role.updateRole(this.editedItem.id, this.editedItem)
+        axios.put('/api/hr/HR/role/update/' + this.editedItem.id, this.editedItem)
            .then(response =>{
                Object.assign(this.roles[index], response.data)
                console.log("data", response.data);
@@ -218,7 +222,8 @@
            })
        } else {
         //    console.log(this.editedItem)
-           Role.createRole(this.editedItem)
+        //    Role.createRole(this.editedItem)
+        axios.post('/api/hr/HR/role/create' , this.editedItem)
            .then(res => {
                console.log(res);
                if (res.data.data == null) {
