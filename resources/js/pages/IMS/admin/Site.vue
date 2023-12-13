@@ -9,12 +9,13 @@
                     outlined
                 >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        BANK INFORMATION
+                        SITES INFORMATION
                     </v-card-text>
+                  
                     <v-dialog v-model="dialog" max-width="500px">
                         <template v-slot:activator="{ props }">
                             <v-btn color="primary" class="mb-2" v-bind="props"
-                                >New Bank</v-btn
+                                >New SITE</v-btn
                             >
                         </template>
                         <v-card>
@@ -31,10 +32,8 @@
                                     <v-row>
                                         <v-col>
                                             <v-text-field
-                                                v-model="
-                                                    editedItem.customer_name
-                                                "
-                                                label="Bank Name"
+                                                v-model="editedItem.site_name"
+                                                label="Site Name"
                                             >
                                             </v-text-field>
                                         </v-col>
@@ -53,7 +52,7 @@
                                 <v-btn
                                     color="blue-darken-1"
                                     variant="text"
-                                    @click="savebank"
+                                    @click="savesite"
                                 >
                                     Save
                                 </v-btn>
@@ -79,7 +78,7 @@
                     <v-data-table
                         :items-per-page="itemsPerPage"
                         :headers="headers"
-                        :items="banks"
+                        :items="sites"
                         :search="search"
                     >
                         <template v-slot:[`item.created_at`]="{ item }">
@@ -87,15 +86,20 @@
                         </template>
 
                         <template v-slot:[`item.actions`]="{ item }">
-                            <v-btn small color="cyan" class="mr-1">
                                 <v-icon
                                     small
                                     @click="editItem(item)"
-                                    color="white"
+                                    color="cyan"
                                 >
                                     mdi-pencil
                                 </v-icon>
-                            </v-btn>
+                                <v-icon
+                                    small
+                                    @click="deleteItem(item)"
+                                    color="red"
+                                >
+                                    mdi-delete
+                                </v-icon>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -117,50 +121,51 @@ export default {
             headers: [
                 {
                     align: "start",
-                    key: "customer_name",
+                    key: "site_name",
                     sortable: false,
-                    title: "Bank Name",
+                    title: "Site Name",
                 },
                 {
                     title: "Created At",
                     key: "created_at",
-                    class: " white--text",
+                    class: "blue--text",
                 },
                 { title: "Actions", key: "actions", class: " white--text" },
             ],
-            banks: [],
+            sites: [],
             editedIndex: -1,
             editedItem: {
-                customer_name: "",
+                site_name_name: "",
             },
             defaultItem: {
-                customer_name: "",
+                site_name: "",
             },
         };
     },
     computed: {
         formTitle() {
             return this.editedIndex === -1
-                ? "Add new bank"
-                : "Update bank information";
+                ? "Add new site"
+                : "Update site information";
         },
     },
     watch: {
         dialog(val) {
             val || this.closedialog();
         },
+      
     },
     created() {
-        this.getBank();
+        this.getSite();
     },
 
     methods: {
-        getBank() {
+        getSite() {
             axios
-                .get("/api/IMS/customer/getallcustomer")
+                .get("/api/IMS/site/getallsite")
                 .then((Response) => {
-                    this.banks = Response.data;
-                    console.log(this.banks);
+                    this.sites = Response.data;
+                    console.log(this.sites);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -178,15 +183,15 @@ export default {
             return moment(value).format("YYYY-MM-DD");
         },
         editItem(item) {
-            this.editedIndex = this.banks.indexOf(item);
+            this.editedIndex = this.sites.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
-        savebank() {
+        savesite() {
             if (this.editedIndex > -1) {
-                Object.assign(this.banks[this.editedIndex], this.editedItem);
+                Object.assign(this.sites[this.editedIndex], this.editedItem);
                 axios
-                    .put("/api/IMS/customer/updatecustomer/" + this.editedItem.id, this.editedItem)
+                    .put("/api/IMS/site/updatesite/" + this.editedItem.id, this.editedItem)
                     .then((Response) => {
                         if (Response.status == 200) {
                             Swal.fire({
@@ -210,7 +215,7 @@ export default {
             }
             else{
                 axios
-                .post( "/api/IMS/customer/addcustomer/",this.editedItem )
+                .post( "/api/IMS/site/addsite/",this.editedItem )
                 .then((Response) => {
                     if (Response.status == 200) {
                         Swal.fire({
@@ -232,8 +237,42 @@ export default {
                     console.log(error);
                 });
             }
-            this.getBank();
+            this.getSite();
         },
+        deleteItem(item){
+            this.editedIndex = this.sites.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            Swal.fire({
+                title: "Do you want to delete this site?",
+                showCancelButton: true,
+                confirmButtonText: "OK",
+            }).then((result) =>{
+                if (result.isConfirmed) {
+                    console.log(this.editedItem.id);
+                    axios.delete("/api/IMS/site/deletesite/"+this.editedItem.id)
+                    .then((Response) => {
+                    if (Response.status == 200) {
+                        Swal.fire({
+                            title: Response.data.message,
+                            icon: "success",
+                        });
+                        console.log(Response.data);
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: error.response.data.message,
+                        icon: "warning",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    console.log(error);
+                 });
+             } 
+                this.getSite();
+            })
+           
+        }
     },
 };
 </script>

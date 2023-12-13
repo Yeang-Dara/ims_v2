@@ -22,6 +22,8 @@ import Profile from '../pages/IMS/admin/Profile.vue'
 import Sparepart from '../pages/IMS/admin/Sparepart.vue'
 import Bank from '../pages/IMS/admin/Bank.vue'
 import Banklocation from '../pages/IMS/admin/Banklocation.vue'
+import Engineer from '../pages/IMS/admin/Engineer.vue'
+import Site from '../pages/IMS/admin/Site.vue'
 
 const routes = [
     {
@@ -126,6 +128,16 @@ const routes = [
                 path: 'Banklocation',
                 name: 'banklocation_page',
                 component: Banklocation
+              },
+              {
+                path: 'Engineer',
+                nam: 'engineer_page',
+                component: Engineer
+              },
+              {
+                path:'Site',
+                name: 'Site_page',
+                component: Site
               }
 
         ]

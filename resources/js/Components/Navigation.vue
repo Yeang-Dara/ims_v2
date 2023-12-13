@@ -222,7 +222,7 @@ export default {
                                 items: [
                                     {
                                         title: "List Engineers",
-                                        link: "/inventory-sys/users",
+                                        link: "/inventory-sys/engineer",
                                         icons: "mdi-account-multiple",
                                     },
                                   
@@ -234,7 +234,7 @@ export default {
                                 items: [
                                     {
                                         title: "List Sites",
-                                        link: "/inventory-sys/users",
+                                        link: "/inventory-sys/site",
                                         icons: "mdi-account-multiple",
                                     },
                                   
