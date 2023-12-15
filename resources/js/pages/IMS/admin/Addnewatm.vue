@@ -1,5 +1,5 @@
 <template>
-    <v-main style="padding: 20px 20px 20px 20px; background-color:#F2F7FF;"  class="" >
+    <v-container fluid grid-list-xl>
         <v-row style="padding:10px 10px 10px 10px ; height: 90%;">
             <v-card class="rounded-0 " width="100%">
                 <v-card class="d-flex align-center rounded-0" height="65" style="padding:15px;" outlined>
@@ -374,7 +374,7 @@
                 </v-card>
             </v-card>
         </v-row>
-    </v-main>
+    </v-container>
 </template>
 <script>
 // import User from "../../apis/User";

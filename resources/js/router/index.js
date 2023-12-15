@@ -60,112 +60,13 @@ const routes = [
         children: [
             {
                 path: 'dashboard',
-                name: 'Incident_Dashboard',
-                component: Dashboard,
-                meta: {
-                    breadcrumb: [
-                        { name: 'Dashboard' }
-                    ]
-                }
-            },
-            {
-                path: 'ticket_record',
-                name: 'ticketRecord',
-                component: TicketRecord,
-            }
-        ]
-    },
-    // IMS
-    {
-        path: '/inventory-sys',
-        name: 'inventory',
-        component: Inventory,
-        redirect: '/inventory-sys/dashboard',
-        children: [
-            {
-                path : 'dashboard',
-                name : 'ims_dashboard',
-                component : IMSDashboard,
-                props: true
-            },
-            {
-                path : 'users',
-                name : 'users_page',
-                component : Users,
-                props: true
-            },
-            {
-                path : 'adduser',
-                name : 'adduser_page',
-                component : Adduser,
-                props: true
-            },
-            {
-                path : 'order',
-                name : 'order_page',
-                component : Order
-            },
-            {
-                path : 'atm',
-                name : 'atm_page',
-                component : ATM
-            },
-            {
-                path : 'addnewatm',
-                name : 'addnewatm_page',
-                component : Addnewatm
-            },
-            {
-                path : 'viewdetail/:id',
-                name : 'viewdetail_page',
-                component : Viewdetail
-            },
-            {
-                path : 'report',
-                name : 'report_page',
-                component : Report
-            },
-            {
-                path : 'update/:id',
-                name : 'update_page',
-                component : Updateatm
-            },
-            {
-                path : 'profile',
-                name : 'profile_page',
-                component : Profile
-              },
-              {
-                path : 'spare_part',
-                name : 'spare_part_page',
-                component : Sparepart
-              }
-        ]
-    },
-    {
-        path: '/hr-sys/login-hr',
-        name : 'Login',
-        component : HRLogin,
-            meta: {
-                    allowAnonymous: true,
-                    requiresAuth: false
-            }
-    },
-    {
-        path: '/hr-sys',
-        name: 'hr',
-        component: HR,
-        redirect: '/hr-sys/dashboard',
-        children: [
-            {
-                path: 'dashboard',
                 name: 'Dashboard',
-                component: HRDashboard,
+                component: Dashboard,
                 meta: {
                     requiresAuth: true,
                     breadcrumb: [
                         { name: 'Dashboard' }
-                      ]
+                    ]
                 }
             },
             {
@@ -309,8 +210,110 @@ const routes = [
                     ]
                 }
             },
+            {
+                path: 'ticket_record',
+                name: 'ticketRecord',
+                component: TicketRecord,
+            },
+            {
+                path : 'atm',
+                name : 'atm_page',
+                component : ATM
+            },
+            {
+                path : 'addnewatm',
+                name : 'addnewatm_page',
+                component : Addnewatm
+            },
         ]
     },
+    // IMS
+    {
+        path: '/inventory-sys',
+        name: 'inventory',
+        component: Inventory,
+        redirect: '/inventory-sys/dashboard',
+        children: [
+            {
+                path : 'dashboard',
+                name : 'ims_dashboard',
+                component : IMSDashboard,
+                props: true
+            },
+            {
+                path : 'users',
+                name : 'users_page',
+                component : Users,
+                props: true
+            },
+            {
+                path : 'adduser',
+                name : 'adduser_page',
+                component : Adduser,
+                props: true
+            },
+            {
+                path : 'order',
+                name : 'order_page',
+                component : Order
+            },
+
+            {
+                path : 'viewdetail/:id',
+                name : 'viewdetail_page',
+                component : Viewdetail
+            },
+            {
+                path : 'report',
+                name : 'report_page',
+                component : Report
+            },
+            {
+                path : 'update/:id',
+                name : 'update_page',
+                component : Updateatm
+            },
+            {
+                path : 'profile',
+                name : 'profile_page',
+                component : Profile
+              },
+              {
+                path : 'spare_part',
+                name : 'spare_part_page',
+                component : Sparepart
+              }
+        ]
+    },
+    {
+        path: '/hr-sys/login-hr',
+        name : 'Login',
+        component : HRLogin,
+            meta: {
+                    allowAnonymous: true,
+                    requiresAuth: false
+            }
+    },
+    // {
+    //     path: '/hr-sys',
+    //     name: 'hr',
+    //     component: HR,
+    //     redirect: '/hr-sys/dashboard',
+    //     children: [
+    //         {
+    //             path: 'dashboard',
+    //             name: 'HR_Dashboard',
+    //             component: HRDashboard,
+    //             meta: {
+    //                 requiresAuth: true,
+    //                 // breadcrumb: [
+    //                 //     { name: 'Dashboard' }
+    //                 //   ]
+    //             }
+    //         },
+
+    //     ]
+    // },
     //notFound
     {
         path: '/:pathMatch(.*)*',
@@ -332,7 +335,7 @@ router.beforeEach((to, from) => {
     }
 
     if (to.meta.requiresAuth == false && localStorage.getItem('token')){
-        return { name: 'hr'}
+        return { name: 'Dashboard'}
     }
 })
 // Set an item in localStorage with an expiration time

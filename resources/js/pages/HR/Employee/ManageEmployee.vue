@@ -332,7 +332,7 @@
             </span>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-            <router-link :to="'/hr-sys/manageEmployee/viewDetail/'+item.user_id" class="text">
+            <router-link :to="'/portal/manageEmployee/viewDetail/'+item.user_id" class="text">
                 <v-icon size="small"
                     class="me-2"
                     color="blue"> mdi-eye

@@ -11,21 +11,10 @@
           text="Invalid login, please try again">
         </v-alert>
       </v-sheet>
-      <div>
-        <v-img
-              src="../../../assets/bti.jpg"
-              :width="200"/>
-      </div>
       <v-main class="d-flex justify-center align-center">
-        <!-- <p class="text-red" v-if="error">{{ error }}</p> -->
         <v-col cols="10" lg="4" class="mx-auto">
           <v-card class="pa-4">
             <div class="text-center">
-              <!-- <v-img
-              src="../../../assets/bti.jpg"
-              class="my-3 mb-4"
-              contain
-              height="100"/> -->
               <h3 > Login in to Your Account </h3>
             </div>
             <v-form @submit.prevent="submitHandler" ref="form">
@@ -134,7 +123,7 @@ import { mapActions, mapState } from 'vuex';
               localStorage.setItem('token', response.data.data.token);
               this.error = false;
               setTimeout(() => {
-                this.$router.push('/hr-sys/dashboard');
+                this.$router.push('/portal/dashboard');
               }, 1000)
           })
           .catch(error => {

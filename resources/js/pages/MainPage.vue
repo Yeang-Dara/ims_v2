@@ -1,57 +1,36 @@
 <template>
-<v-app>
-    <v-toolbar
-      dark
-      height="100"
-      color="#2D3643"
-    >
-    <div class="d-flex align-center toolbar">
-        <v-img
-        :width="300"
-        cover
-        src="../assets/bti_logo.jpg"
-        ></v-img>
-    </div>
-    <v-spacer></v-spacer>
-
-    <div class="text-white mr-5">
-        <h1>BTI PORTAL</h1>
-    </div>
-    </v-toolbar>
-    <v-main>
-        <v-container
-          class="d-flex justify-center align-center text-h5"
-          style="min-height: 300px;"
-        >
-        <v-list justify="center" align="center">
-            <v-list-item class="mb-5 font-weight-bold">
-                Menu
-            </v-list-item>
-            <v-list-item class="mb-5">
-                    <v-btn color="#3E3D83" size="large"  class="text-white font-weight-bold">
-                        <router-link :to="{ name: 'Incident_Dashboard' }" class="text-white text-decoration-none">
-                            Ticket Incedent
+    <v-layout>
+        <v-navigation-drawer width="600" color="#001133" theme="dark" permanent>
+            <div class="text-center pa-16 text-uppercase">
+               <h1>
+                    Welcome to BTI Portal
+               </h1>
+            </div>
+            <div class="text-center">
+                <v-btn color="#3E3D83" size="large"  class="text-white font-weight-bold">
+                        <router-link :to="{ name: 'Login' }" class="text-white text-decoration-none">
+                            Log in
                         </router-link>
-                    </v-btn>
-                <!-- </router-link> -->
-            </v-list-item>
-            <v-list-item class="mb-5">
-                <v-btn color="#3E3D83" size="large"  class="text-white font-weight-bold">
-                    <router-link :to="{ name: 'Login' }" class="text-white text-decoration-none">
-                        hr system
-                    </router-link>
                 </v-btn>
-            </v-list-item>
-            <v-list-item class="mb-5">
-                <v-btn color="#3E3D83" size="large"  class="text-white font-weight-bold">
-                    <router-link :to="{ name: 'inventory' }" class="text-white text-decoration-none">
-                        invetory system
-                    </router-link>
-                </v-btn>
-            </v-list-item>
-        </v-list>
+            </div>
 
-        </v-container>
-    </v-main>
-</v-app>
+        </v-navigation-drawer>
+        <v-main>
+            <div class="d-flex flex-row-reverse ">
+                <v-sheet max-width="200" class="ma-2 pa-2">
+                    <v-img
+                        :width="300"
+                        cover
+                        src="../../assets/BTI-Payments.png"
+                    ></v-img>
+                </v-sheet>
+            </div>
+            <v-sheet>
+                <v-img
+                        cover
+                        src="../../assets/backgroud_mainpage.jpg"
+                ></v-img>
+            </v-sheet>
+        </v-main>
+    </v-layout>
 </template>

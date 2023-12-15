@@ -1,5 +1,5 @@
 <template>
-  <v-main style="padding: 20px 20px 20px 20px; background-color: #f2f7ff">
+  <v-container fluid grid-list-xl>
     <div>
       <v-row class="d-flex mr-4 mt-4 justify-end" >
         <v-dialog v-model="importfile" max-width="550px">
@@ -175,7 +175,7 @@
         </v-card-container>
       </v-card>
     </v-row>
-  </v-main>
+  </v-container>
 </template>
 <script>
 // import Using from "../../apis/Using";
