@@ -135,7 +135,7 @@ export default {
             sites: [],
             editedIndex: -1,
             editedItem: {
-                site_name_name: "",
+                site_name: "",
             },
             defaultItem: {
                 site_name: "",
