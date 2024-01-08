@@ -193,72 +193,7 @@ export default {
                     },
                 ],
             },
-            {
-                group1: true,
-                items: [
-                    {
-                        title: "Setting ",
-                        action: "mdi-cog",
-                        items: [
-                            {
-                                title: "Banks Master",
-                                action: "mdi-account-group",
-                                items: [
-                                    {
-                                        title: "List Banks",
-                                        link: "/inventory-sys/bank",
-                                        icons: "mdi-bank",
-                                    },
-                                    {
-                                        title: " Bank Location",
-                                        link: "/inventory-sys/banklocation",
-                                        icons: "mdi-store-marker",
-                                    },
-                                ],
-                            },
-                            {
-                                title: "Engineers Master",
-                                action: "mdi-account-group",
-                                items: [
-                                    {
-                                        title: "List Engineers",
-                                        link: "/inventory-sys/engineer",
-                                        icons: "mdi-account-multiple",
-                                    },
-                                  
-                                ],
-                            },
-                            {
-                                title: "Site Master",
-                                action: "mdi-account-group",
-                                items: [
-                                    {
-                                        title: "List Sites",
-                                        link: "/inventory-sys/site",
-                                        icons: "mdi-account-multiple",
-                                    },
-                                  
-                                ],
-                            },
-                            {
-                                title: "Terminal Master",
-                                items: [
-                                    {
-                                        title: "Type",
-                                        link: "/inventory-sys/atm",
-                                        icons: "mdi-home-group",
-                                    },
-                                    {
-                                        title: "Mode",
-                                        link: "/inventory-sys/addnewatm",
-                                          icons: "mdi-home-plus",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            },
+           
             {
                 group: false,
                 title: "Order",
@@ -311,6 +246,87 @@ export default {
                         title: "Stock Spare Parts",
                         link: "/inventory-sys/spare_part",
                         icons: "mdi-toolbox",
+                    },
+                ],
+            },
+            {
+                group1: true,
+                items: [
+                    {
+                        title: "Setting ",
+                        action: "mdi-cog",
+                        items: [
+                            {
+                                title: "Banks Master",
+                                action: "mdi-account-group",
+                                items: [
+                                    {
+                                        title: "List Banks",
+                                        link: "/inventory-sys/bank",
+                                        icons: "mdi-bank",
+                                    },
+                                    {
+                                        title: " Bank Location",
+                                        link: "/inventory-sys/banklocation",
+                                        icons: "mdi-store-marker",
+                                    },
+                                ],
+                            },
+                            {
+                                title: "Engineers Master",
+                                action: "mdi-account-group",
+                                items: [
+                                    {
+                                        title: "List Engineers",
+                                        link: "/inventory-sys/engineer",
+                                        icons: "mdi-account-multiple",
+                                    },
+                                  
+                                ],
+                            },
+                            {
+                                title: "Site Master",
+                                action: "mdi-account-group",
+                                items: [
+                                    {
+                                        title: "List Sites",
+                                        link: "/inventory-sys/site",
+                                        icons: "mdi-account-multiple",
+                                    },
+                                  
+                                ],
+                            },
+                            {
+                                title: "Terminal Master",
+                                items: [
+                                    {
+                                        title: "Types",
+                                        link: "/inventory-sys/type",
+                                        icons: "mdi-home-group",
+                                    },
+                                    {
+                                        title: "Models",
+                                        link: "/inventory-sys/model",
+                                        icons: "mdi-home-plus",
+                                    },
+                                ],
+                            },
+                            {
+                                title: "Category Master",
+                                items: [
+                                    {
+                                        title: "Category",
+                                        link: "/inventory-sys/category",
+                                        icons: "mdi-home-group",
+                                    },
+                                    // {
+                                    //     title: "Models",
+                                    //     link: "/inventory-sys/model",
+                                    //     icons: "mdi-home-plus",
+                                    // },
+                                ],
+                            },
+                        ],
                     },
                 ],
             },

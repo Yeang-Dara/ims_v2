@@ -9,13 +9,12 @@
                     outlined
                 >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        SITES INFORMATION
+                        CATEGORIES INFORMATION
                     </v-card-text>
-                  
                     <v-dialog v-model="dialog" max-width="500px">
                         <template v-slot:activator="{ props }">
                             <v-btn color="primary" class="mb-2" v-bind="props"
-                                >New engineer</v-btn
+                                >New category</v-btn
                             >
                         </template>
                         <v-card>
@@ -30,10 +29,20 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
+                                        <!-- <v-col cols="12" md="6" sm="12">
+                                            <v-select
+                                                :items="types"
+                                                item-value="id"
+                                                item-title="terminal_type"
+                                                v-model="editedItem.terminaltype_id"
+                                                label="Terminal Type"
+                                            >
+                                            </v-select>
+                                        </v-col> -->
                                         <v-col>
                                             <v-text-field
-                                                v-model="editedItem.engineer_name"
-                                                label="Engineer Name"
+                                                v-model="editedItem.category_name"
+                                                label="Category Name"
                                             >
                                             </v-text-field>
                                         </v-col>
@@ -52,7 +61,7 @@
                                 <v-btn
                                     color="blue-darken-1"
                                     variant="text"
-                                    @click="savesite"
+                                    @click="savebank"
                                 >
                                     Save
                                 </v-btn>
@@ -78,7 +87,7 @@
                     <v-data-table
                         :items-per-page="itemsPerPage"
                         :headers="headers"
-                        :items="engineers"
+                        :items="categories"
                         :search="search"
                     >
                         <template v-slot:[`item.created_at`]="{ item }">
@@ -88,17 +97,10 @@
                         <template v-slot:[`item.actions`]="{ item }">
                                 <v-icon
                                     small
-                                    @click="editItem(item)"
                                     color="cyan"
+                                    @click="editItem(item)"
                                 >
                                     mdi-pencil
-                                </v-icon>
-                                <v-icon
-                                    small
-                                    @click="deleteItem(item)"
-                                    color="red"
-                                >
-                                    mdi-delete
                                 </v-icon>
                         </template>
                     </v-data-table>
@@ -121,51 +123,52 @@ export default {
             headers: [
                 {
                     align: "start",
-                    key: "engineer_name",
+                    key: "category_name",
                     sortable: false,
-                    title: "Engineer Name",
+                    title: "Category",
                 },
                 {
                     title: "Created At",
                     key: "created_at",
-                    class: "blue--text",
+                    class: " white--text",
                 },
                 { title: "Actions", key: "actions", class: " white--text" },
             ],
-            engineers: [],
+            categories: [],
+            types:[],
             editedIndex: -1,
             editedItem: {
-                engineer_name: "",
+                category_name:"",
+               
             },
             defaultItem: {
-                engineer_name: "",
+                category_name:"",
             },
         };
     },
     computed: {
         formTitle() {
             return this.editedIndex === -1
-                ? "Add new site"
-                : "Update site information";
+                ? "Add new category"
+                : "Update category information";
         },
     },
     watch: {
         dialog(val) {
             val || this.closedialog();
         },
-      
     },
     created() {
-        this.getEngineer();
+        this.getCategory();
     },
 
     methods: {
-        getEngineer() {
+        getCategory() {
             axios
-                .get("/api/IMS/engineer/all")
+                .get("/api/IMS/categorie/allcategory")
                 .then((Response) => {
-                    this.engineers = Response.data;
-                    console.log(this.sites);
+                    this.categories = Response.data.data;
+                    console.log("category",this.categories);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -183,28 +186,28 @@ export default {
             return moment(value).format("YYYY-MM-DD");
         },
         editItem(item) {
-            this.editedIndex = this.engineers.indexOf(item);
+            this.editedIndex = this.categories.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
-        savesite() {
+        savebank() {
             if (this.editedIndex > -1) {
-                Object.assign(this.engineers[this.editedIndex], this.editedItem);
+                Object.assign(this.categories[this.editedIndex], this.editedItem);
                 axios
-                    .put("/api/IMS/engineer/updateengineer/" + this.editedItem.id, this.editedItem)
+                    .put("/api/IMS/categorie/update/" + this.editedItem.id, this.editedItem)
                     .then((Response) => {
-                        if (Response.status == 200) {
+                 
                             Swal.fire({
-                                title: Response.data.message,
+                                title: "Updated successfully",
                                 icon: "success",
                             });
                             console.log(Response.data);
                             this.closedialog();
-                        }
+                        
                     })
                     .catch((error) => {
                         Swal.fire({
-                            title: error.response.data.message,
+                            title: "Something when wrong",
                             icon: "warning",
                             position: "top",
                             showConfirmButton: false,
@@ -215,20 +218,19 @@ export default {
             }
             else{
                 axios
-                .post( "/api/IMS/engineer/addengineer/",this.editedItem )
+                .post( "/api/IMS/categorie/add/",this.editedItem )
                 .then((Response) => {
-                    if (Response.status == 200) {
                         Swal.fire({
-                            title: Response.data.message,
+                            title: "Add new category successfully",
                             icon: "success",
                         });
                         this.closedialog();
                         console.log(Response.data);
-                    }
+                    
                 })
                 .catch((error) => {
                     Swal.fire({
-                        title: error.response.data.message,
+                        title: "Something when wrong!",
                         icon: "warning",
                         position: "top",
                         showConfirmButton: false,
@@ -237,42 +239,11 @@ export default {
                     console.log(error);
                 });
             }
-            this.getEngineer();
+            this.getCategory();
         },
-        deleteItem(item){
-            this.editedIndex = this.engineers.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            Swal.fire({
-                title: "Do you want to delete this engineer?",
-                showCancelButton: true,
-                confirmButtonText: "OK",
-            }).then((result) =>{
-                if (result.isConfirmed) {
-                    console.log(this.editedItem.id);
-                    axios.delete("/api/IMS/engineer/deleteengineer/"+this.editedItem.id)
-                    .then((Response) => {
-                    if (Response.status == 200) {
-                        Swal.fire({
-                            title: Response.data.message,
-                            icon: "success",
-                        });
-                        console.log(Response.data);
-                    }
-                })
-                .catch((error) => {
-                    Swal.fire({
-                        title: error.response.data.message,
-                        icon: "warning",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    console.log(error);
-                 });
-             } 
-                this.getEngineer();
-            })
-           
-        }
     },
+    mounted: function(){
+    }
+
 };
 </script>

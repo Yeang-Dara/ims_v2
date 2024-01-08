@@ -87,15 +87,13 @@
                         </template>
 
                         <template v-slot:[`item.actions`]="{ item }">
-                            <v-btn small color="cyan" class="mr-1">
                                 <v-icon
                                     small
+                                    color="cyan"
                                     @click="editItem(item)"
-                                    color="white"
                                 >
                                     mdi-pencil
                                 </v-icon>
-                            </v-btn>
                         </template>
                     </v-data-table>
                 </v-card>

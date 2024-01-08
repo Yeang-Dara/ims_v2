@@ -80,5 +80,6 @@ Route::group(['prefix' => 'IMS'], function () {
     require __DIR__ . '/IMS/site.php';
     require __DIR__ . '/IMS/banklocation.php';
     require __DIR__ . '/IMS/engineer.php';
+    require __DIR__ . '/IMS/categorie.php';
 });
 

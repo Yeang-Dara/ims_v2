@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Terminalmodel;
+use App\Models\Terminaltype;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,17 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        // $this -> call(TicketSeeder::class);
-        // $this -> call(TerminalSeeder::class);
+       
         $this->call(UserSeeder::class);
         $this->call(UsingSeeder::class);
         $this->call(CustomerSeeder::class);
         $this->call(SiteSeeder::class);
+        $this->call(TerminalTypeSeeder::class);
+        $this->call(TerminalmodelSeeder::class);
+        $this->call(CategorySeeder::class);
     }
 }

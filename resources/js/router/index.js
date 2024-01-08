@@ -24,6 +24,9 @@ import Bank from '../pages/IMS/admin/Bank.vue'
 import Banklocation from '../pages/IMS/admin/Banklocation.vue'
 import Engineer from '../pages/IMS/admin/Engineer.vue'
 import Site from '../pages/IMS/admin/Site.vue'
+import Type from '../pages/IMS/admin/Type.vue'
+import Model from '../pages/IMS/admin/Model.vue'
+import Category from '../pages/IMS/admin/Category.vue'
 
 const routes = [
     {
@@ -138,6 +141,21 @@ const routes = [
                 path:'Site',
                 name: 'Site_page',
                 component: Site
+              },
+              {
+                path:'Type',
+                name: 'Type_page',
+                component: Type
+              },
+              {
+                path:'Model',
+                name: 'Model_page',
+                component: Model
+              },
+              {
+                path:'Category',
+                name: 'category_page',
+                component: Category
               }
 
         ]
