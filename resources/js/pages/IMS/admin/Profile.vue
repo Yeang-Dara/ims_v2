@@ -29,7 +29,7 @@
             <v-card style="">
               <div class="text-center">
                 <v-avatar color="surface-variant" size="250" class="ma-2">
-                  <v-img src="../../assets/profile.jpg" />
+                  <!-- <v-img src="../../assets/profile.jpg" /> -->
                 </v-avatar>
               </div>
               <div class="d-flex justify-center pa-2 mt-0 mb-2">
