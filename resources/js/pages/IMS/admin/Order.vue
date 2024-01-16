@@ -1,5 +1,5 @@
 <template>
-  <v-main style="padding: 20px 20px 20px 20px; background-color: #f2f7ff">
+  <v-container fluid grid-list-xl>
     <v-row style="padding: 10px; height: 90%">
       <v-card class="rounded-0" width="100%">
         <v-card
@@ -338,7 +338,7 @@
         </v-card-container>
       </v-card>
     </v-row>
-  </v-main>
+  </v-container>
 </template>
 <script>
 // import Order from "../../apis/Order";
