@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HR\AttendanceController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\LogFile;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -98,3 +99,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/change-password', [AuthController::class, 'change_password']);
 });
+
+Route::post('/process-log', [LogFile::class, 'processLog']);
+Route::post('/convert-file', [LogFile::class, 'convertFile']);
+Route::post('/upload-file', [LogFile::class, 'Uploadfile']);

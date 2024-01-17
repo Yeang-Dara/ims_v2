@@ -8,9 +8,9 @@
                     <span v-if="user.image">
                         <v-img :src="getImageUrl(user.image)" />
                     </span>
-                    <span v-else>
+                    <!-- <span v-else>
                         <v-img src="../../../assets/man_avatar.png" />
-                    </span>
+                    </span> -->
                   </v-avatar>
                   <h3>{{ user.last_name }} {{ user.first_name }}</h3>
               </div>
