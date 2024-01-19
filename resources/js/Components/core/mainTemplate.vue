@@ -257,6 +257,12 @@
                             style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 17}, 'item-title' ]"
                     >{{ ('Bank Location') }}</v-list-item>
+                    <v-list-item
+                            @click="changeRoute('warehouse_page', 23)"
+                            value="warehouse_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 23}, 'item-title' ]"
+                    >{{ ('Warehouses') }}</v-list-item>
                     </v-list-group>
                     <v-list-item
                             @click="changeRoute('engineer_page', 18)"
@@ -279,17 +285,23 @@
                         >{{ ('Terminal Master') }} </v-list-item>
                     </template>
                     <v-list-item
-                            @click="changeRoute('bank_page', 16)"
-                            value="bank_page"
+                            @click="changeRoute('Type_page', 16)"
+                            value="Type_page"
                             style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 16}, 'item-title' ]"
                     >{{ ('Type') }}</v-list-item>
                     <v-list-item
-                            @click="changeRoute('banklocation_page', 17)"
-                            value="banklocation_page"
+                            @click="changeRoute('Model_page', 17)"
+                            value="Model_page"
                             style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 17}, 'item-title' ]"
                     >{{ ('Model') }}</v-list-item>
+                    <v-list-item
+                            @click="changeRoute('status_page', 24)"
+                            value="status_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 24}, 'item-title' ]"
+                    >{{ ('Status') }}</v-list-item>
                     </v-list-group>
                 </v-list-group>
                 </span>
