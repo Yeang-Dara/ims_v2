@@ -34,3 +34,33 @@
         </v-main>
     </v-layout>
 </template>
+
+<style>
+h1 {
+border-right: solid 3px #ffff;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 28px;
+  color: #ffff;
+}
+
+h1 {
+    animation: animated-text 4s steps(29,end) 1s 1 normal both,
+    animated-cursor 600ms steps(29,end) infinite;
+}
+
+/* text animation */
+
+@keyframes animated-text{
+  from{width: 0;}
+  to{width: 472px;}
+}
+
+/* cursor animations */
+
+@keyframes animated-cursor{
+  from{border-right-color: #ffff;}
+  to{border-right-color: transparent;}
+}
+</style>

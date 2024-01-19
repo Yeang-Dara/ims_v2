@@ -10,7 +10,7 @@
                 <v-img
                     width="150"
                     cover
-                    src="../../../assets/bti-removebg-preview.png"
+                    src="../../../assets/BTI (2).png"
                  ></v-img>
             </router-link>
           </div>
@@ -41,7 +41,7 @@
                                             <v-img :src="getImageUrl(item.image)" />
                                         </span>
                                         <!-- <span v-else>
-                                            <v-img src="/../../../../assets/man_avatar.png" />
+                                            <v-img src="/../../../assets/avatar_female.png" />
                                         </span> -->
                                     </v-avatar>
                                 </template>
@@ -100,11 +100,12 @@
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" app color="grey-darken-2">
 
-        <v-list nav>
+        <v-list nav  dense>
                 <v-list-item
                     @click="changeRoute('Dashboard', 1)"
                     prepend-icon="mdi-view-dashboard"
                     value="Dashboard"
+                    style="font-size: 14px;"
                     :class="[{'active': selectedIndex === 1}, 'item-title' ]"
                 >
                 {{ ('Dashboard') }}
@@ -114,6 +115,7 @@
                 <template v-slot:activator="{ props }">
                     <v-list-item
                     v-bind="props"
+                    style="font-size: 14px;"
                     prepend-icon="mdi-account-multiple"
                     class="item-title"
                     >{{ ('Employees') }} </v-list-item>
@@ -121,11 +123,13 @@
                 <v-list-item
                         @click="changeRoute('AddEmployee', 2)"
                         value="AddEmployee"
+                        style="font-size: 14px;"
                         :class="[{'active': selectedIndex === 2}, 'item-title' ]"
                 >{{ ('Add Employee') }}</v-list-item>
                 <v-list-item
                         @click="changeRoute('ManageEmployee', 3)"
                         value="ManageEmployee"
+                        style="font-size: 14px;"
                         :class="[{'active': selectedIndex === 3}, 'item-title' ]"
                 >{{ ('Manage Employee') }}</v-list-item>
                 </v-list-group>
@@ -134,6 +138,7 @@
                     <template v-slot:activator="{ props }">
                         <v-list-item
                         v-bind="props"
+                        style="font-size: 14px;"
                         prepend-icon="mdi-deskphone"
                         class="item-title"
                         >{{ ('Leaves') }} </v-list-item>
@@ -142,11 +147,13 @@
                         <v-list-item
                             @click="changeRoute('ApplyLeave', 4)"
                             value="ApplyLeave"
+                            style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 4}, 'item-title' ]"
                         >{{ ('Apply Leave') }}</v-list-item>
                         <v-list-item
                                 @click="changeRoute('MyLeave', 12)"
                                 value="MyLeave"
+                                style="font-size: 14px;"
                                 :class="[{'active': selectedIndex === 12}, 'item-title' ]"
                         >{{ ('My Leave') }}</v-list-item>
                     </span>
@@ -154,12 +161,14 @@
                         <v-list-item
                                 @click="changeRoute('ManageLeave', 5)"
                                 value="ManageLeave"
+                                style="font-size: 14px;"
                                 :class="[{'active': selectedIndex === 5}, 'item-title' ]"
                         >{{ ('Manage Leave') }}</v-list-item>
                         <span v-if="user.role_id != 5">
                             <v-list-item
                                 @click="changeRoute('LeaveView', 6)"
                                 value="ManageView"
+                                style="font-size: 14px;"
                                 :class="[{'active': selectedIndex === 6}, 'item-title' ]"
                             >{{ ('Leave View') }}</v-list-item>
                         </span>
@@ -171,26 +180,35 @@
                         v-bind="props"
                         prepend-icon="mdi-warehouse"
                         class="item-title"
+                        style="font-size: 14px;"
                         >{{ ('Terminals') }} </v-list-item>
                     </template>
                         <v-list-item
                             @click="changeRoute('atm_page', 13)"
                             value="atm_page"
-                            prepend-icon="mdi-home-group"
+                            style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 13}, 'item-title' ]"
                         >{{ ('List Terminal') }}</v-list-item>
                         <v-list-item
                                 @click="changeRoute('addnewatm_page', 14)"
                                 value="addnewatm_page"
-                                prepend-icon="mdi-home-plus"
+                                style="font-size: 14px;"
                                 :class="[{'active': selectedIndex === 14}, 'item-title' ]"
                         >{{ ('New Terminal') }}</v-list-item>
                 </v-list-group>
+                <v-list-item
+                    @click="changeRoute('order_page', 15)"
+                    value="order_page"
+                    style="font-size: 14px;"
+                    prepend-icon="mdi-home-plus"
+                    :class="[{'active': selectedIndex === 15}, 'item-title' ]"
+                >{{ ('Incoming Machine') }}</v-list-item>
                 <span v-if=" user.role_id == 1 || user.role_id == 4">
                     <v-list-group value="Setting">
                     <template v-slot:activator="{ props }">
                         <v-list-item
                         v-bind="props"
+                        style="font-size: 14px;"
                         prepend-icon="mdi-cog"
                         class="item-title"
                         >{{ ('Setting') }} </v-list-item>
@@ -198,29 +216,106 @@
                     <v-list-item
                             @click="changeRoute('Department', 7)"
                             value="Department"
+                            style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 7}, 'item-title' ]"
                     >{{ ('Department') }}</v-list-item>
                     <v-list-item
                             @click="changeRoute('LeaveType', 8)"
                             value="LeaveType"
+                            style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 8}, 'item-title' ]"
                     >{{ ('Leave Type') }}</v-list-item>
                     <v-list-item
                             @click="changeRoute('Position', 9)"
                             value="Position"
+                            style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 9}, 'item-title' ]"
                     >{{ ('Position') }}</v-list-item>
                     <v-list-item
                             @click="changeRoute('MasterUsers', 11)"
                             value="MasterUsers"
+                            style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 11}, 'item-title' ]"
                     >{{ ('Master Users') }}</v-list-item>
+                    <v-list-group value="bank">
+                        <template v-slot:activator="{ props }">
+                        <v-list-item
+                        v-bind="props"
+                        class="item-title"
+                        style="font-size: 14px;"
+                        >{{ ('Banks Master') }} </v-list-item>
+                    </template>
+                    <v-list-item
+                            @click="changeRoute('bank_page', 16)"
+                            value="bank_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 16}, 'item-title' ]"
+                    >{{ ('List Banks') }}</v-list-item>
+                    <v-list-item
+                            @click="changeRoute('banklocation_page', 17)"
+                            value="banklocation_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 17}, 'item-title' ]"
+                    >{{ ('Bank Location') }}</v-list-item>
+                    </v-list-group>
+                    <v-list-item
+                            @click="changeRoute('engineer_page', 18)"
+                            value="engineer_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 18}, 'item-title' ]"
+                    >{{ ('Engineers Master') }}</v-list-item>
+                    <v-list-item
+                            @click="changeRoute('Site_page', 19)"
+                            value="Site_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                    >{{ ('Site Master') }}</v-list-item>
+                    <v-list-group value="terminal">
+                        <template v-slot:activator="{ props }">
+                        <v-list-item
+                        v-bind="props"
+                        style="font-size: 14px;"
+                        class="item-title"
+                        >{{ ('Terminal Master') }} </v-list-item>
+                    </template>
+                    <v-list-item
+                            @click="changeRoute('bank_page', 16)"
+                            value="bank_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 16}, 'item-title' ]"
+                    >{{ ('Type') }}</v-list-item>
+                    <v-list-item
+                            @click="changeRoute('banklocation_page', 17)"
+                            value="banklocation_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 17}, 'item-title' ]"
+                    >{{ ('Model') }}</v-list-item>
+                    </v-list-group>
                 </v-list-group>
                 </span>
+                <v-list-item
+                    @click="changeRoute('report_page', 18)"
+                    prepend-icon="mdi-calendar-export"
+                    value="Report"
+                    style="font-size: 14px;"
+                    :class="[{'active': selectedIndex === 18}, 'item-title' ]"
+                >
+                {{ ('Report') }}
+                </v-list-item>
+                <v-list-item
+                    @click="changeRoute('spare_part_page', 19)"
+                    prepend-icon="mdi-toolbox"
+                    value="Spare parts"
+                    style="font-size: 14px;"
+                    :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                >
+                {{ ('Spare parts') }}
+                </v-list-item>
                 <v-list-item
                     @click="changeRoute('ticketRecord', 2)"
                     prepend-icon="mdi-ticket-percent"
                     value="Ticket Record"
+                    style="font-size: 14px;"
                     :class="[{'active': selectedIndex === 2}, 'item-title' ]"
                 >
                 {{ ('Ticket Record') }}
@@ -229,31 +324,35 @@
                     <template v-slot:activator="{ props }">
                         <v-list-item
                         v-bind="props"
+                        style="font-size: 14px;"
                         prepend-icon="mdi-file-cog "
                         class="item-title"
                         >{{ ('Log File') }} </v-list-item>
                     </template>
                     <v-list-item
-                        @click="changeRoute('uploadFile', 19)"
+                        @click="changeRoute('uploadFile', 20)"
                         prepend-icon="mdi-file-plus"
+                        style="font-size: 14px;"
                         value="Upload File"
-                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                        :class="[{'active': selectedIndex === 20}, 'item-title' ]"
                     >
                     {{ ('Upload File') }}
                     </v-list-item>
                     <v-list-item
-                        @click="changeRoute('viewFile', 19)"
+                        @click="changeRoute('viewFile', 21)"
                         prepend-icon="mdi-file-eye"
+                        style="font-size: 14px;"
                         value="View File"
-                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                        :class="[{'active': selectedIndex === 21}, 'item-title' ]"
                     >
                     {{ ('View File') }}
                     </v-list-item>
                     <v-list-item
-                        @click="changeRoute('viewDetail', 19)"
+                        @click="changeRoute('viewDetail', 22)"
                         prepend-icon="mdi-file-find"
+                        style="font-size: 14px;"
                         value="View Detail"
-                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                        :class="[{'active': selectedIndex === 22}, 'item-title' ]"
                     >
                     {{ ('View Detail') }}
                     </v-list-item>
@@ -391,6 +490,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
+    /* font-size: 8px; */
 
   }
   .toolbar-menu-item {
@@ -410,5 +510,9 @@ export default {
     width: 100%;
     height: 100%;
   }
+/*
+  .v-list {
+    font-size: 8px;
+  } */
 
   </style>

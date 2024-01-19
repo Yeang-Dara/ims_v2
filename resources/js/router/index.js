@@ -20,6 +20,8 @@ import Report from '../pages/IMS/admin/Report.vue'
 import Updateatm from '../pages/IMS/admin/Updateatm.vue'
 import Profile from '../pages/IMS/admin/Profile.vue'
 import Sparepart from '../pages/IMS/admin/Sparepart.vue'
+import Bank from '../pages/IMS/admin/Bank.vue'
+import Banklocation from '../pages/IMS/admin/Banklocation.vue'
 
 // HR
 import HR from '../Components/HR/HRmainTemplate.vue'
@@ -41,10 +43,6 @@ import LeaveType from '../pages/HR/Setting/LeaveType.vue'
 import Role from '../pages/HR/Setting/Role.vue'
 import Permission from '../pages/HR/Setting/Permission.vue'
 import MasterUsers from '../pages/HR/Setting/AdminUsers.vue'
-
-
-import Bank from '../pages/IMS/admin/Bank.vue'
-import Banklocation from '../pages/IMS/admin/Banklocation.vue'
 
 // log
 import UploadFile from '../pages/Logfile/UploadFile.vue'
@@ -232,7 +230,37 @@ const routes = [
                 path : 'upload-file',
                 name : 'uploadFile',
                 component :UploadFile
-            }
+            },
+            {
+                path:'bank',
+                name:'bank_page',
+                component: Bank
+              },
+              {
+                path: 'Banklocation',
+                name: 'banklocation_page',
+                component: Banklocation
+              },
+              {
+                path : 'report',
+                name : 'report_page',
+                component : Report
+            },
+            {
+                path : 'spare_part',
+                name : 'spare_part_page',
+                component : Sparepart
+              }
+            //   {
+            //     path: 'Engineer',
+            //     nam: 'engineer_page',
+            //     component: Engineer
+            //   },
+            //   {
+            //     path:'Site',
+            //     name: 'Site_page',
+            //     component: Site
+            //   }
         ]
     },
     // IMS
@@ -260,21 +288,12 @@ const routes = [
                 component : Adduser,
                 props: true
             },
-            {
-                path : 'order',
-                name : 'order_page',
-                component : Order
-            },
+
 
             {
                 path : 'viewdetail/:id',
                 name : 'viewdetail_page',
                 component : Viewdetail
-            },
-            {
-                path : 'report',
-                name : 'report_page',
-                component : Report
             },
             {
                 path : 'update/:id',
@@ -286,11 +305,8 @@ const routes = [
                 name : 'profile_page',
                 component : Profile
               },
-              {
-                path : 'spare_part',
-                name : 'spare_part_page',
-                component : Sparepart
-              }
+
+
         ]
     },
     {
