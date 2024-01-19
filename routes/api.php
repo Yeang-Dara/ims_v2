@@ -13,6 +13,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HR\AttendanceController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LogFile;
+use App\Http\Controllers\UploadFileController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -103,3 +105,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 Route::post('/process-log', [LogFile::class, 'processLog']);
 Route::post('/convert-file', [LogFile::class, 'convertFile']);
 Route::post('/upload-file', [LogFile::class, 'Uploadfile']);
+
+// upload log
+Route::post('/upload-folder', [UploadFileController::class, 'uploadFolder']);
+Route::post('/upload-file', [UploadFileController::class, 'uploadFile']);

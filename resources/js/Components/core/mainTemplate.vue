@@ -224,7 +224,40 @@
                     :class="[{'active': selectedIndex === 2}, 'item-title' ]"
                 >
                 {{ ('Ticket Record') }}
-                </v-list-item>
+               </v-list-item>
+                <v-list-group value="Log File">
+                    <template v-slot:activator="{ props }">
+                        <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-file-cog "
+                        class="item-title"
+                        >{{ ('Log File') }} </v-list-item>
+                    </template>
+                    <v-list-item
+                        @click="changeRoute('uploadFile', 19)"
+                        prepend-icon="mdi-file-plus"
+                        value="Upload File"
+                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                    >
+                    {{ ('Upload File') }}
+                    </v-list-item>
+                    <v-list-item
+                        @click="changeRoute('viewFile', 19)"
+                        prepend-icon="mdi-file-eye"
+                        value="View File"
+                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                    >
+                    {{ ('View File') }}
+                    </v-list-item>
+                    <v-list-item
+                        @click="changeRoute('viewDetail', 19)"
+                        prepend-icon="mdi-file-find"
+                        value="View Detail"
+                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                    >
+                    {{ ('View Detail') }}
+                    </v-list-item>
+                </v-list-group>
         </v-list>
         </v-navigation-drawer>
 

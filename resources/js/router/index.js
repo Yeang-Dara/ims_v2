@@ -46,6 +46,9 @@ import MasterUsers from '../pages/HR/Setting/AdminUsers.vue'
 import Bank from '../pages/IMS/admin/Bank.vue'
 import Banklocation from '../pages/IMS/admin/Banklocation.vue'
 
+// log
+import UploadFile from '../pages/Logfile/UploadFile.vue'
+
 const routes = [
     {
         path: '/',
@@ -225,6 +228,11 @@ const routes = [
                 name : 'addnewatm_page',
                 component : Addnewatm
             },
+            {
+                path : 'upload-file',
+                name : 'uploadFile',
+                component :UploadFile
+            }
         ]
     },
     // IMS
