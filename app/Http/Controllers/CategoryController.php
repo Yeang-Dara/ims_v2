@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+
 
 class CategoryController extends Controller
 {
@@ -46,6 +49,12 @@ class CategoryController extends Controller
            
         ];
         return response()->json($response, 200);
+    }
+    public function getALLcategory()
+    {
+        $data = DB::table('categories')->orderBy('id')->get();
+        
+        return response()->json(['status'=>200,'data'=>$data]); 
     }
 
     

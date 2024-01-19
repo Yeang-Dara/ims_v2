@@ -50,14 +50,15 @@ class TerminalmodelController extends ParentController
     {
         return parent::delete($id);
     }
-    public function GetAllModel($id)
+    public function GetAllModel()
     {
-       $data = DB ::table('terminalmodels')
-                ->join('terminaltypes','terminaltypes.id', '=','terminalmodels.terminaltype_id')
-                ->select('terminaltypes.terminal_type', 'terminalmodels.*')
-                ->where('terminaltypes.id', '=', $id)
-                ->orderBy('terminalmodels.id')
-                ->get();
+    //    $data = DB ::table('terminalmodels')
+    //             ->join('terminaltypes','terminaltypes.id', '=','terminalmodels.terminaltype_id')
+    //             ->select('terminaltypes.terminal_type', 'terminalmodels.*')
+    //             ->where('terminaltypes.id', '=', $id)
+    //             ->orderBy('terminalmodels.id')
+    //             ->get();
+    $data = DB::table('terminalmodels')->orderBy('id')->get();
         return $data;
     }
 }

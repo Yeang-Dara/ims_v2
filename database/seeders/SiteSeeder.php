@@ -14,30 +14,48 @@ class SiteSeeder extends Seeder
         $sites =[
                 [
                     "site_name"=>"2nd ATM",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                 [
                     "site_name"=>"AEON 2",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                 [
                     "site_name"=>"AEON 3",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                 [
                     "site_name"=>"Branch Site",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                 [
                     "site_name"=>"LOBBY",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                  [
                     "site_name"=>"MALL",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                  [
                     "site_name"=>"OffSite",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                 [
                     "site_name"=>"OnSite",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
                  [
                     "site_name"=>"UAT",
+                    "created_at"=>"03/13/2023",
+                    "updated_at"=> "03/26/2023",
                 ],
            
          ];

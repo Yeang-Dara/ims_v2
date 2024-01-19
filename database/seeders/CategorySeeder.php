@@ -2,42 +2,38 @@
 
 namespace Database\Seeders;
 
-use App\Models\Customer;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CustomerSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     public function run(){
-        DB::table('customers')->delete();
+        DB::table('categories')->delete();
         $customers = [
               
                 [
-                    "customer_name"=>"ABA Bank",
+                    "category_name"=>"Broze",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
                 [
-                    "customer_name"=>"AMK MFI",
+                    "category_name"=>"Gold",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
                 [
-                    "customer_name"=>"BTI Share",
+                    "category_name"=>"Platinum",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
                 [
-                    "customer_name"=>"Philip Bank",
+                    "category_name"=>"Silver",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
-                [
-                    "customer_name"=>"WingBank",
-                    "created_at"=>"03/13/2023",
-                    "updated_at"=> "03/26/2023",
-                ],
+            
             ];
-        Customer::insert($customers);
+        Category::insert($customers);
     }
 }

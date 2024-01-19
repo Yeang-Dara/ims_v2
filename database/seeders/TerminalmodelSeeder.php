@@ -2,42 +2,47 @@
 
 namespace Database\Seeders;
 
-use App\Models\Customer;
+use App\Models\Terminalmodel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CustomerSeeder extends Seeder
+class TerminalmodelSeeder extends Seeder
 {
     public function run(){
-        DB::table('customers')->delete();
-        $customers = [
+        DB::table('terminalmodels')->delete();
+        $terminaltype = [
               
                 [
-                    "customer_name"=>"ABA Bank",
+                    "terminal_model"=>"DN 100D",
+                    "terminaltype_id"=>"1",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
                 [
-                    "customer_name"=>"AMK MFI",
+                    "terminal_model"=>"PC 280",
+                    "terminaltype_id"=>"1",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
                 [
-                    "customer_name"=>"BTI Share",
+                    "terminal_model"=>"DN 200v",
+                    "terminaltype_id"=>"2",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
                 [
-                    "customer_name"=>"Philip Bank",
+                    "terminal_model"=>"DC365",
+                    "terminaltype_id"=>"3",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
                 [
-                    "customer_name"=>"WingBank",
+                    "terminal_model"=>"DC365lx",
+                    "terminaltype_id"=>"3",
                     "created_at"=>"03/13/2023",
                     "updated_at"=> "03/26/2023",
                 ],
             ];
-        Customer::insert($customers);
+        Terminalmodel::insert($terminaltype);
     }
 }

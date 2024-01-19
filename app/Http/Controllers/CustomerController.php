@@ -22,6 +22,14 @@ class CustomerController extends ParentController
         $create=[
             'customer_name' => $request->input('customer_name'),
         ];
+        if($request->customer_name == null){
+            $response = [
+                'success' => false,
+                'status' => 403,
+                'message' => "Please input information",
+            ];
+            return response()->json($response, 400);
+        }
         $data = DB::table('customers')
                 ->where('customer_name', '=', $request['customer_name'])->count();
         if ($data > 0) {
@@ -46,15 +54,23 @@ class CustomerController extends ParentController
         $update =[
             'customer_name' => $request->input('customer_name'),
         ];
+        if($request->customer_name == null){
+            $response = [
+                'success' => false,
+                'status' => 403,
+                'message' => "Please input information",
+            ];
+            return response()->json($response, 400);
+        }
         $data = DB::table('customers')
             ->where('customer_name', '=', $request['customer_name'])->count();
         if ($data > 0) {
             $response = [
                 'success' => false,
-                'status' => 400,
+                'status' => 401,
                 'message' => "This customer is exits",
             ];
-            return response()->json($response, 400);
+            return response()->json($response, 401);
         }
         $data1 = Customer::where('id','=',$id)->update($update);
         $response = [

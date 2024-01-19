@@ -9,12 +9,13 @@
                     outlined
                 >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        LOCATION'S BANK INFORMATION
+                        SITES INFORMATION
                     </v-card-text>
-                    <v-dialog v-model="dialog" max-width="700px">
+                  
+                    <v-dialog v-model="dialog" max-width="500px">
                         <template v-slot:activator="{ props }">
                             <v-btn color="primary" class="mb-2" v-bind="props"
-                                >New Location</v-btn
+                                >New engineer</v-btn
                             >
                         </template>
                         <v-card>
@@ -29,42 +30,10 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-select
-                                                :items="banks"
-                                                item-value="id"
-                                                item-title="customer_name"
-                                                v-model="editedItem.bank_name_id"
-                                                label="Bank Name"
-                                                variant="outlined"
-                                            >
-                                            </v-select>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-select
-                                                :items="sites"
-                                                item-value="id"
-                                                item-title="site_name"
-                                                v-model="editedItem.site_name_id"
-                                                label="Site Name"
-                                                variant="outlined"
-                                            >
-                                            </v-select>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
+                                        <v-col>
                                             <v-text-field
-                                                variant="outlined"
-                                                v-model="editedItem.siteID"
-                                                label="Site ID"
-                                            >
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="12" sm="12">
-                                            <v-text-field
-                                            width="100%"
-                                                variant="outlined"
-                                                v-model="editedItem.address"
-                                                label="Address"
+                                                v-model="editedItem.engineer_name"
+                                                label="Engineer Name"
                                             >
                                             </v-text-field>
                                         </v-col>
@@ -109,9 +78,13 @@
                     <v-data-table
                         :items-per-page="itemsPerPage"
                         :headers="headers"
-                        :items="banklocations"
+                        :items="engineers"
                         :search="search"
                     >
+                        <template v-slot:[`item.created_at`]="{ item }">
+                            {{ formatDate(item.created_at) }}
+                        </template>
+
                         <template v-slot:[`item.actions`]="{ item }">
                                 <v-icon
                                     small
@@ -120,13 +93,13 @@
                                 >
                                     mdi-pencil
                                 </v-icon>
-                                <!-- <v-icon
+                                <v-icon
                                     small
                                     @click="deleteItem(item)"
                                     color="red"
                                 >
                                     mdi-delete
-                                </v-icon> -->
+                                </v-icon>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -148,53 +121,32 @@ export default {
             headers: [
                 {
                     align: "start",
-                    key: "customer_name",
+                    key: "engineer_name",
                     sortable: false,
-                    title: "Bank Name",
+                    title: "Engineer Name",
                 },
                 {
-                    key: "site_name",
-                    title: "Site Name",
-                },
-                {
-                    key: "siteID",
-                    title: "Site ID",
-                },
-                {
-                    key: "address",
-                    title: "address",
+                    title: "Created At",
+                    key: "created_at",
+                    class: "blue--text",
                 },
                 { title: "Actions", key: "actions", class: " white--text" },
             ],
-            banklocations: [],
-            sites:[
-                {title: 'site_name'}
-            ],
-
-            banks:[
-                {title: 'customer_name'}
-            ],
+            engineers: [],
             editedIndex: -1,
             editedItem: {
-                site_name_id: "",
-                bank_name_id:"",
-                siteID:"",
-                address:"",
-         
+                engineer_name: "",
             },
             defaultItem: {
-                site_name_id: "",
-                bank_name_id:"",
-                siteID:"",
-                address:"",
+                engineer_name: "",
             },
         };
     },
     computed: {
         formTitle() {
             return this.editedIndex === -1
-                ? "Add new location"
-                : "Update location information";
+                ? "Add new site"
+                : "Update site information";
         },
     },
     watch: {
@@ -204,21 +156,22 @@ export default {
       
     },
     created() {
-        this.getbanklocation();
+        this.getEngineer();
     },
 
     methods: {
-        getbanklocation() {
+        getEngineer() {
             axios
-                .get("/api/IMS/banklocation/getall")
+                .get("/api/IMS/engineer/all")
                 .then((Response) => {
-                    this.banklocations = Response.data;
-                    console.log(this.banklocations);
+                    this.engineers = Response.data;
+                    console.log(this.sites);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
+
         closedialog() {
             this.dialog = false;
             this.$nextTick(() => {
@@ -226,17 +179,43 @@ export default {
                 this.editedIndex = -1;
             });
         },
-       
+        formatDate(value) {
+            return moment(value).format("YYYY-MM-DD");
+        },
         editItem(item) {
-            this.editedIndex = this.banklocations.indexOf(item);
+            this.editedIndex = this.engineers.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
         savesite() {
-          
-          if(this.editedIndex >-1){
-            Object.assign(this.banklocations[this.editedIndex], this.editedItem)
-            axios.put("/api/IMS/banklocation/updatebanklocation/" +this.editedItem.id,this.editedItem)
+            if (this.editedIndex > -1) {
+                Object.assign(this.engineers[this.editedIndex], this.editedItem);
+                axios
+                    .put("/api/IMS/engineer/updateengineer/" + this.editedItem.id, this.editedItem)
+                    .then((Response) => {
+                        if (Response.status == 200) {
+                            Swal.fire({
+                                title: Response.data.message,
+                                icon: "success",
+                            });
+                            console.log(Response.data);
+                            this.closedialog();
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: error.response.data.message,
+                            icon: "warning",
+                            position: "top",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        console.log(error.response.status);
+                    });
+            }
+            else{
+                axios
+                .post( "/api/IMS/engineer/addengineer/",this.editedItem )
                 .then((Response) => {
                     if (Response.status == 200) {
                         Swal.fire({
@@ -248,59 +227,52 @@ export default {
                     }
                 })
                 .catch((error) => {
-                        Swal.fire({
+                    Swal.fire({
                         title: error.response.data.message,
+                        icon: "warning",
                         position: "top",
                         showConfirmButton: false,
                         timer: 1500
-                        });
-                });
-          }
-          else{
-            axios.post("/api/IMS/banklocation/addbanklocation",this.editedItem)
-                .then((Response) => {
-                        if (Response.status == 200) {
-                            Swal.fire({
-                                title: Response.data.message,
-                                icon: "success",
-                            });
-                            this.closedialog();
-                            console.log(Response.data);
-                        }
-                    })
-                    .catch((error) => {
-                            Swal.fire({
-                            title: error.response.data.message,
-                            position: "top",
-                            showConfirmButton: false,
-                            timer: 1500
-                            });
                     });
-          }
-          this.getbanklocation();
+                    console.log(error);
+                });
+            }
+            this.getEngineer();
         },
         deleteItem(item){
-         
+            this.editedIndex = this.engineers.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            Swal.fire({
+                title: "Do you want to delete this engineer?",
+                showCancelButton: true,
+                confirmButtonText: "OK",
+            }).then((result) =>{
+                if (result.isConfirmed) {
+                    console.log(this.editedItem.id);
+                    axios.delete("/api/IMS/engineer/deleteengineer/"+this.editedItem.id)
+                    .then((Response) => {
+                    if (Response.status == 200) {
+                        Swal.fire({
+                            title: Response.data.message,
+                            icon: "success",
+                        });
+                        console.log(Response.data);
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: error.response.data.message,
+                        icon: "warning",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    console.log(error);
+                 });
+             } 
+                this.getEngineer();
+            })
+           
         }
-    },
-    mounted: function(){
-        this.banks = axios.get("/api/IMS/customer/getallcustomer")
-                .then((Response) => {
-                    this.banks = Response.data;
-                    console.log(this.banks);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-
-        this.sites = axios.get("/api/IMS/site/getallsite")
-                .then((Response) => {
-                    this.sites = Response.data;
-                    console.log(this.sites);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
     },
 };
 </script>

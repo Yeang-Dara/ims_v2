@@ -77,6 +77,14 @@ Route::group(['prefix' => 'IMS'], function () {
     require __DIR__ . '/IMS/mainpart.php';
     require __DIR__ . '/IMS/maintenace.php';
     require __DIR__ . '/IMS/spareparts.php';
+    require __DIR__ . '/IMS/terminaltype.php';
+    require __DIR__ . '/IMS/terminalmodel.php';
+    require __DIR__ . '/IMS/customer.php';
+    require __DIR__ . '/IMS/warehouse.php';
+    require __DIR__ . '/IMS/site.php';
+    require __DIR__ . '/IMS/banklocation.php';
+    require __DIR__ . '/IMS/engineer.php';
+    require __DIR__ . '/IMS/categorie.php';
 });
 
 Route::group(['prefix' => 'HR'], function () {

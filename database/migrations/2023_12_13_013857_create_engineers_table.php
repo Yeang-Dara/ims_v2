@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('terminalmodels', function (Blueprint $table) {
+        Schema::create('engineers', function (Blueprint $table) {
             $table->id();
-            $table->integer('terminaltype_id');
-            $table->string('terminal_model')->unique();
+            $table->string('engineer_name')->unique();
             $table->timestamps();
-            $table->foreign('terminaltype_id')
-            ->references('id')
-            ->on('terminaltypes')
-            ->onDelete('CASCADE');
-
         });
     }
 
@@ -29,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('terminalmodels');
+        Schema::dropIfExists('engineers');
     }
 };

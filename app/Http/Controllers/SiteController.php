@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Site;
+use Illuminate\Support\Facades\DB;
 
 class SiteController extends Controller
 {
@@ -13,6 +14,23 @@ class SiteController extends Controller
         $create =[
             'site_name' =>$request->input('site_name'),
         ];
+        if($request->site_name == null){
+            $response = [
+                'success' => false,
+                'status' => 401,
+                'message' => "Please input information",
+            ];
+            return response()->json($response, 401);
+        }
+        $data = DB::table('sites')->where('site_name','=',$request['site_name'])->count();
+        if($data > 0){
+            $response = [
+                'success' => false,
+                'status' => 402,
+                'message' => "This site already exit",
+            ];
+            return response()->json($response, 402);
+        }
             Site::create($create);
         $response = [
             'success' => true,
@@ -20,13 +38,30 @@ class SiteController extends Controller
             'message' => "Add site successfully",
             'data' =>$create,
         ];
-        return response()->json($response, 400);
+        return response()->json($response, 200);
     }
     public function UpdateSite(Request $request, $id)
     {
         $update =[
             'site_name' =>$request->input('site_name'),
         ];
+        if($request->site_name == null){
+            $response = [
+                'success' => false,
+                'status' => 401,
+                'message' => "Please input information",
+            ];
+            return response()->json($response, 401);
+        }
+        $data1 = DB::table('sites')->where('site_name','=',$request['site_name'])->count();
+        if($data1 > 0){
+            $response = [
+                'success' => false,
+                'status' => 402,
+                'message' => "This site already exit",
+            ];
+            return response()->json($response, 402);
+        }
         $data = Site::where('id','=',$id)->update($update);
         $response = [
             'success' => true,
@@ -37,6 +72,16 @@ class SiteController extends Controller
     }
     public function DeleteSite($id)
     {
+        $data = DB::table('banklocations')->where('site_name_id','=',$id)->count();
+        if($data > 0){
+            $response = [
+                'success' => false,
+                'status' => 402,
+                'message' => "You cannot delete this site",
+            ];
+            return response()->json($response, 402);
+        }
+       
         Site::where('id',$id)->delete();
         $response = [
             'success' => true,
@@ -48,7 +93,7 @@ class SiteController extends Controller
     }
     public function GetallSite()
     {
-        $data = Site::get();
+        $data = DB::table('sites')->orderBy('id')->get();
         return $data;
     }
 }

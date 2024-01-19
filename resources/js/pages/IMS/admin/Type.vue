@@ -9,12 +9,12 @@
                     outlined
                 >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        BANK INFORMATION
+                        TERMINAL TYPE INFORMATION
                     </v-card-text>
                     <v-dialog v-model="dialog" max-width="500px">
                         <template v-slot:activator="{ props }">
                             <v-btn color="primary" class="mb-2" v-bind="props"
-                                >New Bank</v-btn
+                                >New Type</v-btn
                             >
                         </template>
                         <v-card>
@@ -32,9 +32,9 @@
                                         <v-col>
                                             <v-text-field
                                                 v-model="
-                                                    editedItem.customer_name
+                                                    editedItem.terminal_type
                                                 "
-                                                label="Bank Name"
+                                                label="Type Name"
                                             >
                                             </v-text-field>
                                         </v-col>
@@ -79,7 +79,7 @@
                     <v-data-table
                         :items-per-page="itemsPerPage"
                         :headers="headers"
-                        :items="banks"
+                        :items="types"
                         :search="search"
                     >
                         <template v-slot:[`item.created_at`]="{ item }">
@@ -115,9 +115,9 @@ export default {
             headers: [
                 {
                     align: "start",
-                    key: "customer_name",
+                    key: "terminal_type",
                     sortable: false,
-                    title: "Bank Name",
+                    title: "Terminal Type",
                 },
                 {
                     title: "Created At",
@@ -126,21 +126,21 @@ export default {
                 },
                 { title: "Actions", key: "actions", class: " white--text" },
             ],
-            banks: [],
+            types: [],
             editedIndex: -1,
             editedItem: {
-                customer_name: "",
+                terminal_type: "",
             },
             defaultItem: {
-                customer_name: "",
+                terminal_type: "",
             },
         };
     },
     computed: {
         formTitle() {
             return this.editedIndex === -1
-                ? "Add new bank"
-                : "Update bank information";
+                ? "Add new terminal type"
+                : "Update terminal type information";
         },
     },
     watch: {
@@ -155,10 +155,10 @@ export default {
     methods: {
         getBank() {
             axios
-                .get("/api/IMS/customer/getallcustomer")
+                .get("/api/IMS/terminaltype/allterminaltype")
                 .then((Response) => {
-                    this.banks = Response.data;
-                    console.log(this.banks);
+                    this.types = Response.data;
+                    console.log(this.types);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -176,19 +176,19 @@ export default {
             return moment(value).format("YYYY-MM-DD");
         },
         editItem(item) {
-            this.editedIndex = this.banks.indexOf(item);
+            this.editedIndex = this.types.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
         savebank() {
             if (this.editedIndex > -1) {
-                Object.assign(this.banks[this.editedIndex], this.editedItem);
+                Object.assign(this.types[this.editedIndex], this.editedItem);
                 axios
-                    .put("/api/IMS/customer/updatecustomer/" + this.editedItem.id, this.editedItem)
+                    .put("/api/IMS/terminaltype/updatetype/" + this.editedItem.id, this.editedItem)
                     .then((Response) => {
                         if (Response.status == 200) {
                             Swal.fire({
-                                title: Response.data.message,
+                                title: "Updated successfully",
                                 icon: "success",
                             });
                             console.log(Response.data);
@@ -197,7 +197,7 @@ export default {
                     })
                     .catch((error) => {
                         Swal.fire({
-                            title: error.response.data.message,
+                            title: "Something when wrong",
                             icon: "warning",
                             position: "top",
                             showConfirmButton: false,
@@ -208,11 +208,11 @@ export default {
             }
             else{
                 axios
-                .post( "/api/IMS/customer/addcustomer/",this.editedItem )
+                .post( "/api/IMS/terminaltype/addtype/",this.editedItem )
                 .then((Response) => {
                     if (Response.status == 200) {
                         Swal.fire({
-                            title: Response.data.message,
+                            title: "Add new terminal type successfully",
                             icon: "success",
                         });
                         this.closedialog();
@@ -221,7 +221,7 @@ export default {
                 })
                 .catch((error) => {
                     Swal.fire({
-                        title: error.response.data.message,
+                        title: "Something when wrong!",
                         icon: "warning",
                         position: "top",
                         showConfirmButton: false,
