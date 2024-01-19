@@ -4,23 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Terminalmodel extends Model
+class Terminalstatus extends Model
 {
     use HasFactory;
-    protected $table= 'terminalmodels';
-
-    protected $fillable = [
-        'terminaltype_id',
-        'terminal_model',
+    protected $table ='terminalstatuses';
+    protected $fillable=[
+        'status',
     ];
     public static function rulesToCreate(): array
     {
         return[];
     }
-    public static function rulesToCreateMessages(){
+    public static function rulesToCreateMessages()
+    {
         return [];
     }
     public static function rulesToUpdate($id = null): array
@@ -31,14 +29,8 @@ class Terminalmodel extends Model
     {
         return [];
     }
-    public function terminalmodels(): BelongsTo
+    public function statuses():HasMany
     {
-        return $this->belongsTo(Terminaltype::class, 'terminaltye_id', 'id');
+        return $this->hasMany(Allterminal::class,'status_id','id');
     }
-    public function models():HasMany
-    {
-        return $this->hasMany(Allterminal::class,'model_id','id');
-    }
-
-
 }

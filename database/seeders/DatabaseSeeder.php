@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TerminalTypeSeeder::class);
         $this->call(TerminalmodelSeeder::class);
         $this->call(CategorySeeder::class);
+        $this->call(TerminalstatusSeeder::class);
     }
 }

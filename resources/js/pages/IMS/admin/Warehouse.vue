@@ -9,12 +9,12 @@
                     outlined
                 >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        TERMINAL MODEL INFORMATION
+                        WAREHOUSES INFORMATION
                     </v-card-text>
                     <v-dialog v-model="dialog" max-width="500px">
                         <template v-slot:activator="{ props }">
                             <v-btn color="primary" class="mb-2" v-bind="props"
-                                >New Model</v-btn
+                                >New warehouse</v-btn
                             >
                         </template>
                         <v-card>
@@ -31,18 +31,18 @@
                                     <v-row>
                                         <v-col cols="12" md="6" sm="12">
                                             <v-select
-                                                :items="types"
+                                                :items="customers"
                                                 item-value="id"
-                                                item-title="terminal_type"
-                                                v-model="editedItem.terminaltype_id"
-                                                label="Terminal Type"
+                                                item-title="customer_name"
+                                                v-model="editedItem.customer_id"
+                                                label="Bank Name"
                                             >
                                             </v-select>
                                         </v-col>
                                         <v-col cols="12" md="6" sm="12">
                                             <v-text-field
-                                                v-model="editedItem.terminal_model"
-                                                label="Type Name"
+                                                v-model="editedItem.warehouse_name"
+                                                label="Warehouse Name"
                                             >
                                             </v-text-field>
                                         </v-col>
@@ -87,7 +87,7 @@
                     <v-data-table
                         :items-per-page="itemsPerPage"
                         :headers="headers"
-                        :items="models"
+                        :items="warehouses"
                         :search="search"
                     >
                         <template v-slot:[`item.created_at`]="{ item }">
@@ -123,9 +123,14 @@ export default {
             headers: [
                 {
                     align: "start",
-                    key: "terminal_model",
+                    key: "customer_name",
                     sortable: false,
-                    title: "Terminal Model",
+                    title: "Bank Name",
+                },
+                {
+                    key: "warehouse_name",
+                    sortable: false,
+                    title: "Warehouse Name",
                 },
                 {
                     title: "Created At",
@@ -134,24 +139,24 @@ export default {
                 },
                 { title: "Actions", key: "actions", class: " white--text" },
             ],
-            models: [],
-            types:[],
+            warehouses: [],
+            customers:[],
             editedIndex: -1,
             editedItem: {
-                terminal_model:"",
-                terminaltype_id:"",
+                warehouse_name:"",
+                customer_id:"",
             },
             defaultItem: {
-                terminal_model:"",
-                terminaltype_id:"",
+                warehouse_name:"",
+                customer_id:"",
             },
         };
     },
     computed: {
         formTitle() {
             return this.editedIndex === -1
-                ? "Add new terminal model"
-                : "Update terminal model information";
+                ? "Add new bank warehouse"
+                : "Update bank warehouse information";
         },
     },
     watch: {
@@ -160,16 +165,16 @@ export default {
         },
     },
     created() {
-        this.getModel();
+        this.getWarehouse();
     },
 
     methods: {
-        getModel() {
+        getWarehouse() {
             axios
-                .get("/api/IMS/terminalmodel/getallmodel")
+                .get("/api/IMS/warehouse/getallwarehouse")
                 .then((Response) => {
-                    this.models = Response.data;
-                    console.log(this.models);
+                    this.warehouses = Response.data;
+                    console.log(this.warehouses);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -187,28 +192,28 @@ export default {
             return moment(value).format("YYYY-MM-DD");
         },
         editItem(item) {
-            this.editedIndex = this.models.indexOf(item);
+            this.editedIndex = this.warehouses.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
         savebank() {
             if (this.editedIndex > -1) {
-                Object.assign(this.models[this.editedIndex], this.editedItem);
+                Object.assign(this.warehouses[this.editedIndex], this.editedItem);
                 axios
-                    .put("/api/IMS/terminalmodel/updatemodel/" + this.editedItem.id, this.editedItem)
+                    .put("/api/IMS/warehouse/updatewarehouse/" + this.editedItem.id, this.editedItem)
                     .then((Response) => {
-                 
+                        if (Response.status == 200) {
                             Swal.fire({
-                                title: "Updated successfully",
+                                title: Response.data.message,
                                 icon: "success",
                             });
                             console.log(Response.data);
                             this.closedialog();
-                        
+                        }
                     })
                     .catch((error) => {
                         Swal.fire({
-                            title: "Something when wrong",
+                            title: error.response.data.message,
                             icon: "warning",
                             position: "top",
                             showConfirmButton: false,
@@ -219,35 +224,36 @@ export default {
             }
             else{
                 axios
-                .post( "/api/IMS/terminalmodel/addmodel/",this.editedItem )
+                .post( "/api/IMS/warehouse/addwarehouse/",this.editedItem )
                 .then((Response) => {
+                        if (Response.status == 200) {
+                            Swal.fire({
+                                title: Response.data.message,
+                                icon: "success",
+                            });
+                            console.log(Response.data);
+                            this.closedialog();
+                        }
+                    })
+                    .catch((error) => {
                         Swal.fire({
-                            title: "Add new terminal model successfully",
-                            icon: "success",
+                            title: error.response.data.message,
+                            icon: "warning",
+                            position: "top",
+                            showConfirmButton: false,
+                            timer: 1500
                         });
-                        this.closedialog();
-                        console.log(Response.data);
-                    
-                })
-                .catch((error) => {
-                    Swal.fire({
-                        title: "Something when wrong!",
-                        icon: "warning",
-                        position: "top",
-                        showConfirmButton: false,
-                        timer: 1500
+                        console.log(error.response.status);
                     });
-                    console.log(error);
-                });
             }
-            this.getModel();
+            this.getWarehouse();
         },
     },
     mounted: function(){
-        this.types = axios.get("/api/IMS/terminaltype/allterminaltype")
+        this.customers = axios.get("/api/IMS/customer/getallcustomer")
                 .then((Response) => {
-                    this.types = Response.data;
-                    console.log(this.types);
+                    this.customers= Response.data;
+                    console.log(this.customers);
                 })
                 .catch((error) => {
                     console.log(error);

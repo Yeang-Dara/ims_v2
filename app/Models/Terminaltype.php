@@ -33,4 +33,8 @@ class Terminaltype extends Model
     {
         return $this->hasMany(Terminalmodel::class, 'terminaltype_id','id');
     }
+    public function types():HasMany
+    {
+        return $this->hasMany(Allterminal::class,'type_id','id');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Banklocation extends Model
 {
@@ -40,5 +41,9 @@ class Banklocation extends Model
     public function sitenames():BelongsTo
     {
         return $this->belongsTo(Site::class,'site_name_id','id');
+    }
+    public function locations():HasMany
+    {
+        return $this->hasMany(Allterminal::class,'banklocation_id','id');
     }
 }
