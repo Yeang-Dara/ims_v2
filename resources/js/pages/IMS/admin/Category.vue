@@ -29,16 +29,6 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <!-- <v-col cols="12" md="6" sm="12">
-                                            <v-select
-                                                :items="types"
-                                                item-value="id"
-                                                item-title="terminal_type"
-                                                v-model="editedItem.terminaltype_id"
-                                                label="Terminal Type"
-                                            >
-                                            </v-select>
-                                        </v-col> -->
                                         <v-col>
                                             <v-text-field
                                                 v-model="editedItem.category_name"
@@ -109,7 +99,6 @@
         </v-row>
     </v-main>
 </template>
-
 <script scope>
 import axios from "axios";
 import moment from "moment";
@@ -139,7 +128,6 @@ export default {
             editedIndex: -1,
             editedItem: {
                 category_name:"",
-               
             },
             defaultItem: {
                 category_name:"",
@@ -203,7 +191,6 @@ export default {
                             });
                             console.log(Response.data);
                             this.closedialog();
-                        
                     })
                     .catch((error) => {
                         Swal.fire({
@@ -226,7 +213,6 @@ export default {
                         });
                         this.closedialog();
                         console.log(Response.data);
-                    
                 })
                 .catch((error) => {
                     Swal.fire({
@@ -243,6 +229,7 @@ export default {
         },
     },
     mounted: function(){
+        
     }
 
 };

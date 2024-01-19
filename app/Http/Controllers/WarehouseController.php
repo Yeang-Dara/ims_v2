@@ -6,6 +6,7 @@ use App\Models\Warehouse;
 use App\Services\WarehouseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class WarehouseController extends ParentController
 {
@@ -23,6 +24,18 @@ class WarehouseController extends ParentController
             'customer_id' => $request->input('customer_id'),
             'warehouse_name' => $request->input('warehouse_name'),
         ];
+
+        $validator=Validator::make($request->all(),[
+            'customer_id' =>'required',
+            'warehouse_name' =>'required',
+        ]);
+        if($validator->fails()) {
+            $response =[
+                'success' =>false,
+                'message' =>"Please input all information"
+            ];
+            return response()->json($response, 404);
+        }
         $data = DB::table('warehouses')
             ->where('customer_id', '=', $request['customer_id'])
             ->where('warehouse_name', '=', $request['warehouse_name'])
@@ -42,7 +55,7 @@ class WarehouseController extends ParentController
             'message' => "Add new warehouse successfully",
             'data' => $data1,
         ];
-        return response()->json($response, 200);
+        return response()->json($response);
     }
     public function  UpdateWarehouse(Request $request, $id)
     {
@@ -50,6 +63,17 @@ class WarehouseController extends ParentController
             'customer_id' => $request->input('customer_id'),
             'warehouse_name' => $request->input('warehouse_name'),
         ];
+        $validator=Validator::make($request->all(),[
+            'customer_id' =>'required',
+            'warehouse_name' =>'required',
+        ]);
+        if($validator->fails()) {
+            $response =[
+                'success' =>false,
+                'message' =>"Please input all information"
+            ];
+            return response()->json($response, 404);
+        }
         $data = DB::table('warehouses')
                 ->where('customer_id', '=', $request['customer_id'])
                 ->where('warehouse_name', '=', $request['warehouse_name'])
@@ -72,9 +96,13 @@ class WarehouseController extends ParentController
     }
     public function GetallWarehouse()
     {
-        $data = Warehouse::get();
+        $data = DB::table('warehouses')
+                    ->join('customers','customers.id','=','warehouses.customer_id')
+                    ->select('customers.customer_name','warehouses.*')
+                    ->orderBy('warehouses.id')
+                    ->get();
 
-        return $data;
+        return response()->json($data);
     }
     
 }

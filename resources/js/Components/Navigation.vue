@@ -261,13 +261,18 @@ export default {
                                 action: "mdi-account-group",
                                 items: [
                                     {
-                                        title: "List Banks",
+                                        title: "Banks",
                                         link: "/inventory-sys/bank",
                                         icons: "mdi-bank",
                                     },
                                     {
-                                        title: " Bank Location",
+                                        title: " Bank Locations",
                                         link: "/inventory-sys/banklocation",
+                                        icons: "mdi-map-marker",
+                                    },
+                                    {
+                                        title: "Warehouses",
+                                        link: "/inventory-sys/warehouse",
                                         icons: "mdi-store-marker",
                                     },
                                 ],
@@ -277,7 +282,7 @@ export default {
                                 action: "mdi-account-group",
                                 items: [
                                     {
-                                        title: "List Engineers",
+                                        title: "Engineers",
                                         link: "/inventory-sys/engineer",
                                         icons: "mdi-account-multiple",
                                     },
@@ -289,7 +294,7 @@ export default {
                                 action: "mdi-account-group",
                                 items: [
                                     {
-                                        title: "List Sites",
+                                        title: "Sites",
                                         link: "/inventory-sys/site",
                                         icons: "mdi-account-multiple",
                                     },
@@ -309,6 +314,11 @@ export default {
                                         link: "/inventory-sys/model",
                                         icons: "mdi-home-plus",
                                     },
+                                    {
+                                        title: "Status",
+                                        link: "/inventory-sys/status",
+                                        icons: "mdi-home-plus",
+                                    },
                                 ],
                             },
                             {
@@ -319,11 +329,6 @@ export default {
                                         link: "/inventory-sys/category",
                                         icons: "mdi-home-group",
                                     },
-                                    // {
-                                    //     title: "Models",
-                                    //     link: "/inventory-sys/model",
-                                    //     icons: "mdi-home-plus",
-                                    // },
                                 ],
                             },
                         ],

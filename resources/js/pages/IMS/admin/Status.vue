@@ -9,12 +9,12 @@
                     outlined
                 >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        TERMINAL MODEL INFORMATION
+                        TERMINAL STATUS INFORMATION
                     </v-card-text>
                     <v-dialog v-model="dialog" max-width="500px">
                         <template v-slot:activator="{ props }">
                             <v-btn color="primary" class="mb-2" v-bind="props"
-                                >New Model</v-btn
+                                >New status</v-btn
                             >
                         </template>
                         <v-card>
@@ -29,20 +29,12 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-select
-                                                :items="types"
-                                                item-value="id"
-                                                item-title="terminal_type"
-                                                v-model="editedItem.terminaltype_id"
-                                                label="Terminal Type"
-                                            >
-                                            </v-select>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
+                                        <v-col>
                                             <v-text-field
-                                                v-model="editedItem.terminal_model"
-                                                label="Type Name"
+                                                v-model="
+                                                    editedItem.status
+                                                "
+                                                label="Status Name"
                                             >
                                             </v-text-field>
                                         </v-col>
@@ -87,7 +79,7 @@
                     <v-data-table
                         :items-per-page="itemsPerPage"
                         :headers="headers"
-                        :items="models"
+                        :items="statuses"
                         :search="search"
                     >
                         <template v-slot:[`item.created_at`]="{ item }">
@@ -123,9 +115,9 @@ export default {
             headers: [
                 {
                     align: "start",
-                    key: "terminal_model",
+                    key: "status",
                     sortable: false,
-                    title: "Terminal Model",
+                    title: "Status Name",
                 },
                 {
                     title: "Created At",
@@ -134,24 +126,21 @@ export default {
                 },
                 { title: "Actions", key: "actions", class: " white--text" },
             ],
-            models: [],
-            types:[],
+            statuses: [],
             editedIndex: -1,
             editedItem: {
-                terminal_model:"",
-                terminaltype_id:"",
+                status: "",
             },
             defaultItem: {
-                terminal_model:"",
-                terminaltype_id:"",
+                tstatus: "",
             },
         };
     },
     computed: {
         formTitle() {
             return this.editedIndex === -1
-                ? "Add new terminal model"
-                : "Update terminal model information";
+                ? "Add new terminal status"
+                : "Update terminal status information";
         },
     },
     watch: {
@@ -160,16 +149,16 @@ export default {
         },
     },
     created() {
-        this.getModel();
+        this.getBank();
     },
 
     methods: {
-        getModel() {
+        getBank() {
             axios
-                .get("/api/IMS/terminalmodel/getallmodel")
+                .get("/api/IMS/status/all")
                 .then((Response) => {
-                    this.models = Response.data;
-                    console.log(this.models);
+                    this.statuses = Response.data;
+                    console.log(this.statuses);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -187,28 +176,28 @@ export default {
             return moment(value).format("YYYY-MM-DD");
         },
         editItem(item) {
-            this.editedIndex = this.models.indexOf(item);
+            this.editedIndex = this.statuses.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
         savebank() {
             if (this.editedIndex > -1) {
-                Object.assign(this.models[this.editedIndex], this.editedItem);
+                Object.assign(this.statuses[this.editedIndex], this.editedItem);
                 axios
-                    .put("/api/IMS/terminalmodel/updatemodel/" + this.editedItem.id, this.editedItem)
+                    .put("/api/IMS/status/update/" + this.editedItem.id, this.editedItem)
                     .then((Response) => {
-                 
+                        if (Response.status == 200) {
                             Swal.fire({
                                 title: "Updated successfully",
                                 icon: "success",
                             });
                             console.log(Response.data);
                             this.closedialog();
-                        
+                        }
                     })
                     .catch((error) => {
                         Swal.fire({
-                            title: "Something when wrong",
+                            title: error.response.data.message,
                             icon: "warning",
                             position: "top",
                             showConfirmButton: false,
@@ -219,15 +208,16 @@ export default {
             }
             else{
                 axios
-                .post( "/api/IMS/terminalmodel/addmodel/",this.editedItem )
+                .post( "/api/IMS/status/add/",this.editedItem )
                 .then((Response) => {
+                    if (Response.status == 200) {
                         Swal.fire({
-                            title: "Add new terminal model successfully",
+                            title: "Add new terminal type successfully",
                             icon: "success",
                         });
                         this.closedialog();
                         console.log(Response.data);
-                    
+                    }
                 })
                 .catch((error) => {
                     Swal.fire({
@@ -240,19 +230,8 @@ export default {
                     console.log(error);
                 });
             }
-            this.getModel();
+            this.getBank();
         },
     },
-    mounted: function(){
-        this.types = axios.get("/api/IMS/terminaltype/allterminaltype")
-                .then((Response) => {
-                    this.types = Response.data;
-                    console.log(this.types);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-    }
-
 };
 </script>

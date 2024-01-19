@@ -22,6 +22,8 @@ import Site from '../pages/IMS/admin/Site.vue'
 import Type from '../pages/IMS/admin/Type.vue'
 import Model from '../pages/IMS/admin/Model.vue'
 import Category from '../pages/IMS/admin/Category.vue'
+import Warehouse from '../pages/IMS/admin/Warehouse.vue'
+import Status from '../pages/IMS/admin/Status.vue'
 
 // HR
 import HR from '../Components/HR/HRmainTemplate.vue'
@@ -285,7 +287,17 @@ const routes = [
                 path:'Category',
                 name: 'category_page',
                 component: Category
-              }
+              },
+              {
+                path:'Warehouse',
+                name: 'warehouse_page',
+                component: Warehouse
+              },
+              {
+                path:'Status',
+                name: 'status_page',
+                component: Status
+              },
 
         ]
     },
