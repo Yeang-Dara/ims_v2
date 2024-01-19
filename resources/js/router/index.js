@@ -47,7 +47,7 @@ import Permission from '../pages/HR/Setting/Permission.vue'
 import MasterUsers from '../pages/HR/Setting/AdminUsers.vue'
 
 // log
-import UploadFile from '../pages/Logfile/UploadFile.vue'
+import ClientLog from '../pages/Logfile/ClientLog.vue'
 
 const routes = [
     {
@@ -229,9 +229,9 @@ const routes = [
                 component : Addnewatm
             },
             {
-                path : 'upload-file',
-                name : 'uploadFile',
-                component :UploadFile
+                path : 'client_log',
+                name : 'clientLog',
+                component :ClientLog
             },
             {
                 path:'bank',

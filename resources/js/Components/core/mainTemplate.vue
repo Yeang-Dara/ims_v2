@@ -303,6 +303,12 @@
                             :class="[{'active': selectedIndex === 24}, 'item-title' ]"
                     >{{ ('Status') }}</v-list-item>
                     </v-list-group>
+                    <v-list-item
+                            @click="changeRoute('category_page', 24)"
+                            value="category_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 24}, 'item-title' ]"
+                    >{{ ('Category') }}</v-list-item>
                 </v-list-group>
                 </span>
                 <v-list-item
@@ -332,34 +338,34 @@
                 >
                 {{ ('Ticket Record') }}
                </v-list-item>
-                <v-list-group value="Log File">
+                <v-list-group value="DC365 Log">
                     <template v-slot:activator="{ props }">
                         <v-list-item
                         v-bind="props"
                         style="font-size: 14px;"
                         prepend-icon="mdi-file-cog "
                         class="item-title"
-                        >{{ ('Log File') }} </v-list-item>
+                        >{{ ('DC365 Log') }} </v-list-item>
                     </template>
                     <v-list-item
-                        @click="changeRoute('uploadFile', 20)"
-                        prepend-icon="mdi-file-plus"
+                        @click="changeRoute('clientLog', 20)"
+                        prepend-icon="mdi-file-account"
                         style="font-size: 14px;"
-                        value="Upload File"
+                        value="ClientLog"
                         :class="[{'active': selectedIndex === 20}, 'item-title' ]"
                     >
-                    {{ ('Upload File') }}
+                    {{ ('ClientLog') }}
                     </v-list-item>
                     <v-list-item
-                        @click="changeRoute('viewFile', 21)"
-                        prepend-icon="mdi-file-eye"
+                        @click="changeRoute('serverLog', 21)"
+                        prepend-icon="mdi-file-cloud"
                         style="font-size: 14px;"
-                        value="View File"
+                        value="ServerLog"
                         :class="[{'active': selectedIndex === 21}, 'item-title' ]"
                     >
-                    {{ ('View File') }}
+                    {{ ('ServerLog') }}
                     </v-list-item>
-                    <v-list-item
+                    <!-- <v-list-item
                         @click="changeRoute('viewDetail', 22)"
                         prepend-icon="mdi-file-find"
                         style="font-size: 14px;"
@@ -367,7 +373,7 @@
                         :class="[{'active': selectedIndex === 22}, 'item-title' ]"
                     >
                     {{ ('View Detail') }}
-                    </v-list-item>
+                    </v-list-item> -->
                 </v-list-group>
         </v-list>
         </v-navigation-drawer>
