@@ -114,7 +114,8 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 Route::post('/process-log', [LogFile::class, 'processLog']);
 Route::post('/convert-file', [LogFile::class, 'convertFile']);
 Route::post('/upload-file', [LogFile::class, 'Uploadfile']);
+Route::get('/getData', [LogFile::class, 'getAll']);
 
 // upload log
-Route::post('/upload-folder', [UploadFileController::class, 'uploadFolder']);
-Route::post('/upload-file', [UploadFileController::class, 'uploadFile']);
+// Route::post('/upload-folder', [UploadFileController::class, 'uploadFolder']);
+// Route::post('/upload-file', [UploadFileController::class, 'uploadFile']);

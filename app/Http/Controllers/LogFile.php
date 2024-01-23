@@ -12,6 +12,7 @@ use League\Csv\Reader;
 
 class LogFile extends Controller
 {
+
     //test file convert to JSON
     public function processLog1(){
         $text = "I am not sure today";
@@ -304,6 +305,13 @@ class LogFile extends Controller
                 'log_message' => $logMessage,
             ]);
         }
+    }
+
+    public function getAll()
+    {
+        $data = LogEntry::all();
+
+        return response()->json(['data' => $data]);
     }
 
 

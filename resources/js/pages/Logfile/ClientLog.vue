@@ -2,26 +2,36 @@
     <v-container fluid grid-list-xl>
         <div class="d-flex flex-row mb-6">
             <div class="ma-2 pa-2 d-flex" style="width:200px;">
-                <v-select
-                    label="Issue Type"
-                    v-model="filters.issue"
-                    :items="issues"
-                    clearable
-                    variant="solo"
-                    density="compact"
-                >
-                </v-select>
+                <!-- <v-date-picker></v-date-picker> -->
+                <v-text-field
+                    v-model="filters.date"
+                        class="pr-1"
+                        label="Date"
+                        :readonly="isLoading"
+                        variant="solo"
+                        :rules="[v => !!v || 'Date is required']"
+                        required outlined dense
+                        color="blue" autocomplete="false" type="date"
+                        @input="filterData"
+                        />
             </div>
-            <div class="ma-2 pa-2 d-flex me-auto" style="width:200px;">
-                <v-select
-                    label="Alias ATM ID"
-                    v-model="filters.terminal_id"
-                    :items="terminals"
-                    clearable
+            <div class="ma-2 pa-2 d-flex " style="width:200px;">
+                <v-text-field
+                v-model="filters.time"
+                    class="pr-1"
+                    label="Time"
+                    :value="filters.time"
+                    :readonly="isLoading"
                     variant="solo"
-                    density="compact"
-                >
-                </v-select>
+                    :rules="[v => !!v || 'Time is required']"
+                    required outlined dense color="blue"
+                    autocomplete="false"
+                    type="time"
+                    @input="filterData"
+                />
+            </div>
+            <div class="ma-2 pa-2 d-flex me-auto">
+                <v-btn @click="clearFilters" color="indigo-darken-1">Clear</v-btn>
             </div>
             <div class="ma-2 pa-2">
                 <v-dialog v-model="dialog" persistent width="400">
@@ -36,7 +46,7 @@
                         </v-card-title>
                         <v-card-text>
                             <v-container>
-                                <v-file-input label="File input" variant="outlined" accept=".csv" @change="handleFileUpload"></v-file-input>
+                                <v-file-input label="File input" variant="outlined" accept=".txt" @change="handleFileUpload"></v-file-input>
                             </v-container>
                         </v-card-text>
                         <v-card-actions>
@@ -51,7 +61,7 @@
                         <v-btn
                             color="blue-darken-1"
                             variant="flat"
-                            @click="importCsv"
+                            @click="upload"
                         >
                             Save
                         </v-btn>
@@ -62,12 +72,11 @@
     </div>
        <v-card class="rounded-0 mx-auto" >
            <v-data-table
-           :custom-filter="customFilter"
-           :headers="headers"
-           :items="Tickets"
-           :search="search"
-           class="elevation-1 table"
-           item-value="name"
+            v-model:search="search"
+            :headers="headers"
+            :items="filteredData"
+            class="elevation-1 table"
+            item-value="name"
            >
             <template v-slot:top>
                 <v-toolbar
@@ -98,58 +107,53 @@
         expanded: [],
         headers: [
             {
-            title: 'Ticket ID',
+            title: 'Date',
             align: 'start',
-            sortable: false,
-            key: 'ticket_id',
+            // sortable: false,
+            key: 'date',
           },
-          { title: 'ATM ID', align: 'start', key: 'atm_id'},
-          { title: 'Alias ATM ID', align: 'start', key: 'terminal_id'},
-          { title: 'ATM Type', align: 'start', key: 'atm_type'},
-          { title: 'Diagnosis', align: 'start', key: 'diagnosis'},
-          { title: 'Call Date', align: 'start', key: 'created_time'},
-          { title: 'Issue Type', align: 'start', key: 'issue'},
-          { title: '', key: 'data-table-expand' }
+          { title: 'Time', align: 'start', key: 'time'},
+          { title: 'Thread', align: 'start', key: 'thread'},
+          { title: 'Code', align: 'start', key: 'code'},
+          { title: 'Message', key: 'log_message'},
         ],
-        tickets: [],
+        datas: [],
         search: '',
         filters: {
-            issue: '',
-            terminal_id: '',
+            date: '',
+            time: '',
         },
+        filteredData: [], // Store filtered data
      }),
-     computed: {
-        Tickets() {
-            // search
-            if (this.search) {
-                let searchRegex = new RegExp(this.search, 'i');
-                this.tickets = this.tickets.filter(item => searchRegex.test(item.atm_id) || searchRegex.test(item.atm_type));
-            }
-            // filter
-            if(!this.filters.issue  && !this.filters.terminal_id) {
-                return this.tickets;
-            }
-            else if (this.filters.issue) {
-                return this.tickets.filter(item => item.issue=== this.filters.issue);
-            }
-            else {
-                return this.tickets.filter(item => item.terminal_id=== this.filters.terminal_id);
-            }
-        },
-     },
      created() {
-        this.getTickets();
+        this.getData();
     },
      methods: {
+        filterData() {
+            const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
+
+            this.filteredData = this.datas.filter(item => {
+                const itemDateTime = new Date(`${item.date} ${item.time}`);
+                return (
+                (!this.filters.date || itemDateTime.toISOString().includes(this.filters.date)) &&
+                (!this.filters.time || itemDateTime.toISOString().includes(this.filters.time))
+                );
+            });
+        },
+        clearFilters() {
+            this.filters.date = '';
+            this.filters.time = '';
+            this.filteredData = this.datas;
+        },
         handleFileUpload(event) {
             this.file = event.target.files[0];
         // Perform further processing with the uploaded CSV file
         },
-        importCsv() {
+        upload() {
             const formData = new FormData();
             formData.append('file', this.file);
             console.log(this.file)
-            axios.post('/api/ticket/import', formData)
+            axios.post('/api/upload-file', formData)
             .then(res => {
                 console.log(res.data)
                 setTimeout(function() {
@@ -158,15 +162,19 @@
             })
             this.dialog = false;
         },
-        getTickets() {
-            axios.get('/api/tickets')
-                .then(response => {
-                    this.tickets = response.data;
-                    // console.log(this.tickets);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+        getData() {
+            axios.get('/api/getData')
+            .then(response => {
+                if (response.data && Array.isArray(response.data.data)) {
+                    this.datas = response.data.data;
+                    console.log(this.datas);
+                } else {
+                    console.log('Invalid data structure received from the server');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
         },
         customFilter(value, query, item) {
             if (!this.filters.issue) {
@@ -182,7 +190,7 @@
 
 <style>
     .table td{
-        font-size: small!important;
+        font-size: x-small!important;
         height: 0!important;
         /* padding: 1px!important; */
     }
@@ -192,11 +200,18 @@
         height: 0!important;
         background-color: #3c519c!important;
         color: white!important;
+        border: 0.1px solid rgb(230, 228, 228)!important;
     }
 
     .table td {
         border: 0.1px solid rgb(230, 228, 228)!important;
         border-collapse: collapse!important;
+    }
+
+    .see-more-link {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
     }
 </style>
 
