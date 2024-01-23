@@ -9,29 +9,33 @@
                         label="Date"
                         :readonly="isLoading"
                         variant="solo"
+                        :disabled="NonData"
                         :rules="[v => !!v || 'Date is required']"
                         required outlined dense
                         color="blue" autocomplete="false" type="date"
-                        @input="filterData"
                         />
             </div>
             <div class="ma-2 pa-2 d-flex " style="width:200px;">
                 <v-text-field
-                v-model="filters.time"
+                    v-model="filters.time"
                     class="pr-1"
                     label="Time"
-                    :value="filters.time"
+                    :value="formattedTime"
+                    :disabled="NonData"
                     :readonly="isLoading"
                     variant="solo"
                     :rules="[v => !!v || 'Time is required']"
-                    required outlined dense color="blue"
+                    required
+                    outlined
+                    dense
+                    color="blue"
                     autocomplete="false"
                     type="time"
-                    @input="filterData"
+                    @input="formatTime"
                 />
             </div>
             <div class="ma-2 pa-2 d-flex me-auto">
-                <v-btn @click="clearFilters" color="indigo-darken-1">Clear</v-btn>
+                <v-btn @click="clearFilters" color="indigo-darken-1" :disabled="NonData">Clear</v-btn>
             </div>
             <div class="ma-2 pa-2">
                 <v-dialog v-model="dialog" persistent width="400">
@@ -70,7 +74,8 @@
                 </v-dialog>
             </div>
     </div>
-       <v-card class="rounded-0 mx-auto" >
+    <span v-if="shouldDisplayContent">
+        <v-card class="rounded-0 mx-auto" >
            <v-data-table
             v-model:search="search"
             :headers="headers"
@@ -96,6 +101,15 @@
             </template>
             </v-data-table>
        </v-card>
+    </span>
+    <span v-else>
+      <!-- Optional: Message or content to display when there is no data -->
+      <p>No data available.</p>
+      <p class="text-blue">
+        Please click import button.
+      </p>
+    </span>
+
     </v-container>
  </template>
 
@@ -128,22 +142,57 @@
      created() {
         this.getData();
     },
-     methods: {
-        filterData() {
-            const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
-
-            this.filteredData = this.datas.filter(item => {
+    watch: {
+        shouldDisplayContent: {
+            handler(newValue) {
+                // Open the dialog if shouldDisplayContent is false (no datas)
+                if (!newValue) {
+                    this.openFileDialog();
+                }
+            },
+        // immediate: true, // Trigger the handler immediately on component creation
+        },
+    },
+    computed: {
+        shouldDisplayContent() {
+            return this.datas && this.datas.length > 0;
+        },
+        filteredData() {
+            return this.datas.filter(item => {
                 const itemDateTime = new Date(`${item.date} ${item.time}`);
-                return (
-                (!this.filters.date || itemDateTime.toISOString().includes(this.filters.date)) &&
-                (!this.filters.time || itemDateTime.toISOString().includes(this.filters.time))
-                );
+                const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
+
+                // Check date if applicable
+                const dateMatches = !this.filters.date || itemDateTime.toISOString().includes(this.filters.date);
+
+                // Check time if applicable
+                const timeMatches = !this.filters.time ||
+                (itemDateTime.getHours() === filterDateTime.getHours() &&
+                itemDateTime.getMinutes() === filterDateTime.getMinutes());
+
+                return dateMatches && timeMatches;
             });
+        },
+
+        formattedTime() {
+            // Extract 'HH:mm' from the time string
+            const timeParts = this.filters.time.split(':');
+            return timeParts.slice(0, 2).join(':');
+        },
+
+        NonData() {
+            return this.datas.length === 0;
+        }
+
+    },
+
+     methods: {
+        openFileDialog() {
+        this.dialog = true;
         },
         clearFilters() {
             this.filters.date = '';
             this.filters.time = '';
-            this.filteredData = this.datas;
         },
         handleFileUpload(event) {
             this.file = event.target.files[0];
@@ -161,6 +210,9 @@
                 }, 3000);
             })
             this.dialog = false;
+            setTimeout(function() {
+                        window.location.reload();
+            }, 4000);
         },
         getData() {
             axios.get('/api/getData')
