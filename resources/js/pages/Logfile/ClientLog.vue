@@ -162,9 +162,11 @@
                 const itemDateTime = new Date(`${item.date} ${item.time}`);
                 const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
 
+                  // Format dates to compare
+                const itemDate = itemDateTime.toLocaleDateString();
+                const filterDate = filterDateTime.toLocaleDateString();
                 // Check date if applicable
-                const dateMatches = !this.filters.date || itemDateTime.toISOString().includes(this.filters.date);
-
+                const dateMatches = !this.filters.date || itemDate === filterDate;
                 // Check time if applicable
                 const timeMatches = !this.filters.time ||
                 (itemDateTime.getHours() === filterDateTime.getHours() &&
@@ -189,6 +191,10 @@
      methods: {
         openFileDialog() {
         this.dialog = true;
+        },
+        formatTime() {
+            // Ensure that the input value is always formatted as 'HH:mm'
+            this.filters.time = this.formattedTime;
         },
         clearFilters() {
             this.filters.date = '';
@@ -227,14 +233,6 @@
             .catch(error => {
                 console.log(error);
             })
-        },
-        customFilter(value, query, item) {
-            if (!this.filters.issue) {
-                return true;
-            }
-            else {
-                return value.issue=== this.filters.issue;
-            }
         },
      },
    }
