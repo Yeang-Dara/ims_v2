@@ -251,7 +251,6 @@
             </template>
             <v-list-item
                 @click="changeRoute('clientLog', 20)"
-                prepend-icon="mdi-file-account"
                 style="font-size: 14px;"
                 value="ClientLog"
                 :class="[{'active': selectedIndex === 20}, 'item-title' ]"
@@ -259,13 +258,12 @@
             {{ ('ClientLog') }}
             </v-list-item>
             <v-list-item
-                @click="changeRoute('serverLog', 21)"
-                prepend-icon="mdi-file-cloud"
+                @click="changeRoute('QRScan', 21)"
                 style="font-size: 14px;"
-                value="ServerLog"
+                value="QRScan"
                 :class="[{'active': selectedIndex === 21}, 'item-title' ]"
             >
-            {{ ('ServerLog') }}
+            {{ ('QRScan ClientLog') }}
             </v-list-item>
             <!-- <v-list-item
                 @click="changeRoute('viewDetail', 22)"

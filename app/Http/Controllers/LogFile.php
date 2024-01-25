@@ -314,5 +314,28 @@ class LogFile extends Controller
         return response()->json(['data' => $data]);
     }
 
+    public function QRScanLog_date(Request $request)
+    {
+        $date = $request->input('date');
 
+        $data = DB::table('log_entries')
+                ->select('time')
+                ->where('date', $date)
+                ->where('log_message', 'like', '%QRServer : decode%')
+                ->get();
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function QRScanLog_time(Request $request)
+    {
+        $time= $request->input('time');
+
+        $data = DB::table('log_entries')
+                ->where('time', $time)
+                ->where('log_message', 'like', '%QRServer : decode%')
+                ->get();
+
+        return response()->json(['data' => $data]);
+    }
 }

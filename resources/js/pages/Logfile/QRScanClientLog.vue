@@ -16,101 +16,54 @@
                         color="blue" autocomplete="false" type="date"
                         />
             </div>
-            <div class="ma-2 pa-2 d-flex " style="width:200px;">
-                <v-text-field
-                    v-model="filters.time"
-                    class="pr-1"
-                    label="Time"
-                    :value="formattedTime"
-                    :disabled="NonData"
-                    :readonly="isLoading"
-                    variant="solo"
-                    :rules="[v => !!v || 'Time is required']"
-                    required
-                    outlined
-                    density="compact"
-                    color="blue"
-                    autocomplete="false"
-                    type="time"
-                    @input="formatTime"
-                />
+            <div class="ma-2 pa-2 d-flex ">
+                <v-btn color="indigo-darken-1">QRSever</v-btn>
             </div>
             <div class="ma-2 pa-2 d-flex me-auto">
-                <v-btn @click="clearFilters" color="indigo-darken-1" :disabled="NonData">Clear</v-btn>
+                <v-btn @click="clearFilters" color="indigo-darken-2" :disabled="NonData">Clear</v-btn>
             </div>
-            <div class="ma-2 pa-2">
-                <v-dialog v-model="dialog" persistent width="400">
-                    <template v-slot:activator="{ props }">
-                        <v-btn type="submit" color="green" class="ma-2 pa-2"  prepend-icon="mdi-file-import" v-bind="props">
-                            import
-                        </v-btn>
-                    </template>
-                    <v-card>
-                        <v-card-title>
-                            <span class="text-h5">Import file</span>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-container>
-                                <v-file-input label="File input" variant="outlined" accept=".txt" @change="handleFileUpload"></v-file-input>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="grey"
-                            variant="flat"
-                            @click="dialog = false"
-                        >
-                            Close
-                        </v-btn>
-                        <v-btn
-                            color="blue-darken-1"
-                            variant="flat"
-                            @click="upload"
-                        >
-                            Save
-                        </v-btn>
-                        </v-card-actions>
+        </div>
+            <v-row>
+                <v-col cols="12" sm="3" md="3">
+                    <v-card class="QRList">
+                        <v-list>
+                            <v-list-item :style="{ fontSize: 'smaller', fontWeight: 'bold', color: '#3c519c' }" >QRServers</v-list-item>
+                            <v-list-item
+                                v-for="(item, i) in items"
+                                :key="i"
+                                :value="item"
+                                color="primary"
+                                density="compact"
+                            >
+                                <v-list-item-title :style="{ fontSize: 'smaller' }" v-text="item.text">
+                                </v-list-item-title>
+                                <!-- <v-divider></v-divider> -->
+                            </v-list-item>
+                            </v-list>
                     </v-card>
-                </v-dialog>
-            </div>
-    </div>
-    <span v-if="shouldDisplayContent">
-        <v-card class="rounded-0 mx-auto" >
-           <v-data-table
-            v-model:search="search"
-            :headers="headers"
-            :items="filteredData"
-            class="elevation-1 table"
-            item-value="name"
-           >
-            <template v-slot:top>
-                <v-toolbar
-                flat
-                >
-                <v-spacer></v-spacer>
-                <v-text-field
-                    class="ma-2 search"
-                    v-model="search"
-                    density="compact"
-                    variant="solo"
-                    append-inner-icon="mdi-magnify"
-                    label="Search"
-                    hide-details
-                ></v-text-field>
-                </v-toolbar>
-            </template>
-            </v-data-table>
-       </v-card>
-    </span>
-    <span v-else>
-      <!-- Optional: Message or content to display when there is no data -->
-      <p>No data available.</p>
-      <p class="text-blue">
-        Please click import button.
-      </p>
-    </span>
-
+                </v-col>
+                <v-col cols="12" sm="9" md="9">
+                    <span v-if="shouldDisplayContent">
+                        <v-card class="rounded-5 mx-auto pa-2" >
+                            <v-data-table
+                                v-model:search="search"
+                                :headers="headers"
+                                :items="filteredData"
+                                class="table"
+                                item-value="name"
+                            >
+                            </v-data-table>
+                        </v-card>
+                    </span>
+                    <span v-else>
+                    <!-- Optional: Message or content to display when there is no data -->
+                    <p>No data available.</p>
+                    <p class="text-blue">
+                        Please click import button.
+                    </p>
+                    </span>
+                </v-col>
+            </v-row>
     </v-container>
  </template>
 
@@ -128,8 +81,6 @@
             key: 'date',
           },
           { title: 'Time', align: 'start', key: 'time'},
-          { title: 'Thread', align: 'start', key: 'thread'},
-          { title: 'Code', align: 'start', key: 'code'},
           { title: 'Message', key: 'log_message'},
         ],
         datas: [],
@@ -139,6 +90,11 @@
             time: '',
         },
         filteredData: [], // Store filtered data
+        items: [
+            { text: 'Real-Time'},
+            { text: 'Audience' },
+            { text: 'Conversions'},
+        ],
      }),
      created() {
         this.getData();
@@ -241,14 +197,15 @@
 
 <style>
     .table td{
-        font-size: x-small!important;
-        height: 0!important;
-        /* padding: 1px!important; */
+        font-size: small!important;
+        /* height: 2 !important; */
+        padding: 4px !important;
     }
 
     .table th{
-        font-size: small!important;
-        height: 0!important;
+        font-size: 16px !important;
+        height: 0 !important;
+        padding: 6px !important ;
         background-color: #3c519c!important;
         color: white!important;
         border: 0.1px solid rgb(230, 228, 228)!important;
@@ -257,12 +214,17 @@
     .table td {
         border: 0.1px solid rgb(230, 228, 228)!important;
         border-collapse: collapse!important;
+        font-family: 'Consolas', monospace;
     }
 
     .see-more-link {
         color: blue;
         cursor: pointer;
         text-decoration: underline;
+    }
+
+    .QRList {
+        font-size: 16px !important;
     }
 </style>
 
