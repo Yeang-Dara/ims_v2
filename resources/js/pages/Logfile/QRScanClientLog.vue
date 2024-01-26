@@ -7,9 +7,7 @@
                     v-model="filters.date"
                         class="pr-1"
                         label="Date"
-                        :readonly="isLoading"
                         variant="solo"
-                        :disabled="NonData"
                         :rules="[v => !!v || 'Date is required']"
                         required outlined
                         density="compact"
@@ -17,10 +15,7 @@
                         />
             </div>
             <div class="ma-2 pa-2 d-flex ">
-                <v-btn color="indigo-darken-1">QRSever</v-btn>
-            </div>
-            <div class="ma-2 pa-2 d-flex me-auto">
-                <v-btn @click="clearFilters" color="indigo-darken-2" :disabled="NonData">Clear</v-btn>
+                <v-btn color="indigo-darken-1" @click="scanQR">QR Server</v-btn>
             </div>
         </div>
             <v-row>
@@ -29,17 +24,18 @@
                         <v-list>
                             <v-list-item :style="{ fontSize: 'smaller', fontWeight: 'bold', color: '#3c519c' }" >QRServers</v-list-item>
                             <v-list-item
-                                v-for="(item, i) in items"
+                                v-for="(item, i) in list_time"
                                 :key="i"
                                 :value="item"
                                 color="primary"
                                 density="compact"
+                                @click="handleItemClick(item)"
                             >
-                                <v-list-item-title :style="{ fontSize: 'smaller' }" v-text="item.text">
+                                <v-list-item-title :style="{ fontSize: 'smaller' }" v-text="item.time">
                                 </v-list-item-title>
                                 <!-- <v-divider></v-divider> -->
                             </v-list-item>
-                            </v-list>
+                        </v-list>
                     </v-card>
                 </v-col>
                 <v-col cols="12" sm="9" md="9">
@@ -48,7 +44,7 @@
                             <v-data-table
                                 v-model:search="search"
                                 :headers="headers"
-                                :items="filteredData"
+                                :items="datas"
                                 class="table"
                                 item-value="name"
                             >
@@ -70,9 +66,6 @@
  <script>
    export default {
      data: () => ({
-        dialog: false,
-        file: null,
-        expanded: [],
         headers: [
             {
             title: 'Date',
@@ -87,50 +80,15 @@
         search: '',
         filters: {
             date: '',
-            time: '',
         },
         filteredData: [], // Store filtered data
-        items: [
-            { text: 'Real-Time'},
-            { text: 'Audience' },
-            { text: 'Conversions'},
-        ],
+        list_time: {
+            time: '',
+        }
      }),
-     created() {
-        this.getData();
-    },
-    watch: {
-        shouldDisplayContent: {
-            handler(newValue) {
-                // Open the dialog if shouldDisplayContent is false (no datas)
-                if (!newValue) {
-                    this.openFileDialog();
-                }
-            },
-        // immediate: true, // Trigger the handler immediately on component creation
-        },
-    },
     computed: {
         shouldDisplayContent() {
             return this.datas && this.datas.length > 0;
-        },
-        filteredData() {
-            return this.datas.filter(item => {
-                const itemDateTime = new Date(`${item.date} ${item.time}`);
-                const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
-
-                  // Format dates to compare
-                const itemDate = itemDateTime.toLocaleDateString();
-                const filterDate = filterDateTime.toLocaleDateString();
-                // Check date if applicable
-                const dateMatches = !this.filters.date || itemDate === filterDate;
-                // Check time if applicable
-                const timeMatches = !this.filters.time ||
-                (itemDateTime.getHours() === filterDateTime.getHours() &&
-                itemDateTime.getMinutes() === filterDateTime.getMinutes());
-
-                return dateMatches && timeMatches;
-            });
         },
 
         formattedTime() {
@@ -144,53 +102,29 @@
         }
 
     },
-
      methods: {
-        openFileDialog() {
-        this.dialog = true;
-        },
-        formatTime() {
-            // Ensure that the input value is always formatted as 'HH:mm'
-            this.filters.time = this.formattedTime;
-        },
-        clearFilters() {
-            this.filters.date = '';
-            this.filters.time = '';
-        },
-        handleFileUpload(event) {
-            this.file = event.target.files[0];
-        // Perform further processing with the uploaded CSV file
-        },
-        upload() {
-            const formData = new FormData();
-            formData.append('file', this.file);
-            console.log(this.file)
-            axios.post('/api/Log/clientLog/upload-file', formData)
+        scanQR(){
+            axios.post('/api/Log/clientLog/list-qr', { date: this.filters.date })
             .then(res => {
-                console.log(res.data)
-                setTimeout(function() {
-                        alert('Uploaded successfuly...');
-                }, 3000);
+                this.list_time = res.data.data;
+                console.log(this.list_time);
             })
-            this.dialog = false;
-            setTimeout(function() {
-                        window.location.reload();
-            }, 4000);
+            .catch(err => {
+                console.log(err);
+            })
         },
-        getData() {
-            axios.get('/api/Log/clientLog/getData')
+
+        handleItemClick(item) {
+            console.log('Clicked item:', item);
+            axios.post('/api/Log/clientLog/qrServer', { time: item.time, date: this.filters.date })
             .then(response => {
-                if (response.data && Array.isArray(response.data.data)) {
                     this.datas = response.data.data;
-                    console.log(this.datas);
-                } else {
-                    console.log('Invalid data structure received from the server');
-                }
+                    console.log(item.time, this.filters.date);
             })
             .catch(error => {
                 console.log(error);
             })
-        },
+        }
      },
    }
  </script>
