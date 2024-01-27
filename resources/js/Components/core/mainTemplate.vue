@@ -183,9 +183,15 @@
                         style="font-size: 14px;"
                         >{{ ('Terminals') }} </v-list-item>
                     </template>
-                        <v-list-item
+                        <!-- <v-list-item
                             @click="changeRoute('atm_page', 13)"
                             value="atm_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 13}, 'item-title' ]"
+                        >{{ ('List Terminal') }}</v-list-item> -->
+                        <v-list-item
+                            @click="changeRoute('allterminal_page', 13)"
+                            value="allterminal_page"
                             style="font-size: 14px;"
                             :class="[{'active': selectedIndex === 13}, 'item-title' ]"
                         >{{ ('List Terminal') }}</v-list-item>
@@ -195,6 +201,7 @@
                                 style="font-size: 14px;"
                                 :class="[{'active': selectedIndex === 14}, 'item-title' ]"
                         >{{ ('New Terminal') }}</v-list-item>
+                  
                 </v-list-group>
                 <v-list-item
                     @click="changeRoute('order_page', 15)"

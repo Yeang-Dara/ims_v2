@@ -24,6 +24,7 @@ import Model from '../pages/IMS/admin/Model.vue'
 import Category from '../pages/IMS/admin/Category.vue'
 import Warehouse from '../pages/IMS/admin/Warehouse.vue'
 import Status from '../pages/IMS/admin/Status.vue'
+import Allterminal from '../pages/IMS/admin/Allterminal.vue'
 
 // HR
 import HR from '../Components/HR/HRmainTemplate.vue'
@@ -297,6 +298,11 @@ const routes = [
                 path:'Status',
                 name: 'status_page',
                 component: Status
+              },
+              {
+                path:'Allterminal',
+                name: 'allterminal_page',
+                component: Allterminal
               },
 
         ]
