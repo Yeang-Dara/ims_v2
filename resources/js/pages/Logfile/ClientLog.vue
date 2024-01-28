@@ -16,12 +16,31 @@
                         color="blue" autocomplete="false" type="date"
                         />
             </div>
+            <div class="ma-2 pa-2" style="width:200px;">
+                <v-text-field
+                    v-model="filters.from_time"
+                    class="pr-1"
+                    label="From Time"
+                    :value="formattedFromTime"
+                    :disabled="NonData"
+                    :readonly="isLoading"
+                    variant="solo"
+                    :rules="[v => !!v || 'Time is required']"
+                    required
+                    outlined
+                    density="compact"
+                    color="blue"
+                    autocomplete="false"
+                    type="time"
+                    @input="formatTime"
+                />
+            </div>
             <div class="ma-2 pa-2 d-flex " style="width:200px;">
                 <v-text-field
-                    v-model="filters.time"
+                    v-model="filters.to_time"
                     class="pr-1"
-                    label="Time"
-                    :value="formattedTime"
+                    label="To Time"
+                    :value="formattedToTime"
                     :disabled="NonData"
                     :readonly="isLoading"
                     variant="solo"
@@ -124,7 +143,7 @@
             {
             title: 'Date',
             align: 'start',
-            // sortable: false,
+            width: '150px',
             key: 'date',
           },
           { title: 'Time', align: 'start', key: 'time'},
@@ -136,7 +155,8 @@
         search: '',
         filters: {
             date: '',
-            time: '',
+            from_time: '',
+            to_time: '',
         },
         filteredData: [], // Store filtered data
      }),
@@ -160,26 +180,40 @@
         },
         filteredData() {
             return this.datas.filter(item => {
+                // const itemDateTime = new Date(`${item.date} ${item.time}`);
+                // const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
+
+                //   // Format dates to compare
+                // const itemDate = itemDateTime.toLocaleDateString();
+                // const filterDate = filterDateTime.toLocaleDateString();
+                // // Check date if applicable
+                // const dateMatches = !this.filters.date || itemDate === filterDate;
+                // // Check time if applicable
+                // const timeMatches = !this.filters.time ||
+                // (itemDateTime.getHours() === filterDateTime.getHours() &&
+                // itemDateTime.getMinutes() === filterDateTime.getMinutes());
+
+                // return dateMatches && timeMatches;
                 const itemDateTime = new Date(`${item.date} ${item.time}`);
-                const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
+                const filterStartDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
+                const filterEndDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
 
-                  // Format dates to compare
-                const itemDate = itemDateTime.toLocaleDateString();
-                const filterDate = filterDateTime.toLocaleDateString();
-                // Check date if applicable
-                const dateMatches = !this.filters.date || itemDate === filterDate;
-                // Check time if applicable
-                const timeMatches = !this.filters.time ||
-                (itemDateTime.getHours() === filterDateTime.getHours() &&
-                itemDateTime.getMinutes() === filterDateTime.getMinutes());
+                // Check if itemDateTime is within the specified time range
+                const isWithinRange = !this.filters.startTime || !this.filters.endTime ||
+                    (itemDateTime >= filterStartDateTime && itemDateTime <= filterEndDateTime);
 
-                return dateMatches && timeMatches;
+                return isWithinRange;
             });
         },
 
-        formattedTime() {
+        formattedFromTime() {
             // Extract 'HH:mm' from the time string
-            const timeParts = this.filters.time.split(':');
+            const timeParts = this.filters.from_time.split(':');
+            return timeParts.slice(0, 2).join(':');
+        },
+        formattedToTime() {
+            // Extract 'HH:mm' from the time string
+            const timeParts = this.filters.to_time.split(':');
             return timeParts.slice(0, 2).join(':');
         },
 
@@ -217,9 +251,9 @@
                 }, 3000);
             })
             this.dialog = false;
-            setTimeout(function() {
-                        window.location.reload();
-            }, 4000);
+           // setTimeout(function() {
+           //             window.location.reload();
+            //}, 4000);
         },
         getData() {
             axios.get('/api/Log/clientLog/getData')
