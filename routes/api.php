@@ -98,6 +98,10 @@ Route::group(['prefix' => 'HR'], function () {
     require __DIR__ . '/HR/role.php';
 });
 
+Route::group(['prefix' => 'Log'], function () {
+    require __DIR__ . '/LogFile/clientLog.php';
+});
+
 // Authentication
 Route::controller(AuthController::class)->group(function() {
     Route::post('login', 'login');
@@ -112,10 +116,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/change-password', [AuthController::class, 'change_password']);
 });
 
-Route::post('/process-log', [LogFile::class, 'processLog']);
-Route::post('/convert-file', [LogFile::class, 'convertFile']);
-Route::post('/upload-file', [LogFile::class, 'Uploadfile']);
 
 // upload log
-Route::post('/upload-folder', [UploadFileController::class, 'uploadFolder']);
-Route::post('/upload-file', [UploadFileController::class, 'uploadFile']);
+// Route::post('/upload-folder', [UploadFileController::class, 'uploadFolder']);
+// Route::post('/upload-file', [UploadFileController::class, 'uploadFile']);

@@ -12,6 +12,7 @@ use League\Csv\Reader;
 
 class LogFile extends Controller
 {
+
     //test file convert to JSON
     public function processLog1(){
         $text = "I am not sure today";
@@ -306,5 +307,51 @@ class LogFile extends Controller
         }
     }
 
+    public function getAll()
+    {
+        $data = LogEntry::orderBy('date')->get();
 
+        return response()->json(['data' => $data]);
+    }
+
+    public function QRScanLog_date(Request $request)
+    {
+        $date = $request->input('date');
+
+        $data = DB::table('log_entries')
+                ->select('time')
+                ->where('date', $date)
+                ->where('log_message', 'like', '%QRServer : decode%')
+                ->orderBy('time')
+                ->get();
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function QRScanLog_time(Request $request)
+    {
+        $time= $request->input('time');
+        $date= $request->input('date');
+
+        $data = DB::table('log_entries')
+                ->where('time', $time)
+                ->where('date', $date)
+                ->where('log_message', 'like', '%QRServer : decode%')
+                ->get();
+        // If there are matching entries
+        if ($data->isNotEmpty()) {
+            // Get the ID of the last matched entry
+            $lastEntryId = $data->last()->id;
+
+            // Query all entries with an ID greater than the last matched entry
+            $additionalData = DB::table('log_entries')
+                                ->select('id', 'date', 'time', 'code', 'thread', 'log_message', 'created_at', 'updated_at')
+                                ->where('id', '>', $lastEntryId)
+                                ->get();
+
+            // Concatenate the additional data with the matched data
+            $data = $data->concat($additionalData);
+        }
+        return response()->json(['data' => $data]);
+    }
 }

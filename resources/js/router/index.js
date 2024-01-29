@@ -49,6 +49,7 @@ import MasterUsers from '../pages/HR/Setting/AdminUsers.vue'
 
 // log
 import ClientLog from '../pages/Logfile/ClientLog.vue'
+import QRScan from '../pages/Logfile/QRScanClientLog.vue'
 
 const routes = [
     {
@@ -304,6 +305,11 @@ const routes = [
                 name: 'allterminal_page',
                 component: Allterminal
               },
+              {
+                path:'QRScan_ClientLog',
+                name: 'QRScan',
+                component: QRScan
+              }
 
         ]
     },

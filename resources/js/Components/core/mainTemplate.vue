@@ -1,18 +1,293 @@
 <template>
     <v-app>
+        <v-navigation-drawer v-model="drawer" app color="grey-darken-2">
+
+            <v-list nav  dense>
+                    <v-list-item
+                        @click="changeRoute('Dashboard', 1)"
+                        prepend-icon="mdi-view-dashboard"
+                        value="Dashboard"
+                        style="font-size: 14px;"
+                        :class="[{'active': selectedIndex === 1}, 'item-title' ]"
+                    >
+                    {{ ('Dashboard') }}
+                    </v-list-item>
+                    <span v-if="user.role_id != 2 && user.role_id != 5 && user.role_id != 6">
+                    <v-list-group value="Employees">
+                    <template v-slot:activator="{ props }">
+                        <v-list-item
+                        v-bind="props"
+                        style="font-size: 14px;"
+                        prepend-icon="mdi-account-multiple"
+                        class="item-title"
+                        >{{ ('Employees') }} </v-list-item>
+                    </template>
+                    <v-list-item
+                            @click="changeRoute('AddEmployee', 2)"
+                            value="AddEmployee"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 2}, 'item-title' ]"
+                    >{{ ('Add Employee') }}</v-list-item>
+                    <v-list-item
+                            @click="changeRoute('ManageEmployee', 3)"
+                            value="ManageEmployee"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 3}, 'item-title' ]"
+                    >{{ ('Manage Employee') }}</v-list-item>
+                    </v-list-group>
+                </span>
+                    <v-list-group value="Leave">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                            v-bind="props"
+                            style="font-size: 14px;"
+                            prepend-icon="mdi-deskphone"
+                            class="item-title"
+                            >{{ ('Leaves') }} </v-list-item>
+                        </template>
+                        <span v-if="user.role_id != 3">
+                            <v-list-item
+                                @click="changeRoute('ApplyLeave', 4)"
+                                value="ApplyLeave"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 4}, 'item-title' ]"
+                            >{{ ('Apply Leave') }}</v-list-item>
+                            <v-list-item
+                                    @click="changeRoute('MyLeave', 12)"
+                                    value="MyLeave"
+                                    style="font-size: 14px;"
+                                    :class="[{'active': selectedIndex === 12}, 'item-title' ]"
+                            >{{ ('My Leave') }}</v-list-item>
+                        </span>
+                        <span v-if="user.role_id != 2">
+                            <v-list-item
+                                    @click="changeRoute('ManageLeave', 5)"
+                                    value="ManageLeave"
+                                    style="font-size: 14px;"
+                                    :class="[{'active': selectedIndex === 5}, 'item-title' ]"
+                            >{{ ('Manage Leave') }}</v-list-item>
+                            <span v-if="user.role_id != 5">
+                                <v-list-item
+                                    @click="changeRoute('LeaveView', 6)"
+                                    value="ManageView"
+                                    style="font-size: 14px;"
+                                    :class="[{'active': selectedIndex === 6}, 'item-title' ]"
+                                >{{ ('Leave View') }}</v-list-item>
+                            </span>
+                        </span>
+                    </v-list-group>
+                    <v-list-group value="Terminals">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                            v-bind="props"
+                            prepend-icon="mdi-warehouse"
+                            class="item-title"
+                            style="font-size: 14px;"
+                            >{{ ('Terminals') }} </v-list-item>
+                        </template>
+                        <v-list-item
+                            @click="changeRoute('allterminal_page', 13)"
+                            value="allterminal_page"
+                            style="font-size: 14px;"
+                            :class="[{'active': selectedIndex === 13}, 'item-title' ]"
+                        >{{ ('List Terminal') }}</v-list-item>
+                            <v-list-item
+                                    @click="changeRoute('addnewatm_page', 14)"
+                                    value="addnewatm_page"
+                                    style="font-size: 14px;"
+                                    :class="[{'active': selectedIndex === 14}, 'item-title' ]"
+                            >{{ ('New Terminal') }}</v-list-item>
+                    </v-list-group>
+                    <v-list-item
+                        @click="changeRoute('order_page', 15)"
+                        value="order_page"
+                        style="font-size: 14px;"
+                        prepend-icon="mdi-home-plus"
+                        :class="[{'active': selectedIndex === 15}, 'item-title' ]"
+                    >{{ ('Incoming Machine') }}</v-list-item>
+                    <span v-if=" user.role_id == 1 || user.role_id == 4">
+                        <v-list-group value="Setting">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                            v-bind="props"
+                            style="font-size: 14px;"
+                            prepend-icon="mdi-cog"
+                            class="item-title"
+                            >{{ ('Setting') }} </v-list-item>
+                        </template>
+                        <v-list-item
+                                @click="changeRoute('Department', 7)"
+                                value="Department"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 7}, 'item-title' ]"
+                        >{{ ('Department') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('LeaveType', 8)"
+                                value="LeaveType"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 8}, 'item-title' ]"
+                        >{{ ('Leave Type') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('Position', 9)"
+                                value="Position"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 9}, 'item-title' ]"
+                        >{{ ('Position') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('MasterUsers', 11)"
+                                value="MasterUsers"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 11}, 'item-title' ]"
+                        >{{ ('Master Users') }}</v-list-item>
+                        <v-list-group value="bank">
+                            <template v-slot:activator="{ props }">
+                            <v-list-item
+                            v-bind="props"
+                            class="item-title"
+                            style="font-size: 14px;"
+                            >{{ ('Banks Master') }} </v-list-item>
+                        </template>
+                        <v-list-item
+                                @click="changeRoute('bank_page', 16)"
+                                value="bank_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 16}, 'item-title' ]"
+                        >{{ ('List Banks') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('banklocation_page', 17)"
+                                value="banklocation_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 17}, 'item-title' ]"
+                        >{{ ('Bank Location') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('warehouse_page', 23)"
+                                value="warehouse_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 23}, 'item-title' ]"
+                        >{{ ('Warehouses') }}</v-list-item>
+                        </v-list-group>
+                        <v-list-item
+                                @click="changeRoute('engineer_page', 18)"
+                                value="engineer_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 18}, 'item-title' ]"
+                        >{{ ('Engineers Master') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('Site_page', 19)"
+                                value="Site_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                        >{{ ('Site Master') }}</v-list-item>
+                        <v-list-group value="terminal">
+                            <template v-slot:activator="{ props }">
+                            <v-list-item
+                            v-bind="props"
+                            style="font-size: 14px;"
+                            class="item-title"
+                            >{{ ('Terminal Master') }} </v-list-item>
+                        </template>
+                        <v-list-item
+                                @click="changeRoute('Type_page', 16)"
+                                value="Type_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 16}, 'item-title' ]"
+                        >{{ ('Type') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('Model_page', 17)"
+                                value="Model_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 17}, 'item-title' ]"
+                        >{{ ('Model') }}</v-list-item>
+                        <v-list-item
+                                @click="changeRoute('status_page', 24)"
+                                value="status_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 24}, 'item-title' ]"
+                        >{{ ('Status') }}</v-list-item>
+                        </v-list-group>
+                        <v-list-item
+                                @click="changeRoute('category_page', 24)"
+                                value="category_page"
+                                style="font-size: 14px;"
+                                :class="[{'active': selectedIndex === 24}, 'item-title' ]"
+                        >{{ ('Category') }}</v-list-item>
+                    </v-list-group>
+                    </span>
+                    <v-list-item
+                        @click="changeRoute('report_page', 18)"
+                        prepend-icon="mdi-calendar-export"
+                        value="Report"
+                        style="font-size: 14px;"
+                        :class="[{'active': selectedIndex === 18}, 'item-title' ]"
+                    >
+                    {{ ('Report') }}
+                    </v-list-item>
+                    <v-list-item
+                        @click="changeRoute('spare_part_page', 19)"
+                        prepend-icon="mdi-toolbox"
+                        value="Spare parts"
+                        style="font-size: 14px;"
+                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                    >
+                    {{ ('Spare parts') }}
+                    </v-list-item>
+                    <v-list-item
+                        @click="changeRoute('ticketRecord', 2)"
+                        prepend-icon="mdi-ticket-percent"
+                        value="Ticket Record"
+                        style="font-size: 14px;"
+                        :class="[{'active': selectedIndex === 2}, 'item-title' ]"
+                    >
+                    {{ ('Ticket Record') }}
+                </v-list-item>
+                    <v-list-group value="DC365 Log">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                            v-bind="props"
+                            style="font-size: 14px;"
+                            prepend-icon="mdi-file-cog "
+                            class="item-title"
+                            >{{ ('DC365 Log') }} </v-list-item>
+                        </template>
+                        <v-list-item
+                            @click="changeRoute('clientLog', 20)"
+                            style="font-size: 14px;"
+                            value="ClientLog"
+                            :class="[{'active': selectedIndex === 20}, 'item-title' ]"
+                        >
+                        {{ ('ClientLog') }}
+                        </v-list-item>
+                        <v-list-item
+                            @click="changeRoute('QRScan', 21)"
+                            style="font-size: 14px;"
+                            value="QRScan"
+                            :class="[{'active': selectedIndex === 21}, 'item-title' ]"
+                        >
+                        {{ ('QRScan ClientLog') }}
+                        </v-list-item>
+                        <!-- <v-list-item
+                            @click="changeRoute('viewDetail', 22)"
+                            prepend-icon="mdi-file-find"
+                            style="font-size: 14px;"
+                            value="View Detail"
+                            :class="[{'active': selectedIndex === 22}, 'item-title' ]"
+                        >
+                        {{ ('View Detail') }}
+                        </v-list-item> -->
+                    </v-list-group>
+            </v-list>
+        </v-navigation-drawer>
         <v-app-bar
           app dark color="#1C2E6D"
         >
-          <v-app-bar-nav-icon class="text-white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          <!-- <v-app-bar-nav-icon class="text-white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
 
-          <div class="d-flex align-center toolbar">
-            <router-link :to="{ name: 'Dashboard' }" class="text">
+          <div class="d-flex align-center toolbar" @click.stop="drawer = !drawer">
                 <v-img
                     width="150"
                     cover
                     src="../../../assets/BTI (2).png"
                  ></v-img>
-            </router-link>
           </div>
           <v-spacer></v-spacer>
         <v-menu offset-y transition="scale-transition">
@@ -91,299 +366,7 @@
         <div class="mt-3 ml-2 mr-2 text-white text-capitalize">
             <p>{{ user.last_name }} {{ user.first_name }}</p>
         </div>
-          <!-- <v-btn icon>
-            <router-link :to="{ name: 'mainPage' }">
-                <v-icon color="white">
-                </v-icon>
-            </router-link>
-            </v-btn> -->
         </v-app-bar>
-        <v-navigation-drawer v-model="drawer" app color="grey-darken-2">
-
-        <v-list nav  dense>
-                <v-list-item
-                    @click="changeRoute('Dashboard', 1)"
-                    prepend-icon="mdi-view-dashboard"
-                    value="Dashboard"
-                    style="font-size: 14px;"
-                    :class="[{'active': selectedIndex === 1}, 'item-title' ]"
-                >
-                {{ ('Dashboard') }}
-                </v-list-item>
-                <span v-if="user.role_id != 2 && user.role_id != 5 && user.role_id != 6">
-                <v-list-group value="Employees">
-                <template v-slot:activator="{ props }">
-                    <v-list-item
-                    v-bind="props"
-                    style="font-size: 14px;"
-                    prepend-icon="mdi-account-multiple"
-                    class="item-title"
-                    >{{ ('Employees') }} </v-list-item>
-                </template>
-                <v-list-item
-                        @click="changeRoute('AddEmployee', 2)"
-                        value="AddEmployee"
-                        style="font-size: 14px;"
-                        :class="[{'active': selectedIndex === 2}, 'item-title' ]"
-                >{{ ('Add Employee') }}</v-list-item>
-                <v-list-item
-                        @click="changeRoute('ManageEmployee', 3)"
-                        value="ManageEmployee"
-                        style="font-size: 14px;"
-                        :class="[{'active': selectedIndex === 3}, 'item-title' ]"
-                >{{ ('Manage Employee') }}</v-list-item>
-                </v-list-group>
-            </span>
-                <v-list-group value="Leave">
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                        v-bind="props"
-                        style="font-size: 14px;"
-                        prepend-icon="mdi-deskphone"
-                        class="item-title"
-                        >{{ ('Leaves') }} </v-list-item>
-                    </template>
-                    <span v-if="user.role_id != 3">
-                        <v-list-item
-                            @click="changeRoute('ApplyLeave', 4)"
-                            value="ApplyLeave"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 4}, 'item-title' ]"
-                        >{{ ('Apply Leave') }}</v-list-item>
-                        <v-list-item
-                                @click="changeRoute('MyLeave', 12)"
-                                value="MyLeave"
-                                style="font-size: 14px;"
-                                :class="[{'active': selectedIndex === 12}, 'item-title' ]"
-                        >{{ ('My Leave') }}</v-list-item>
-                    </span>
-                    <span v-if="user.role_id != 2">
-                        <v-list-item
-                                @click="changeRoute('ManageLeave', 5)"
-                                value="ManageLeave"
-                                style="font-size: 14px;"
-                                :class="[{'active': selectedIndex === 5}, 'item-title' ]"
-                        >{{ ('Manage Leave') }}</v-list-item>
-                        <span v-if="user.role_id != 5">
-                            <v-list-item
-                                @click="changeRoute('LeaveView', 6)"
-                                value="ManageView"
-                                style="font-size: 14px;"
-                                :class="[{'active': selectedIndex === 6}, 'item-title' ]"
-                            >{{ ('Leave View') }}</v-list-item>
-                        </span>
-                    </span>
-                </v-list-group>
-                <v-list-group value="Terminals">
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                        v-bind="props"
-                        prepend-icon="mdi-warehouse"
-                        class="item-title"
-                        style="font-size: 14px;"
-                        >{{ ('Terminals') }} </v-list-item>
-                    </template>
-                        <!-- <v-list-item
-                            @click="changeRoute('atm_page', 13)"
-                            value="atm_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 13}, 'item-title' ]"
-                        >{{ ('List Terminal') }}</v-list-item> -->
-                        <v-list-item
-                            @click="changeRoute('allterminal_page', 13)"
-                            value="allterminal_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 13}, 'item-title' ]"
-                        >{{ ('List Terminal') }}</v-list-item>
-                        <v-list-item
-                                @click="changeRoute('addnewatm_page', 14)"
-                                value="addnewatm_page"
-                                style="font-size: 14px;"
-                                :class="[{'active': selectedIndex === 14}, 'item-title' ]"
-                        >{{ ('New Terminal') }}</v-list-item>
-                  
-                </v-list-group>
-                <v-list-item
-                    @click="changeRoute('order_page', 15)"
-                    value="order_page"
-                    style="font-size: 14px;"
-                    prepend-icon="mdi-home-plus"
-                    :class="[{'active': selectedIndex === 15}, 'item-title' ]"
-                >{{ ('Incoming Machine') }}</v-list-item>
-                <span v-if=" user.role_id == 1 || user.role_id == 4">
-                    <v-list-group value="Setting">
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                        v-bind="props"
-                        style="font-size: 14px;"
-                        prepend-icon="mdi-cog"
-                        class="item-title"
-                        >{{ ('Setting') }} </v-list-item>
-                    </template>
-                    <v-list-item
-                            @click="changeRoute('Department', 7)"
-                            value="Department"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 7}, 'item-title' ]"
-                    >{{ ('Department') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('LeaveType', 8)"
-                            value="LeaveType"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 8}, 'item-title' ]"
-                    >{{ ('Leave Type') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('Position', 9)"
-                            value="Position"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 9}, 'item-title' ]"
-                    >{{ ('Position') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('MasterUsers', 11)"
-                            value="MasterUsers"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 11}, 'item-title' ]"
-                    >{{ ('Master Users') }}</v-list-item>
-                    <v-list-group value="bank">
-                        <template v-slot:activator="{ props }">
-                        <v-list-item
-                        v-bind="props"
-                        class="item-title"
-                        style="font-size: 14px;"
-                        >{{ ('Banks Master') }} </v-list-item>
-                    </template>
-                    <v-list-item
-                            @click="changeRoute('bank_page', 16)"
-                            value="bank_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 16}, 'item-title' ]"
-                    >{{ ('List Banks') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('banklocation_page', 17)"
-                            value="banklocation_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 17}, 'item-title' ]"
-                    >{{ ('Bank Location') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('warehouse_page', 23)"
-                            value="warehouse_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 23}, 'item-title' ]"
-                    >{{ ('Warehouses') }}</v-list-item>
-                    </v-list-group>
-                    <v-list-item
-                            @click="changeRoute('engineer_page', 18)"
-                            value="engineer_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 18}, 'item-title' ]"
-                    >{{ ('Engineers Master') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('Site_page', 19)"
-                            value="Site_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 19}, 'item-title' ]"
-                    >{{ ('Site Master') }}</v-list-item>
-                    <v-list-group value="terminal">
-                        <template v-slot:activator="{ props }">
-                        <v-list-item
-                        v-bind="props"
-                        style="font-size: 14px;"
-                        class="item-title"
-                        >{{ ('Terminal Master') }} </v-list-item>
-                    </template>
-                    <v-list-item
-                            @click="changeRoute('Type_page', 16)"
-                            value="Type_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 16}, 'item-title' ]"
-                    >{{ ('Type') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('Model_page', 17)"
-                            value="Model_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 17}, 'item-title' ]"
-                    >{{ ('Model') }}</v-list-item>
-                    <v-list-item
-                            @click="changeRoute('status_page', 24)"
-                            value="status_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 24}, 'item-title' ]"
-                    >{{ ('Status') }}</v-list-item>
-                    </v-list-group>
-                    <v-list-item
-                            @click="changeRoute('category_page', 24)"
-                            value="category_page"
-                            style="font-size: 14px;"
-                            :class="[{'active': selectedIndex === 24}, 'item-title' ]"
-                    >{{ ('Category') }}</v-list-item>
-                </v-list-group>
-                </span>
-                <v-list-item
-                    @click="changeRoute('report_page', 18)"
-                    prepend-icon="mdi-calendar-export"
-                    value="Report"
-                    style="font-size: 14px;"
-                    :class="[{'active': selectedIndex === 18}, 'item-title' ]"
-                >
-                {{ ('Report') }}
-                </v-list-item>
-                <v-list-item
-                    @click="changeRoute('spare_part_page', 19)"
-                    prepend-icon="mdi-toolbox"
-                    value="Spare parts"
-                    style="font-size: 14px;"
-                    :class="[{'active': selectedIndex === 19}, 'item-title' ]"
-                >
-                {{ ('Spare parts') }}
-                </v-list-item>
-                <v-list-item
-                    @click="changeRoute('ticketRecord', 2)"
-                    prepend-icon="mdi-ticket-percent"
-                    value="Ticket Record"
-                    style="font-size: 14px;"
-                    :class="[{'active': selectedIndex === 2}, 'item-title' ]"
-                >
-                {{ ('Ticket Record') }}
-               </v-list-item>
-                <v-list-group value="DC365 Log">
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                        v-bind="props"
-                        style="font-size: 14px;"
-                        prepend-icon="mdi-file-cog "
-                        class="item-title"
-                        >{{ ('DC365 Log') }} </v-list-item>
-                    </template>
-                    <v-list-item
-                        @click="changeRoute('clientLog', 20)"
-                        prepend-icon="mdi-file-account"
-                        style="font-size: 14px;"
-                        value="ClientLog"
-                        :class="[{'active': selectedIndex === 20}, 'item-title' ]"
-                    >
-                    {{ ('ClientLog') }}
-                    </v-list-item>
-                    <v-list-item
-                        @click="changeRoute('serverLog', 21)"
-                        prepend-icon="mdi-file-cloud"
-                        style="font-size: 14px;"
-                        value="ServerLog"
-                        :class="[{'active': selectedIndex === 21}, 'item-title' ]"
-                    >
-                    {{ ('ServerLog') }}
-                    </v-list-item>
-                    <!-- <v-list-item
-                        @click="changeRoute('viewDetail', 22)"
-                        prepend-icon="mdi-file-find"
-                        style="font-size: 14px;"
-                        value="View Detail"
-                        :class="[{'active': selectedIndex === 22}, 'item-title' ]"
-                    >
-                    {{ ('View Detail') }}
-                    </v-list-item> -->
-                </v-list-group>
-        </v-list>
-        </v-navigation-drawer>
 
         <!-- page -->
       <v-main>
