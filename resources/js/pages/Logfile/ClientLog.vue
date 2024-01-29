@@ -2,7 +2,6 @@
     <v-container fluid grid-list-xl>
         <div class="d-flex flex-row mb-6">
             <div class="ma-2 pa-2 d-flex" style="width:200px;">
-                <!-- <v-date-picker></v-date-picker> -->
                 <v-text-field
                     v-model="filters.date"
                         class="pr-1"
@@ -54,13 +53,13 @@
                     @input="formatTime"
                 />
             </div>
-            <div class="ma-2 pa-2 d-flex me-auto">
+            <div class="ma-2 pa-3 d-flex me-auto">
                 <v-btn @click="clearFilters" color="indigo-darken-1" :disabled="NonData">Clear</v-btn>
             </div>
-            <div class="ma-2 pa-2">
+            <div class="ma-2 pa-3">
                 <v-dialog v-model="dialog" persistent width="400">
                     <template v-slot:activator="{ props }">
-                        <v-btn type="submit" color="green" class="ma-2 pa-2"  prepend-icon="mdi-file-import" v-bind="props">
+                        <v-btn type="submit" color="green" prepend-icon="mdi-file-import" v-bind="props">
                             import
                         </v-btn>
                     </template>
@@ -143,13 +142,13 @@
             {
             title: 'Date',
             align: 'start',
-            width: '150px',
+            width: '120px',
             key: 'date',
           },
           { title: 'Time', align: 'start', key: 'time'},
           { title: 'Thread', align: 'start', key: 'thread'},
           { title: 'Code', align: 'start', key: 'code'},
-          { title: 'Message', key: 'log_message'},
+          { title: 'Message', key: 'log_message',width: '500px',},
         ],
         datas: [],
         search: '',
@@ -180,30 +179,25 @@
         },
         filteredData() {
             return this.datas.filter(item => {
-                // const itemDateTime = new Date(`${item.date} ${item.time}`);
-                // const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
+            const itemDateTime = new Date(`${item.date} ${item.time}`);
+            const filterFromDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
+            const filterToDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
 
-                //   // Format dates to compare
-                // const itemDate = itemDateTime.toLocaleDateString();
-                // const filterDate = filterDateTime.toLocaleDateString();
-                // // Check date if applicable
-                // const dateMatches = !this.filters.date || itemDate === filterDate;
-                // // Check time if applicable
-                // const timeMatches = !this.filters.time ||
-                // (itemDateTime.getHours() === filterDateTime.getHours() &&
-                // itemDateTime.getMinutes() === filterDateTime.getMinutes());
+            // Format dates to compare
+            const itemDate = itemDateTime.toLocaleDateString();
 
-                // return dateMatches && timeMatches;
-                const itemDateTime = new Date(`${item.date} ${item.time}`);
-                const filterStartDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
-                const filterEndDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
+            // Check date if applicable
+            const dateMatches = !this.filters.date ||
+                itemDate === filterFromDateTime.toLocaleDateString() ||
+                itemDate === filterToDateTime.toLocaleDateString();
 
-                // Check if itemDateTime is within the specified time range
-                const isWithinRange = !this.filters.startTime || !this.filters.endTime ||
-                    (itemDateTime >= filterStartDateTime && itemDateTime <= filterEndDateTime);
+            // Check time if applicable
+            const fromTimeMatches = !this.filters.from_time || itemDateTime >= filterFromDateTime;
+            const toTimeMatches = !this.filters.to_time || itemDateTime <= filterToDateTime;
 
-                return isWithinRange;
-            });
+            return dateMatches && fromTimeMatches && toTimeMatches;
+        });
+
         },
 
         formattedFromTime() {
@@ -229,11 +223,13 @@
         },
         formatTime() {
             // Ensure that the input value is always formatted as 'HH:mm'
-            this.filters.time = this.formattedTime;
+            this.filters.from_time = this.formattedFromTime;
+            this.filters.to_time = this.formattedToTime;
         },
         clearFilters() {
             this.filters.date = '';
-            this.filters.time = '';
+            this.filters.from_time = '';
+            this.filters.to_time = '';
         },
         handleFileUpload(event) {
             this.file = event.target.files[0];

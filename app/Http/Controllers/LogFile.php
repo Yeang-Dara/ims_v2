@@ -307,7 +307,7 @@ class LogFile extends Controller
 
     public function getAll()
     {
-        $data = LogEntry::orderBy('date')->get();
+        $data = LogEntry::orderBy('date')->orderBy('time')->get();
 
         return response()->json(['data' => $data]);
     }
