@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Storage;
 use League\Csv\Writer;
 use App\Models\LogEntry;
 use Illuminate\Support\Facades\DB;
-use League\Csv\Reader;
 
 
 class LogFile extends Controller
@@ -182,7 +181,6 @@ class LogFile extends Controller
         // Optionally, return a response or redirect as needed
         return response()->download(storage_path("app/$outputFilePath"));
     }
-
     // upload big file
     public function Uploadfile2(Request $request)
     {
@@ -354,4 +352,5 @@ class LogFile extends Controller
         }
         return response()->json(['data' => $data]);
     }
+
 }

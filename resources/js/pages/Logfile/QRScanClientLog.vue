@@ -71,6 +71,7 @@
             title: 'Date',
             align: 'start',
             // sortable: false,
+            width: '150px',
             key: 'date',
           },
           { title: 'Time', align: 'start', key: 'time'},

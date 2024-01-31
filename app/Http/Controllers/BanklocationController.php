@@ -112,4 +112,14 @@ class BanklocationController extends ParentController
                     ->orderBy('id')->get();
         return $data;
     }
+    public function getID($id)
+    {
+        $data = DB::table('banklocations')
+                    ->join('customers','banklocations.bank_name_id','=','customers.id')
+                    ->join('sites','banklocations.site_name_id','=','sites.id')
+                    ->select('customers.customer_name','sites.site_name', 'banklocations.*')
+                    ->where('banklocations.id','=',$id)->get();
+                   
+        return response()->json($data);
+    }
 }

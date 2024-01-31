@@ -16,12 +16,31 @@
                         color="blue" autocomplete="false" type="date"
                         />
             </div>
+            <div class="ma-2 pa-2" style="width:200px;">
+                <v-text-field
+                    v-model="filters.from_time"
+                    class="pr-1"
+                    label="From Time"
+                    :value="formattedFromTime"
+                    :disabled="NonData"
+                    :readonly="isLoading"
+                    variant="solo"
+                    :rules="[v => !!v || 'Time is required']"
+                    required
+                    outlined
+                    density="compact"
+                    color="blue"
+                    autocomplete="false"
+                    type="time"
+                    @input="formatTime"
+                />
+            </div>
             <div class="ma-2 pa-2 d-flex " style="width:200px;">
                 <v-text-field
-                    v-model="filters.time"
+                    v-model="filters.to_time"
                     class="pr-1"
-                    label="Time"
-                    :value="formattedTime"
+                    label="To Time"
+                    :value="formattedToTime"
                     :disabled="NonData"
                     :readonly="isLoading"
                     variant="solo"
@@ -51,7 +70,7 @@
                         </v-card-title>
                         <v-card-text>
                             <v-container>
-                                <v-file-input label="File input" variant="outlined" accept=".txt" @change="handleFileUpload"></v-file-input>
+                                <v-file-input label="File input" variant="outlined" accept=".txt" @change="handleFileUpload" :loading="isUploading"></v-file-input>
                             </v-container>
                         </v-card-text>
                         <v-card-actions>
@@ -103,6 +122,7 @@
             </v-data-table>
        </v-card>
     </span>
+    
     <span v-else>
       <!-- Optional: Message or content to display when there is no data -->
       <p>No data available.</p>
@@ -110,7 +130,17 @@
         Please click import button.
       </p>
     </span>
-
+        <v-dialog v-model="dialog1" >
+            <div class="text-center">
+                <v-progress-circular
+                :size="70"
+                :width="7"
+                color="primary"
+                indeterminate
+            ></v-progress-circular>
+            </div>
+           
+        </v-dialog>
     </v-container>
  </template>
 
@@ -118,13 +148,15 @@
    export default {
      data: () => ({
         dialog: false,
+        dialog1:false,
         file: null,
+        isUploading:false,
         expanded: [],
         headers: [
             {
             title: 'Date',
             align: 'start',
-            // sortable: false,
+            width: '150px',
             key: 'date',
           },
           { title: 'Time', align: 'start', key: 'time'},
@@ -136,7 +168,8 @@
         search: '',
         filters: {
             date: '',
-            time: '',
+            from_time: '',
+            to_time: '',
         },
         filteredData: [], // Store filtered data
      }),
@@ -160,26 +193,40 @@
         },
         filteredData() {
             return this.datas.filter(item => {
+                // const itemDateTime = new Date(`${item.date} ${item.time}`);
+                // const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
+
+                //   // Format dates to compare
+                // const itemDate = itemDateTime.toLocaleDateString();
+                // const filterDate = filterDateTime.toLocaleDateString();
+                // // Check date if applicable
+                // const dateMatches = !this.filters.date || itemDate === filterDate;
+                // // Check time if applicable
+                // const timeMatches = !this.filters.time ||
+                // (itemDateTime.getHours() === filterDateTime.getHours() &&
+                // itemDateTime.getMinutes() === filterDateTime.getMinutes());
+
+                // return dateMatches && timeMatches;
                 const itemDateTime = new Date(`${item.date} ${item.time}`);
-                const filterDateTime = new Date(`${this.filters.date} ${this.filters.time}`);
+                const filterStartDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
+                const filterEndDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
 
-                  // Format dates to compare
-                const itemDate = itemDateTime.toLocaleDateString();
-                const filterDate = filterDateTime.toLocaleDateString();
-                // Check date if applicable
-                const dateMatches = !this.filters.date || itemDate === filterDate;
-                // Check time if applicable
-                const timeMatches = !this.filters.time ||
-                (itemDateTime.getHours() === filterDateTime.getHours() &&
-                itemDateTime.getMinutes() === filterDateTime.getMinutes());
+                // Check if itemDateTime is within the specified time range
+                const isWithinRange = !this.filters.startTime || !this.filters.endTime ||
+                    (itemDateTime >= filterStartDateTime && itemDateTime <= filterEndDateTime);
 
-                return dateMatches && timeMatches;
+                return isWithinRange;
             });
         },
 
-        formattedTime() {
+        formattedFromTime() {
             // Extract 'HH:mm' from the time string
-            const timeParts = this.filters.time.split(':');
+            const timeParts = this.filters.from_time.split(':');
+            return timeParts.slice(0, 2).join(':');
+        },
+        formattedToTime() {
+            // Extract 'HH:mm' from the time string
+            const timeParts = this.filters.to_time.split(':');
             return timeParts.slice(0, 2).join(':');
         },
 
@@ -209,17 +256,19 @@
             const formData = new FormData();
             formData.append('file', this.file);
             console.log(this.file)
+            this.dialog1=true,
             axios.post('/api/Log/clientLog/upload-file', formData)
             .then(res => {
                 console.log(res.data)
+                this.dialog1=false,
                 setTimeout(function() {
                         alert('Uploaded successfuly...');
-                }, 3000);
+                },3000);
+             
             })
             this.dialog = false;
-            // setTimeout(function() {
-            //             window.location.reload();
-            // }, 4000);
+            this.getData();
+    
         },
         getData() {
             axios.get('/api/Log/clientLog/getData')
