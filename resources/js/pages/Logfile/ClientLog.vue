@@ -69,7 +69,7 @@
                         </v-card-title>
                         <v-card-text>
                             <v-container>
-                                <v-file-input label="File input" variant="outlined" accept=".txt" @change="handleFileUpload"></v-file-input>
+                                <v-file-input label="File input" variant="outlined" accept=".txt" @change="handleFileUpload" :loading="isUploading"></v-file-input>
                             </v-container>
                         </v-card-text>
                         <v-card-actions>
@@ -159,6 +159,7 @@
             </v-data-table>
        </v-card>
     </span>
+
     <span v-else>
       <!-- Optional: Message or content to display when there is no data -->
       <p>No data available.</p>
@@ -166,7 +167,17 @@
         Please click import button.
       </p>
     </span>
+        <v-dialog v-model="dialog1" >
+            <div class="text-center">
+                <v-progress-circular
+                :size="70"
+                :width="7"
+                color="primary"
+                indeterminate
+            ></v-progress-circular>
+            </div>
 
+        </v-dialog>
     </v-container>
  </template>
 
@@ -174,8 +185,10 @@
    export default {
      data: () => ({
         dialog: false,
+        dialog1:false,
         file: null,
         choose: '',
+        isUploading:false,
         expanded: [],
         headers: [
             {
@@ -281,17 +294,19 @@
             const formData = new FormData();
             formData.append('file', this.file);
             console.log(this.file)
+            this.dialog1=true,
             axios.post('/api/Log/clientLog/upload-file', formData)
             .then(res => {
                 console.log(res.data)
+                this.dialog1=false,
                 setTimeout(function() {
                         alert('Uploaded successfuly...');
-                }, 3000);
+                },3000);
+
             })
             this.dialog = false;
-           // setTimeout(function() {
-           //             window.location.reload();
-            //}, 4000);
+            this.getData();
+
         },
 
         getData() {

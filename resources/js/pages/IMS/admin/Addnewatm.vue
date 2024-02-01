@@ -1,482 +1,258 @@
 <template>
-    <v-container fluid grid-list-xl>
-        <v-row style="padding:10px 10px 10px 10px ; height: 90%;">
-            <v-card class="rounded-0 " width="100%">
-                <v-card class="d-flex align-center rounded-0" height="65" style="padding:15px;" outlined>
-                    <v-card-text style="font-size: 20px; text-align:center; color:blue;">ADD NEW MACHINE USING</v-card-text>
-                </v-card>
-                <v-card>
-                    <v-card-text >
-                        <v-card-container>
-                            <v-row class="pt-2" >
-                                <v-col class="pb-0 py-0 "
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                    <label for="atm_id">ATM ID</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
+    <v-container fluid grid-list-xl class="pt-0">
+        <v-card>
+            <v-card-title>Add new terminal</v-card-title>
+            <v-container>
+                <v-row class="pt-2" variant="outlined">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6" md="4">
+                        <label for="atm_id">ATM ID</label>
+                        <v-icon small color="orange">mdi-star
+                        </v-icon>
 
-                                    <v-text-field
-                                        v-model="uses.atm_id"
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="pb-0 py-0 "
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                    <label for="alias_id">Alias ATM ID</label>
-                                    <v-text-field
-                                        v-model="uses.alias_id"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                    <v-col class="pb-0 py-0 "
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                    <label for="alias_id">Install Date</label>
-                                    <v-text-field
-                                        v-model="uses.install_date"
-                                        type="date"
-                                        prepend-inner-icon="mdi-calendar"
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0 pb-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                    <label for="alias_id">Delivery Date</label>
+                        <v-text-field v-model="uses.atm_id" outlined></v-text-field>
+                    </v-col>
+                    <v-col class="pb-0 py-0 " cols="12" sm="6" md="4">
+                        <label for="alias_id">Alias ATM ID</label>
+                        <v-text-field v-model="uses.alias_id" label="" outlined></v-text-field>
+                    </v-col>
+                    <v-col class="pb-0 py-0 " cols="12" sm="6" md="4">
+                        <label for="alias_id">Install Date</label>
+                        <v-text-field v-model="uses.install_date" type="date" prepend-inner-icon="mdi-calendar"
+                            outlined></v-text-field>
+                    </v-col>
+                    <v-col class="py-0 pb-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Delivery Date</label>
 
-                                    <v-text-field
-                                        v-model="uses.delivery_date"
-                                        label=""
-                                        type="date"
-                                        prepend-inner-icon="mdi-calendar"
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                    <label for="alias_id">Take Over Date</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-text-field
-                                        v-model="uses.take_over_date"
-                                        label=""
-                                        type="date"
-                                        prepend-inner-icon="mdi-calendar-end"
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                    <label for="alias_id">Category</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-select
-                                        :items=" itemscategories"
-                                        v-model="uses.category_name"
-                                        label=""
-                                        outlined
-                                    ></v-select>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Serial Number</label>
-                                    <v-icon small color="orange">mdi-star </v-icon>
-                                    <v-text-field
-                                        v-model="uses.serial_number"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Model</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-select
-                                        :items="models"
-                                        v-model="uses.model_name"
-                                        label=""
-                                        outlined
-                                    ></v-select>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Warranty Days</label>
-                                    <v-text-field
-                                        v-model="uses.warranty_days"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                  <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Status</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-select
-                                        :items="itemsstatus"
-                                        v-model="uses.status"
-                                        label=""
-                                        outlined
-                                    ></v-select>
-                                </v-col>
-                                 <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Type</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-select
-                                        :items="itemstypes"
-                                        v-model="uses.type_name"
-                                        label=""
-                                        outlined
-                                    ></v-select>
-                                </v-col>
-                                   <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">APK Version</label>
+                        <v-text-field v-model="uses.delivery_date" label="" type="date" prepend-inner-icon="mdi-calendar"
+                            outlined></v-text-field>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Take Over Date</label>
+                        <v-icon small color="orange">mdi-star
+                        </v-icon>
+                        <v-text-field v-model="uses.takeover_date" label="" type="date"
+                            prepend-inner-icon="mdi-calendar-end" outlined></v-text-field>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Category</label>
+                        <v-icon small color="orange">mdi-star
+                        </v-icon>
+                        <v-select :items="categories" item-value="id" item-title="category_name" v-model="uses.category_id"
+                            label="" outlined></v-select>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Serial Number</label>
+                        <v-icon small color="orange">mdi-star </v-icon>
+                        <v-text-field v-model="uses.serial_number" label="" outlined></v-text-field>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Model</label>
+                        <v-icon small color="orange">mdi-star
+                        </v-icon>
+                        <v-select :items="models" item-value="id" item-title="terminal_model" v-model="uses.model_id"
+                            label="" outlined></v-select>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Warranty Days</label>
+                        <v-text-field v-model="uses.warrenty" label="" outlined></v-text-field>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Status</label>
+                        <v-icon small color="orange">mdi-star
+                        </v-icon>
+                        <v-select :items="statuses" item-value="id" item-title="status" v-model="uses.status_id" label=""
+                            outlined></v-select>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Type</label>
+                        <v-icon small color="orange">mdi-star
+                        </v-icon>
+                        <v-select :items="types" item-value="id" item-title="terminal_type" v-model="uses.type_id" label=""
+                            outlined></v-select>
+                    </v-col>
 
-                                    <v-text-field
-                                        v-model="uses.apk_version"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                   <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Android Version</label>
-                                    <v-text-field
-                                        v-model="uses.andriod_version"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                   <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Image Version</label>
-                                    <v-text-field
-                                        v-model="uses.image_version"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                   <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Mainboard Version</label>
-                                    <v-text-field
-                                        v-model="uses.mainboard_version"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Bank name</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-select
-                                        :items="banks"
-                                        v-model="uses.bank_name"
-                                        label=""
-                                        outlined
-                                    ></v-select>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Site ID</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-text-field
-                                        v-model="uses.site_id"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                 <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                    <label for="comment">Comment</label>
-                                    <v-text-field
-                                        v-model="uses.comment"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Site Name</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-text-field
-                                        v-model ="uses.site_name"
-                                        label =""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Region</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-text-field
-                                        v-model="uses.region_name"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4">
-                                  <label for="alias_id">Location</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-text-field
-                                        v-model="uses.location"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4"
-                                >
-                                  <label for="alias_id">City/Provinces</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-select
-                                        :items="citys"
-                                        v-model="uses.city"
-                                        label=""
-                                        outlined
-                                    ></v-select>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4"
-                                >
-                                  <label for="alias_id">State</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-text-field
-                                        v-model="uses.state_name"
-                                        label=""
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="6"
-                                md="4"
-                                >
-                                  <label for="alias_id">Accessibility</label>
-                                    <v-text-field
-                                        v-model="uses.accessibility"
-                                        label=" "
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="py-0"
-                                cols="12"
-                                sm="12"
-                                >
-                                  <label for="alias_id">Address</label>
-                                    <v-icon
-                                        small
-                                        color="orange">mdi-star
-                                    </v-icon>
-                                    <v-text-field
-                                        v-model="uses.address"
-                                        label=""
-                                        prepend-inner-icon="mdi-map-marker-outline"
-                                        outlined
-                                    ></v-text-field>
-                                </v-col>
-                            </v-row>
-                            <v-row class="d-flex justify-end pa-2 mb-2">
-                                <v-btn color="red" style="color: white">
-                                    <router-link
-                                        :to="{ name: 'atm_page' }"
-                                        class="white--text"
-                                        style="text-decoration: none"
-                                        >Back</router-link>
-                                </v-btn>
-                                <v-btn color="blue darken-1" outlinetext style="color:white; margin-left:6px;" @click="addItem">Add Machine</v-btn>
-                            </v-row>
-                        </v-card-container>
-                    </v-card-text>
-                </v-card>
+                    <v-col class="py-0" cols="12" sm="6" md="4">
+                        <label for="alias_id">Android Version</label>
+                        <v-text-field v-model="uses.android_version" label="" outlined></v-text-field>
+                    </v-col>
+                    <v-col class="py-0" cols="12" sm="6" md="6">
+                        <label for="alias_id">SiteID</label>
+                        <v-icon small color="orange">mdi-star
+                        </v-icon>
+                        <v-autocomplete :items="banklocations" item-value="id" item-title="siteID" v-model="uses.banklocation_id" label="" clearable></v-autocomplete>
+                    </v-col>
+                </v-row>
+                <v-row class="d-flex justify-end pa-2 mb-2">
+                    <v-btn color="blue darken-1" outlinetext style="color:white; margin-left:6px;" @click="addItem">Add</v-btn>
+                </v-row>
+            </v-container>
+            <v-divider></v-divider>
+            <v-card-title>Bank information</v-card-title>
+            <v-container>
+                <v-row>
+                    <v-col class="py-0" cols="12" sm="6" md="">
+                        <v-text-field  variant="outlined" item-value="id" item-title="siteID" label="Search bank information here"
+                            prepend-inner-icon="mdi-magnify" @click="find"></v-text-field>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-card>
+        <!-- search bank location  -->
+        <v-dialog v-model="dialog" width="70%">
+            <v-card>
+                <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="banklocations" :search="search"></v-data-table>
+                <v-btn @click="close" style="color: blue;" >Close</v-btn>
             </v-card>
-        </v-row>
+        </v-dialog>
     </v-container>
 </template>
 <script>
-// import User from "../../apis/User";
-// import Using from "../../apis/Using";
 import Swal from "sweetalert2";
 import axios from 'axios';
 export default {
-    data:() =>({
-        itemstypes:['ATM','CRM','DC365'],
-        itemscategories:['Gold','Bronze','Platinum','Silver',],
-        banks:["ABA Bank","AMK MFI","Wing","Philip Bank" ],
-        models:['DN 200V','DN 100D','DC365','DC365lx','PC 280'],
-        itemsstatus:['non-active','active',],
-        citys:['Banteay Meanchey','Battambang','Kampong Cham','Kampong Chhnang','Kampong Speu','Kampong Thom','Kampot','Kandal','Koh Kong','Kratié','Mondulkiri','Phnom Penh','Preah Vihear','Prey Veng','Pursat','Ratanakiri','Siem Reap','Preah Sihanouk','Stung Treng','Svay Rieng','Takéo','Oddar Meanchey','Kep','Pailin','Tboung Khmum'],
+    data: () => ({
+        types: [],
+        dialog: false,
+        categories: [],
+        banklocations: [],
+        models: [],
+        statuses: [],
         success: false,
         error: false,
-        Rules:[
-                v => !!v || 'is required',
-            ],
-        user:{},
-        uses:{
-            user_id:'',
-            atm_id:'',
-            alias_id:'',
-            install_date:'',
-            delivery_date:'',
-            take_over_date:'',
-            category_name:'',
-            serial_number:'',
-            model_name:'',
-            warranty_days:'',
-            comment:'',
-            type_name:'',
-            status:'',
-            bank_name:'',
-            site_id:'',
-            region_name:'',
-            site_name:'',
-            location:'',
-            city:'',
-            state_name:'',
-            accessibility:'',
-            address:'',
-            apk_version:'',
-            mainboard_version:'',
-            android_version:'',
-            image_version:'',
+        noData: true,
+        Rules: [
+            v => !!v || 'is required',
+        ],
+        test:{},
+        dataID: {},
+        uses: {
+            atm_id: '',
+            serial_number: '',
+            alias_id: '',
+            install_date: '',
+            delivery_date: '',
+            takeover_date: '',
+            android_version: '',
+            model_id: '',
+            type_id: '',
+            banklocation_id: '',
+            category_id: '',
+            status_id: '',
+            warrenty: '',
         },
+        editedItem: {
+                site_name_id: "",
+                bank_name_id:"",
+                siteID:"",
+                address:"",
+         
+            },
+        headers: [
+            {
+                align: "start",
+                key: "customer_name",
+                sortable: false,
+                title: "Bank Name",
+            },
+            {
+                key: "site_name",
+                title: "Site Name",
+            },
+            {
+                key: "siteID",
+                title: "Site ID",
+            },
+            {
+                key: "address",
+                title: "address",
+            },
+            { title: "", key: "actions", class: " white--text" },
+        ],
     }),
-    methods:{
-         hide_success: function (event) {
-        console.log('Hide')
-        window.setInterval(() => {
-        this.success = false;
-        this.error = false;
-      }, 5000)
+    watch:{
+        dialog(val) {
+            val || this.close();
+        },
     },
-      addItem(){
-        // axios.post('/api/IMS/user')
-        User.auth()
-        .then(Response=>{
-            this.user = Response.data;
-             let data = {}
-            this.uses.user_id =Response.data.id
-            data = this.uses
-            // axios.post('/api/IMS/using/create')
-            Using.create(data)
-            .then(()=>{
-                Swal.fire({
-                    title: "Add machine successfully",
-                    icon: "success",
-                });
-                setTimeout(()=>{
-                    this.$router.push({ name: 'atm_page' });
-                },3000)
-            })
-            .catch(error => {
-                 Swal.fire({
-                    icon: "error",
-                    title: "Information invalid",
-                });
-            })
-        })
-      }
+    methods: {
+        hide_success: function (event) {
+            console.log('Hide')
+            window.setInterval(() => {
+                this.success = false;
+                this.error = false;
+            }, 5000)
+        },
+        addItem() {
+            console.log(this.uses);
+        },
+        find() {
+            this.dialog = true;
+        },
+        close(){
+            this.dialog= false;
+        },
     },
     mounted: function () {
-    if(alert){
-      this.hide_success();
+        if (alert) {
+            this.hide_success();
+        }
+
+        axios.get("/api/IMS/categorie/allcategory")
+            .then((Response) => {
+                this.categories = Response.data.data;
+                console.log("category", this.categories);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios.get("/api/IMS/terminaltype/allterminaltype")
+            .then((Response) => {
+                this.types = Response.data;
+                console.log("type", this.types);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        axios.get("/api/IMS/terminalmodel/getallmodel")
+            .then((Response) => {
+                this.models = Response.data;
+                console.log("model", this.models);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        axios.get("/api/IMS/status/all")
+            .then((Response) => {
+                this.statuses = Response.data;
+                console.log("status", this.statuses);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios.get("/api/IMS/banklocation/getall")
+            .then((Response) => {
+                this.banklocations = Response.data;
+                console.log("location", this.banklocations);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
-   }
 }
 </script>
 <style scoped>
 ::v-deep .v-alert {
-  width: 300px;
-  margin-top: 20px;
-  position: fixed;
-  right: 0%;
-  z-index: 1;
-  top: 50px;
+    width: 300px;
+    margin-top: 20px;
+    position: fixed;
+    right: 0%;
+    z-index: 1;
+    top: 50px;
 }
-.v-text-field .prepend-inner-icon{
+
+.v-text-field .prepend-inner-icon {
     color: blue;
 }
 </style>
