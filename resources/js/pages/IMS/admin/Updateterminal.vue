@@ -1,78 +1,75 @@
 <template>
     <v-container fluid grid-list-xl class="pt-0">
         <v-card>
-            <v-card-title>Add new terminal</v-card-title>
+            <v-card-title>Update terminal information</v-card-title>
             <v-container>
                 <v-row class="pt-2" variant="outlined">
                     <v-col class="pb-0 py-0 " cols="12" sm="6" md="4">
                         <label for="atm_id">ATM ID<a style="color: red;">*</a></label>
-                        <v-text-field v-model="uses.atm_id" outlined variant="outlined"></v-text-field>
+                        <v-text-field v-model="update.atm_id" variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="pb-0 py-0 " cols="12" sm="6" md="4">
                         <label for="alias_id">Alias ATM ID</label>
-                        <v-text-field v-model="uses.alias_id" label="" outlined variant="outlined"></v-text-field>
+                        <v-text-field v-model="update.alias_id" label="" outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="pb-0 py-0 " cols="12" sm="6" md="4">
                         <label for="alias_id">Install Date</label>
-                        <v-text-field v-model="uses.install_date" type="date" prepend-inner-icon="mdi-calendar"
+                        <v-text-field v-model="update.install_date" type="date" prepend-inner-icon="mdi-calendar"
                             outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0 pb-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Delivery Date</label>
 
-                        <v-text-field v-model="uses.delivery_date" label="" type="date" prepend-inner-icon="mdi-calendar"
+                        <v-text-field v-model="update.delivery_date" label="" type="date" prepend-inner-icon="mdi-calendar"
                             variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Take Over Date<a style="color: red;">*</a></label>
-                        <!-- <v-icon small color="orange">mdi-star
-                        </v-icon> -->
-                        <v-text-field v-model="uses.takeover_date" label="" type="date"
+                        <v-text-field v-model="update.takeover_date" label="" type="date"
                             prepend-inner-icon="mdi-calendar-end" outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Category<a style="color: red;">*</a></label>
-                        <v-select :items="categories" item-value="id" item-title="category_name" v-model="uses.category_id"
+                        <v-select :items="categories" item-value="id" item-title="category_name" v-model="update.category_id"
                             label="" outlined variant="outlined"></v-select>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Serial Number<a style="color: red;">*</a></label>
-                        <v-text-field v-model="uses.serial_number" label="" outlined variant="outlined"></v-text-field>
+                        <v-text-field v-model="update.serial_number" label="" outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Model<a style="color: red;">*</a></label>
-                        <v-select :items="models" item-value="id" item-title="terminal_model" v-model="uses.model_id"
+                        <v-select :items="models" item-value="id" item-title="terminal_model" v-model="update.model_id"
                             label="" outlined variant="outlined"></v-select>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Warranty Days <a style="color: red;">*</a></label>
-                        <v-text-field v-model="uses.warrenty" label="" outlined variant="outlined"></v-text-field>
+                        <v-text-field v-model="warrenty" label="" outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Status<a style="color: red;">*</a></label>
-                        <v-select :items="statuses" item-value="id" item-title="status" v-model="uses.status_id" label=""
+                        <v-select :items="statuses" item-value="id" item-title="status" v-model="update.status_id" label=""
                              variant="outlined"></v-select>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Type <a style="color: red;">*</a></label>
-                        <v-select :items="types" item-value="id" item-title="terminal_type" v-model="uses.type_id" label=""
+                        <v-select :items="types" item-value="id" item-title="terminal_type" v-model="update.type_id" label=""
                             outlined variant="outlined"></v-select>
                     </v-col>
-
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Android Version<a style="color: red;">*</a></label>
-                        <v-text-field v-model="uses.android_version" label="" outlined variant="outlined"></v-text-field>
+                        <v-text-field v-model="android_version" label="" outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="6">
                         <label for="alias_id">SiteID <a style="color: red;">*</a></label>
                         <v-autocomplete :items="banklocations" item-value="id" item-title="siteID"
-                            v-model="uses.banklocation_id" clearable variant="outlined" placeholder="site ID of bank location"></v-autocomplete>
+                            v-model="update.banklocation_id" clearable variant="outlined" placeholder="site ID of bank location"></v-autocomplete>
                     </v-col>
                 </v-row>
-                <v-row class="d-flex justify-end pa-2 mb-2">
+                <!-- <v-row class="d-flex justify-end pa-2 mb-2">
                     <v-btn color="blue darken-1" outlinetext style="color:white; margin-left:6px;"
                         @click="addItem">Add</v-btn>
-                </v-row>
+                </v-row> -->
             </v-container>
             <v-divider></v-divider>
             <v-card-title>Bank information</v-card-title>
@@ -107,15 +104,7 @@ export default {
         banklocations: [],
         models: [],
         statuses: [],
-        success: false,
-        error: false,
-        noData: true,
-        Rules: [
-            v => !!v || 'is required',
-        ],
-        test: {},
-        dataID: {},
-        uses: {
+        update: {
             atm_id: '',
             serial_number: '',
             alias_id: '',
@@ -129,13 +118,6 @@ export default {
             category_id: '',
             status_id: '',
             warrenty: '',
-        },
-        editedItem: {
-            site_name_id: "",
-            bank_name_id: "",
-            siteID: "",
-            address: "",
-
         },
         headers: [
             {
@@ -158,7 +140,20 @@ export default {
             },
             { title: "", key: "actions", class: " white--text" },
         ],
+
     }),
+    created(){
+        const id = this.$route.params.id;
+        console.log("id",id);
+        axios.get('http://localhost:8000/api/IMS/terminal/getid/'+id)
+        .then((Response) => {
+            this.update = Response.data;
+            console.log("update",Response.data.atm_id);
+        })
+        .catch((error) => {
+                console.log(error);
+            });
+    },
     watch: {
         dialog(val) {
             val || this.close();
@@ -172,31 +167,31 @@ export default {
                 this.error = false;
             }, 5000)
         },
-        addItem() {
-            axios.post("/api/IMS/terminal/add", this.uses)
-                .then((Response) => {
-                    if (Response.status == 200) {
-                        Swal.fire({
-                            title: Response.data.message,
-                            icon: "success",
-                        });
-                        console.log(Response.data);
-                        setTimeout(() => {
-                            this.$router.push({ name: "allterminal_page" });
-                        }, 3000);
-                    }
-                })
-                .catch((error) => {
-                    Swal.fire({
-                        title: error.response.data.message,
-                        icon: "warning",
-                        position: "top",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    console.log(error);
-                });
-        },
+        // addItem() {
+        //     axios.post("/api/IMS/terminal/add", this.uses)
+        //         .then((Response) => {
+        //             if (Response.status == 200) {
+        //                 Swal.fire({
+        //                     title: Response.data.message,
+        //                     icon: "success",
+        //                 });
+        //                 console.log(Response.data);
+        //                 setTimeout(() => {
+        //                     this.$router.push({ name: "allterminal_page" });
+        //                 }, 3000);
+        //             }
+        //         })
+        //         .catch((error) => {
+        //             Swal.fire({
+        //                 title: error.response.data.message,
+        //                 icon: "warning",
+        //                 position: "top",
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             });
+        //             console.log(error);
+        //         });
+        // },
         find() {
             this.dialog = true;
         },
@@ -220,7 +215,7 @@ export default {
         axios.get("/api/IMS/terminaltype/allterminaltype")
             .then((Response) => {
                 this.types = Response.data;
-                console.log("type", this.types);
+                // console.log("type", this.types);
             })
             .catch((error) => {
                 console.log(error);
@@ -229,7 +224,7 @@ export default {
         axios.get("/api/IMS/terminalmodel/getallmodel")
             .then((Response) => {
                 this.models = Response.data;
-                console.log("model", this.models);
+                // console.log("model", this.models);
             })
             .catch((error) => {
                 console.log(error);
@@ -238,7 +233,7 @@ export default {
         axios.get("/api/IMS/status/all")
             .then((Response) => {
                 this.statuses = Response.data;
-                console.log("status", this.statuses);
+                // console.log("status", this.statuses);
             })
             .catch((error) => {
                 console.log(error);
@@ -246,7 +241,7 @@ export default {
         axios.get("/api/IMS/banklocation/getall")
             .then((Response) => {
                 this.banklocations = Response.data;
-                console.log("location", this.banklocations);
+                // console.log("location", this.banklocations);
             })
             .catch((error) => {
                 console.log(error);
@@ -255,15 +250,5 @@ export default {
 }
 </script>
 <style scoped>
-::v-deep .v-alert {
-    width: 300px;
-    margin-top: 20px;
-    position: fixed;
-    right: 0%;
-    z-index: 1;
-    top: 50px;
-}
 
-.v-text-field .prepend-inner-icon {
-    color: blue;
-}</style>
+</style>

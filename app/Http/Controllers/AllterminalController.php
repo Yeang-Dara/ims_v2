@@ -122,5 +122,10 @@ class AllterminalController extends Controller
                 ->orderBy('allterminals.id')->get();
                 return response()->json($data);
     }
+    public function getID($id)
+    {
+        $data =  DB::table('allterminals')->where('allterminals.id','=',$id)->get();
+        return response()->json($data);
+    }
     
 }

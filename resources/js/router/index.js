@@ -25,6 +25,7 @@ import Category from '../pages/IMS/admin/Category.vue'
 import Warehouse from '../pages/IMS/admin/Warehouse.vue'
 import Status from '../pages/IMS/admin/Status.vue'
 import Allterminal from '../pages/IMS/admin/Allterminal.vue'
+import Updateterminal from '../pages/IMS/admin/Updateterminal.vue'
 
 // HR
 import HR from '../Components/HR/HRmainTemplate.vue'
@@ -304,6 +305,11 @@ const routes = [
                 path:'Allterminal',
                 name: 'allterminal_page',
                 component: Allterminal
+              },
+              {
+                path:'Updateterminal/:id',
+                name: 'updateterminal_page',
+                component: Updateterminal
               },
               {
                 path:'QRScan_ClientLog',
