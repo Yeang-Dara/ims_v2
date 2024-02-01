@@ -10,4 +10,7 @@ Route::group(['prefix' => 'clientLog'], function () {
     Route::get('getData', 'LogFile@getAll');
     Route::post('list-qr', 'LogFile@QRScanLog_date');
     Route::post('qrServer', 'LogFile@QRScanLog_time');
+
+    // Route::post('search-device', 'LogFile@SearchDevice');
+    Route::post('list-device', 'LogFile@SearchDevice');
 });

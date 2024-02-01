@@ -312,6 +312,7 @@ class LogFile extends Controller
         return response()->json(['data' => $data]);
     }
 
+    // search scan
     public function QRScanLog_date(Request $request)
     {
         $date = $request->input('date');
@@ -353,4 +354,18 @@ class LogFile extends Controller
         return response()->json(['data' => $data]);
     }
 
+    // search device by line
+    public function SearchDevice(Request $request)
+    {
+        $date = $request->input('date');
+
+        $data = DB::table('log_entries')
+                ->select('time')
+                ->where('date', $date)
+                ->where('log_message', 'like', '%DeviceStatusPacD : parseData result%')
+                ->orderBy('time')
+                ->get();
+
+        return response()->json(['data' => $data]);
+    }
 }

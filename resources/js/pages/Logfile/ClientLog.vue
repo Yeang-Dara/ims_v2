@@ -92,7 +92,45 @@
                     </v-card>
                 </v-dialog>
             </div>
-    </div>
+        </div>
+        <div class="ma-2 pa-2">
+            <v-row>
+                <v-col cols="12" sm="4" md="4">
+                    <v-card subtitle="Search Option">
+                    <v-radio-group
+                        v-model="choose"
+                        inline
+                        >
+                        <v-radio
+                            class="ma-2"
+                            label="Scan"
+                            value="scan"
+                        ></v-radio>
+                        <v-radio
+                            class="ma-2"
+                            label="Device Status"
+                            value="device"
+                        ></v-radio>
+                        </v-radio-group>
+                    </v-card>
+                </v-col>
+                <v-col cols="12" sm="4" md="4">
+                    <v-btn color="indigo-darken-1" @click="searchData">Search</v-btn>
+                </v-col>
+                <v-col cols="12" sm="4" md="4">
+                    <v-select
+                        label="Times"
+                        :items="list_time"
+                        variant="solo"
+                        item-title="time"
+                        item-value="id"
+                        density="comfortable">
+
+                    </v-select>
+                </v-col>
+            </v-row>
+
+        </div>
     <span v-if="shouldDisplayContent">
         <v-card class="rounded-0 mx-auto" >
            <v-data-table
@@ -137,6 +175,7 @@
      data: () => ({
         dialog: false,
         file: null,
+        choose: '',
         expanded: [],
         headers: [
             {
@@ -157,6 +196,9 @@
             from_time: '',
             to_time: '',
         },
+        list_time: [
+            { title: 'time' }
+        ],
         filteredData: [], // Store filtered data
      }),
      created() {
@@ -251,6 +293,7 @@
            //             window.location.reload();
             //}, 4000);
         },
+
         getData() {
             axios.get('/api/Log/clientLog/getData')
             .then(response => {
@@ -265,6 +308,36 @@
                 console.log(error);
             })
         },
+
+        searchData(){
+            console.log("date", this.filters.date);
+
+            // Determine the endpoint based on the selected option
+            const endpoint = this.choose === 'scan' ? '/api/Log/clientLog/list-qr' : '/api/Log/clientLog/list-device';
+
+            // Make the Axios POST request
+            axios.post(endpoint, { date: this.filters.date })
+                .then(res => {
+                    this.list_time = res.data.data;
+                    console.log(this.list_time);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+        },
+
+        handleItemClick(item) {
+            console.log('Clicked item:', item);
+            axios.post('/api/Log/clientLog/qrServer', { time: item.time, date: this.filters.date })
+            .then(response => {
+                    this.datas = response.data.data;
+                    console.log(item.time, this.filters.date);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
      },
    }
  </script>
