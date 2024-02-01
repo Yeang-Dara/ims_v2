@@ -6,7 +6,6 @@
                     v-model="filters.date"
                         class="pr-1"
                         label="Date"
-                        :readonly="isLoading"
                         variant="solo"
                         :disabled="NonData"
                         :rules="[v => !!v || 'Date is required']"
@@ -22,10 +21,7 @@
                     label="From Time"
                     :value="formattedFromTime"
                     :disabled="NonData"
-                    :readonly="isLoading"
                     variant="solo"
-                    :rules="[v => !!v || 'Time is required']"
-                    required
                     outlined
                     density="compact"
                     color="blue"
@@ -41,9 +37,7 @@
                     label="To Time"
                     :value="formattedToTime"
                     :disabled="NonData"
-                    :readonly="isLoading"
                     variant="solo"
-                    :rules="[v => !!v || 'Time is required']"
                     required
                     outlined
                     density="compact"
@@ -100,6 +94,7 @@
                     <v-radio-group
                         v-model="choose"
                         inline
+                        :disabled="NonData"
                         >
                         <v-radio
                             class="ma-2"
@@ -115,17 +110,18 @@
                     </v-card>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                    <v-btn color="indigo-darken-1" @click="searchData">Search</v-btn>
+                    <v-btn color="indigo-darken-1" @click="searchData" :disabled="NonData">Search</v-btn>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
                     <v-select
+                        v-model="time"
                         label="Times"
                         :items="list_time"
                         variant="solo"
                         item-title="time"
-                        item-value="id"
-                        density="comfortable">
-
+                        :disabled="NonData"
+                        density="comfortable"
+                        @change="handleTimeChange">
                     </v-select>
                 </v-col>
             </v-row>
@@ -188,6 +184,7 @@
         dialog1:false,
         file: null,
         choose: '',
+        time: null,
         isUploading:false,
         expanded: [],
         headers: [
@@ -234,24 +231,24 @@
         },
         filteredData() {
             return this.datas.filter(item => {
-            const itemDateTime = new Date(`${item.date} ${item.time}`);
-            const filterFromDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
-            const filterToDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
+                const itemDateTime = new Date(`${item.date} ${item.time}`);
+                const filterFromDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
+                const filterToDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
 
-            // Format dates to compare
-            const itemDate = itemDateTime.toLocaleDateString();
+                // Format dates to compare
+                const itemDate = itemDateTime.toLocaleDateString();
 
-            // Check date if applicable
-            const dateMatches = !this.filters.date ||
-                itemDate === filterFromDateTime.toLocaleDateString() ||
-                itemDate === filterToDateTime.toLocaleDateString();
+                // Check date if applicable
+                const dateMatches = !this.filters.date ||
+                    itemDate === filterFromDateTime.toLocaleDateString() ||
+                    itemDate === filterToDateTime.toLocaleDateString();
 
-            // Check time if applicable
-            const fromTimeMatches = !this.filters.from_time || itemDateTime >= filterFromDateTime;
-            const toTimeMatches = !this.filters.to_time || itemDateTime <= filterToDateTime;
+                // Check time if applicable
+                const fromTimeMatches = !this.filters.from_time || itemDateTime >= filterFromDateTime;
+                const toTimeMatches = !this.filters.to_time || itemDateTime <= filterToDateTime;
 
-            return dateMatches && fromTimeMatches && toTimeMatches;
-        });
+                return dateMatches && fromTimeMatches && toTimeMatches;
+            });
 
         },
 
@@ -268,7 +265,19 @@
 
         NonData() {
             return this.datas.length === 0;
-        }
+        },
+
+        // handleTimeChange() {
+        //     console.log('Clicked item:', this.time);
+        //     axios.post('/api/Log/clientLog/qrServer', { time: this.time, date: this.filters.date })
+        //     .then(response => {
+        //             this.datas = response.data.data;
+        //             console.log(item.time, this.filters.date);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
+        // }
 
     },
 
@@ -326,7 +335,6 @@
 
         searchData(){
             console.log("date", this.filters.date);
-
             // Determine the endpoint based on the selected option
             const endpoint = this.choose === 'scan' ? '/api/Log/clientLog/list-qr' : '/api/Log/clientLog/list-device';
 
@@ -342,17 +350,14 @@
 
         },
 
-        handleItemClick(item) {
-            console.log('Clicked item:', item);
-            axios.post('/api/Log/clientLog/qrServer', { time: item.time, date: this.filters.date })
-            .then(response => {
-                    this.datas = response.data.data;
-                    console.log(item.time, this.filters.date);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        handleTimeChange() {
+            // Perform actions when the time selection changes
+            console.log('Selected time:', this.filters.date);
+
+            // You can add further actions here if needed
         }
+
+
      },
    }
  </script>

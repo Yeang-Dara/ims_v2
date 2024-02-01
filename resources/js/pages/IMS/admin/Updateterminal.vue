@@ -147,8 +147,8 @@ export default {
         console.log("id",id);
         axios.get('http://localhost:8000/api/IMS/terminal/getid/'+id)
         .then((Response) => {
-            this.update = Response.data;
-            console.log("update",Response.data.atm_id);
+            this.update = Response.data[0];
+            console.log("update",this.update);
         })
         .catch((error) => {
                 console.log(error);
