@@ -271,11 +271,13 @@
     
         },
         getData() {
+            this.dialog1= true;
             axios.get('/api/Log/clientLog/getData')
             .then(response => {
                 if (response.data && Array.isArray(response.data.data)) {
                     this.datas = response.data.data;
                     console.log(this.datas);
+                    this.dialog1 = false;
                 } else {
                     console.log('Invalid data structure received from the server');
                 }

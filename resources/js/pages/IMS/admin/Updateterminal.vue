@@ -66,10 +66,12 @@
                             v-model="update.banklocation_id" clearable variant="outlined" placeholder="site ID of bank location"></v-autocomplete>
                     </v-col>
                 </v-row>
-                <!-- <v-row class="d-flex justify-end pa-2 mb-2">
-                    <v-btn color="blue darken-1" outlinetext style="color:white; margin-left:6px;"
-                        @click="addItem">Add</v-btn>
-                </v-row> -->
+                <v-row class="d-flex justify-space-between pa-2 mb-2">
+                    <v-btn color="red">
+                        <router-link :to="'/portal/allterminal'"  style="color:white;" class="text-decoration-none" >Back</router-link>
+                    </v-btn> 
+                    <v-btn color="blue darken-1" outlinetext style="color:white; margin-left:6px;" @click="Update">Update</v-btn>
+                </v-row>
             </v-container>
             <v-divider></v-divider>
             <v-card-title>Bank information</v-card-title>
@@ -147,7 +149,7 @@ export default {
         console.log("id",id);
         axios.get('http://localhost:8000/api/IMS/terminal/getid/'+id)
         .then((Response) => {
-            this.update = Response.data;
+            this.update = Response.data[0];
             console.log("update",Response.data.atm_id);
         })
         .catch((error) => {
@@ -198,6 +200,43 @@ export default {
         close() {
             this.dialog = false;
         },
+        Update(){
+            axios.put("/api/IMS/terminal/update/"+this.update.id, this.update)
+                .then((Response) => {
+                    if (Response.status == 200) {
+                        Swal.fire({
+                            title: Response.data.message,
+                            icon: "success",
+                        });
+                        console.log(Response.data);
+                        setTimeout(() => {
+                            this.$router.push({ name: "allterminal_page" });
+                        }, 3000);
+                    }
+                })
+                .catch((error) => {
+                
+                    console.log(error.response);
+                    if(error.response.status==500){
+                         Swal.fire({
+                        title: "This serail number already exit",
+                        icon: "warning",
+                        position: "top",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    }
+                    else{
+                        Swal.fire({
+                        title: error.response.data.message,
+                        icon: "warning",
+                        position: "top",
+                        showConfirmButton: false,
+                        timer: 1500
+                        });
+                    }
+                });
+        }
     },
     mounted: function () {
         if (alert) {
@@ -207,7 +246,7 @@ export default {
         axios.get("/api/IMS/categorie/allcategory")
             .then((Response) => {
                 this.categories = Response.data.data;
-                console.log("category", this.categories);
+                // console.log("category", this.categories);
             })
             .catch((error) => {
                 console.log(error);
