@@ -85,6 +85,7 @@ class AllterminalController extends Controller
         $input = $request->all();
         $data = DB::table('allterminals')->where('atm_id','=',$request['atm_id'])
                                         ->where('id','!=',$id)->count();
+        
         if($data >0){
             $response =[
                 'success' =>false,
@@ -93,6 +94,7 @@ class AllterminalController extends Controller
             ];
             return response()->json($response,403);
         }
+   
         Allterminal::where('id','=',$id)->update($input);
         $response = [
             'success' => true,

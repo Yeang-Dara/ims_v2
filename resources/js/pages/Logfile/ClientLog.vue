@@ -121,7 +121,7 @@
                         item-title="time"
                         :disabled="NonData"
                         density="comfortable"
-                        @change="handleTimeChange">
+                        @update:modelValue="handleTimeChange">
                     </v-select>
                 </v-col>
             </v-row>
@@ -132,7 +132,7 @@
            <v-data-table
             v-model:search="search"
             :headers="headers"
-            :items="filteredData"
+            :items="search_data"
             class="elevation-1 table"
             item-value="name"
            >
@@ -200,6 +200,7 @@
           { title: 'Message', key: 'log_message',width: '500px',},
         ],
         datas: [],
+        search_data: [],
         search: '',
         filters: {
             date: '',
@@ -228,6 +229,10 @@
     computed: {
         shouldDisplayContent() {
             return this.datas && this.datas.length > 0;
+        },
+        Data() {
+        // Return an array containing both search_data and filteredData
+            return [this.search_data, this.filteredData];
         },
         filteredData() {
             return this.datas.filter(item => {
@@ -266,18 +271,6 @@
         NonData() {
             return this.datas.length === 0;
         },
-
-        // handleTimeChange() {
-        //     console.log('Clicked item:', this.time);
-        //     axios.post('/api/Log/clientLog/qrServer', { time: this.time, date: this.filters.date })
-        //     .then(response => {
-        //             this.datas = response.data.data;
-        //             console.log(item.time, this.filters.date);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     })
-        // }
 
     },
 
@@ -319,11 +312,13 @@
         },
 
         getData() {
+            this.dialog1= true;
             axios.get('/api/Log/clientLog/getData')
             .then(response => {
                 if (response.data && Array.isArray(response.data.data)) {
                     this.datas = response.data.data;
                     console.log(this.datas);
+                    this.dialog1 = false;
                 } else {
                     console.log('Invalid data structure received from the server');
                 }
@@ -351,13 +346,18 @@
         },
 
         handleTimeChange() {
-            // Perform actions when the time selection changes
-            console.log('Selected time:', this.filters.date);
+            const endpoint = this.choose === 'scan' ? '/api/Log/clientLog/qrServer' : '/api/Log/clientLog/search-device';
 
-            // You can add further actions here if needed
+            axios.post(endpoint, { time: this.time, date: this.filters.date })
+            .then(response => {
+                    this.search_data = response.data.data;
+                    console.log(this.time, this.filters.date);
+                    console.log("data", this.search_data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
-
-
      },
    }
  </script>

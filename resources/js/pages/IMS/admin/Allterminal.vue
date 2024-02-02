@@ -38,7 +38,7 @@
                             <router-link :to="'/portal/updateterminal/'+item.id">
                                 <v-icon size="small"
                                     class="me-2"
-                                    color="blue"> mdi-eye
+                                    color="blue">mdi-pencil
                                 </v-icon>
                             </router-link>     
                        
