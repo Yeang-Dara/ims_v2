@@ -132,7 +132,7 @@
            <v-data-table
             v-model:search="search"
             :headers="headers"
-            :items="search_data"
+            :items="displayedData"
             class="elevation-1 table"
             item-value="name"
            >
@@ -230,10 +230,7 @@
         shouldDisplayContent() {
             return this.datas && this.datas.length > 0;
         },
-        Data() {
-        // Return an array containing both search_data and filteredData
-            return [this.search_data, this.filteredData];
-        },
+
         filteredData() {
             return this.datas.filter(item => {
                 const itemDateTime = new Date(`${item.date} ${item.time}`);
@@ -255,6 +252,11 @@
                 return dateMatches && fromTimeMatches && toTimeMatches;
             });
 
+        },
+
+        displayedData() {
+            // Return filteredData if there's no search, otherwise return search_data
+            return this.datas ? this.search_data : this.filteredData();
         },
 
         formattedFromTime() {
@@ -287,6 +289,8 @@
             this.filters.date = '';
             this.filters.from_time = '';
             this.filters.to_time = '';
+            this.choose = '';
+            this.time = '';
         },
         handleFileUpload(event) {
             this.file = event.target.files[0];
