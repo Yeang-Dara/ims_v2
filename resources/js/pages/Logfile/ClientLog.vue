@@ -350,18 +350,18 @@
         },
 
         searchData(){
-            // Determine the endpoint based on the selected option
-            // const endpoint = this.choose === 'scan' ? '/api/Log/clientLog/list-qr' : '/api/Log/clientLog/list-device';
 
             if (this.choose === 'scan'){
                 axios.post('/api/Log/clientLog/list-qr', { date: this.filters.date })
                 .then(res => {
                     this.list_time = res.data.data;
                     console.log(this.list_time);
+                    alert("Now, you can select time!");
                 })
                 .catch(err => {
                     console.log(err);
                 });
+
             }
             else if(this.choose === 'device') {
                 Promise.all([
@@ -371,31 +371,16 @@
                 .then(([deviceRes, listRes]) => {
                     this.list_device = deviceRes.data.data;
                     this.list_time = listRes.data.data;
-                    console.log(this.list_device);
-                    console.log(this.list_time);
+                    // console.log(this.list_device);
+                    // console.log(this.list_time);
+                    alert("If you want detail time. Please select time!")
                 })
                 .catch(err => {
                     console.log(err);
                 });
-
-                    // axios.post('/api/Log/clientLog/device-time', { date: this.filters.date })
-                    // .then(res => {
-                    //     this.list_device = res.data.data;
-                    //     console.log(this.list_device);
-                    // })
-                    // .catch(err => {
-                    //     console.log(err);
-                    // });
-                    // axios.post('/api/Log/clientLog/list-device', { date: this.filters.date })
-                    // .then(res => {
-                    //     this.list_time = res.data.data;
-                    //     console.log(this.list_time);
-                    // })
-                    // .catch(err => {
-                    //     console.log(err);
-                    // });
-
             }
+
+
         },
 
         handleTimeChange() {
