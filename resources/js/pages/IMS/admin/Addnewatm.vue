@@ -89,6 +89,20 @@
         <!-- search bank location  -->
         <v-dialog v-model="dialog" width="70%">
             <v-card>
+                <template v-slot:text>
+                        <div class="d-flex align-end">
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                v-model="search"
+                                label="Search"
+                                prepend-inner-icon="mdi-magnify"
+                                variant="outlined"
+                                hide-details
+                                clearable
+                                width="70px"
+                            ></v-text-field>
+                        </div>
+                    </template> 
                 <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="banklocations"
                     :search="search"></v-data-table>
                 <v-btn @click="close" style="color: blue;">Close</v-btn>
@@ -102,6 +116,7 @@ import axios from 'axios';
 export default {
     data: () => ({
         types: [],
+        search:"",
         dialog: false,
         categories: [],
         banklocations: [],
@@ -187,14 +202,33 @@ export default {
                     }
                 })
                 .catch((error) => {
-                    Swal.fire({
+                    // Swal.fire({
+                    //     title: error.response.data.message,
+                    //     icon: "warning",
+                    //     position: "top",
+                    //     showConfirmButton: false,
+                    //     timer: 1500
+                    // });
+                    // console.log(error);
+                    console.log(error.response);
+                    if(error.response.status==500){
+                         Swal.fire({
+                        title: "This serail number already exit",
+                        icon: "warning",
+                        position: "top",
+                        showConfirmButton: false,
+                        timer: 1500
+                        });
+                    }
+                    else{
+                        Swal.fire({
                         title: error.response.data.message,
                         icon: "warning",
                         position: "top",
                         showConfirmButton: false,
                         timer: 1500
-                    });
-                    console.log(error);
+                        });
+                    }
                 });
         },
         find() {

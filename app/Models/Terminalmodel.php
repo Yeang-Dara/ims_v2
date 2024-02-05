@@ -39,6 +39,10 @@ class Terminalmodel extends Model
     {
         return $this->hasMany(Allterminal::class,'model_id','id');
     }
+    public function spareparts():HasMany
+    {
+        return $this->hasMany(Sparepart::class,'model_id','id');
+    }
 
 
 }

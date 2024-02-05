@@ -108,6 +108,7 @@ class AllterminalController extends Controller
     {
         $data =  DB::table('allterminals')
                 ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+                ->join('sites','sites.id','=','banklocations.site_name_id')
                 ->join('customers','customers.id','=','banklocations.bank_name_id')
                 ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
                 ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
@@ -116,6 +117,7 @@ class AllterminalController extends Controller
                 ->select('customers.customer_name',
                             'banklocations.siteID',
                             'banklocations.address',
+                            'sites.site_name',
                             'terminalmodels.terminal_model',
                             'terminaltypes.terminal_type',
                             'categories.category_name',
@@ -126,7 +128,30 @@ class AllterminalController extends Controller
     }
     public function getID($id)
     {
+       
         $data =  DB::table('allterminals')->where('allterminals.id','=',$id)->get();
+        return response()->json($data);
+    }
+    public function getViewdetail($id)
+    {
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('allterminals.id','=',$id)->get();
         return response()->json($data);
     }
     

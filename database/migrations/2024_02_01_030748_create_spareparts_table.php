@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('spareparts', function (Blueprint $table) {
             $table->id();
-            // $table->integer('user_id');
-            $table->string('spareparts_name');
+            $table->integer('model_id');
+            $table->string('sparepart_name');
             $table->integer('quantity');
             $table->integer('quantity_used')->nullable();
             $table->integer('quantity_remain')->nullable();
-            $table->string('for_machine_model');
             $table->string('part_number')->nullable();
             $table->timestamps();
-            // $table->foreign('user_id')
-            //     ->references('id')
-            //     ->on('users')
-            //     ->onDelete('CASCADE');
+            $table->foreign('model_id')
+                ->references('id')
+                ->on('terminalmodels')
+                ->onDelete('CASCADE');
+          
         });
     }
 
