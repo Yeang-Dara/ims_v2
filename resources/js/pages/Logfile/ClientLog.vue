@@ -121,6 +121,7 @@
                         item-title="time"
                         :disabled="NonData"
                         density="comfortable"
+                        clearable
                         @update:modelValue="handleTimeChange">
                     </v-select>
                 </v-col>
@@ -132,7 +133,7 @@
            <v-data-table
             v-model:search="search"
             :headers="headers"
-            :items="displayedData"
+            :items="filteredData"
             class="elevation-1 table"
             item-value="name"
            >
@@ -210,6 +211,7 @@
         list_time: [
             { title: 'time' }
         ],
+        list_device: [],
         filteredData: [], // Store filtered data
      }),
      created() {
@@ -232,31 +234,47 @@
         },
 
         filteredData() {
-            return this.datas.filter(item => {
-                const itemDateTime = new Date(`${item.date} ${item.time}`);
-                const filterFromDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
-                const filterToDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
+            let filteredData = [];
 
-                // Format dates to compare
-                const itemDate = itemDateTime.toLocaleDateString();
+            // Check if search_data is available and push it to filteredData if so
+            if (this.search_data) {
+                filteredData.push(...this.search_data);
+            }
 
-                // Check date if applicable
-                const dateMatches = !this.filters.date ||
-                    itemDate === filterFromDateTime.toLocaleDateString() ||
-                    itemDate === filterToDateTime.toLocaleDateString();
+            // Check if list_device is available and push it to filteredData if so
+            if (this.list_device) {
+                filteredData.push(...this.list_device);
+            }
 
-                // Check time if applicable
-                const fromTimeMatches = !this.filters.from_time || itemDateTime >= filterFromDateTime;
-                const toTimeMatches = !this.filters.to_time || itemDateTime <= filterToDateTime;
+            // If neither search_data nor list_device is available, filter datas and push filtered items to filteredData
+            if (!this.search_data && !this.list_device) {
+                filteredData = this.datas.filter(item => {
+                    const itemDateTime = new Date(`${item.date} ${item.time}`);
+                    const filterFromDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
+                    const filterToDateTime = new Date(`${this.filters.date} ${this.filters.to_time}`);
 
-                return dateMatches && fromTimeMatches && toTimeMatches;
-            });
+                    // Format dates to compare
+                    const itemDate = itemDateTime.toLocaleDateString();
+
+                    // Check date if applicable
+                    const dateMatches = !this.filters.date ||
+                        itemDate === filterFromDateTime.toLocaleDateString() ||
+                        itemDate === filterToDateTime.toLocaleDateString();
+
+                    // Check time if applicable
+                    const fromTimeMatches = !this.filters.from_time || itemDateTime >= filterFromDateTime;
+                    const toTimeMatches = !this.filters.to_time || itemDateTime <= filterToDateTime;
+
+                    return dateMatches && fromTimeMatches && toTimeMatches;
+                });
+            }
+
+            return filteredData;
 
         },
 
         displayedData() {
-            // Return filteredData if there's no search, otherwise return search_data
-            return this.datas ? this.search_data : this.filteredData();
+                return this.search_data;
         },
 
         formattedFromTime() {
@@ -278,7 +296,7 @@
 
      methods: {
         openFileDialog() {
-        this.dialog = true;
+            this.dialog = true;
         },
         formatTime() {
             // Ensure that the input value is always formatted as 'HH:mm'
@@ -294,7 +312,6 @@
         },
         handleFileUpload(event) {
             this.file = event.target.files[0];
-        // Perform further processing with the uploaded CSV file
         },
         upload() {
             const formData = new FormData();
@@ -321,7 +338,7 @@
             .then(response => {
                 if (response.data && Array.isArray(response.data.data)) {
                     this.datas = response.data.data;
-                    console.log(this.datas);
+                    // console.log(this.datas);
                     this.dialog1 = false;
                 } else {
                     console.log('Invalid data structure received from the server');
@@ -333,12 +350,11 @@
         },
 
         searchData(){
-            console.log("date", this.filters.date);
             // Determine the endpoint based on the selected option
-            const endpoint = this.choose === 'scan' ? '/api/Log/clientLog/list-qr' : '/api/Log/clientLog/list-device';
+            // const endpoint = this.choose === 'scan' ? '/api/Log/clientLog/list-qr' : '/api/Log/clientLog/list-device';
 
-            // Make the Axios POST request
-            axios.post(endpoint, { date: this.filters.date })
+            if (this.choose === 'scan'){
+                axios.post('/api/Log/clientLog/list-qr', { date: this.filters.date })
                 .then(res => {
                     this.list_time = res.data.data;
                     console.log(this.list_time);
@@ -346,7 +362,40 @@
                 .catch(err => {
                     console.log(err);
                 });
+            }
+            else if(this.choose === 'device') {
+                Promise.all([
+                    axios.post('/api/Log/clientLog/device-time', { date: this.filters.date }),
+                    axios.post('/api/Log/clientLog/list-device', { date: this.filters.date })
+                ])
+                .then(([deviceRes, listRes]) => {
+                    this.list_device = deviceRes.data.data;
+                    this.list_time = listRes.data.data;
+                    console.log(this.list_device);
+                    console.log(this.list_time);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
 
+                    // axios.post('/api/Log/clientLog/device-time', { date: this.filters.date })
+                    // .then(res => {
+                    //     this.list_device = res.data.data;
+                    //     console.log(this.list_device);
+                    // })
+                    // .catch(err => {
+                    //     console.log(err);
+                    // });
+                    // axios.post('/api/Log/clientLog/list-device', { date: this.filters.date })
+                    // .then(res => {
+                    //     this.list_time = res.data.data;
+                    //     console.log(this.list_time);
+                    // })
+                    // .catch(err => {
+                    //     console.log(err);
+                    // });
+
+            }
         },
 
         handleTimeChange() {
@@ -355,8 +404,6 @@
             axios.post(endpoint, { time: this.time, date: this.filters.date })
             .then(response => {
                     this.search_data = response.data.data;
-                    console.log(this.time, this.filters.date);
-                    console.log("data", this.search_data);
             })
             .catch(error => {
                 console.log(error);

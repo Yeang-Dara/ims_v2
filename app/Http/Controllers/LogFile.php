@@ -395,4 +395,16 @@ class LogFile extends Controller
         }
         return response()->json(['data' => $data]);
     }
+
+    // list only status device
+    public function DeviceTime(Request $request)
+    {
+        $date= $request->input('date');
+
+        $data = DB::table('log_entries')
+                ->where('date', $date)
+                ->where('log_message', 'like', '%DeviceStatusPacD : parseData result%')
+                ->get();
+        return response()->json(['data' => $data]);
+    }
 }
