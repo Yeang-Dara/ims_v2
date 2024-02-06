@@ -69,7 +69,7 @@
                 <v-row class="d-flex justify-space-between pa-2 mb-2">
                     <v-btn color="red">
                         <router-link :to="'/portal/allterminal'"  style="color:white;" class="text-decoration-none" >Back</router-link>
-                    </v-btn> 
+                    </v-btn>
                     <v-btn color="blue darken-1" outlinetext style="color:white; margin-left:6px;" @click="Update">Update</v-btn>
                 </v-row>
             </v-container>
@@ -215,7 +215,7 @@ export default {
                     }
                 })
                 .catch((error) => {
-                
+
                     console.log(error.response);
                     if(error.response.status==500){
                          Swal.fire({

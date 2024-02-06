@@ -307,11 +307,12 @@ class LogFile extends Controller
 
     public function getAll()
     {
-        $data = LogEntry::orderBy('date')->get();
+        $data = LogEntry::orderBy('date')->orderBy('time')->get();
 
         return response()->json(['data' => $data]);
     }
 
+    // search scan
     public function QRScanLog_date(Request $request)
     {
         $date = $request->input('date');
@@ -353,4 +354,57 @@ class LogFile extends Controller
         return response()->json(['data' => $data]);
     }
 
+    // search device by line
+    public function SearchDevice(Request $request)
+    {
+        $date = $request->input('date');
+
+        $data = DB::table('log_entries')
+                ->select('time')
+                ->where('date', $date)
+                ->where('log_message', 'like', '%DeviceStatusPacD : parseData result%')
+                ->orderBy('time')
+                ->get();
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function SearchDevice_time(Request $request)
+    {
+        $time= $request->input('time');
+        $date= $request->input('date');
+
+        $data = DB::table('log_entries')
+                ->where('time', $time)
+                ->where('date', $date)
+                ->where('log_message', 'like', '%DeviceStatusPacD : parseData result%')
+                ->get();
+        // If there are matching entries
+        if ($data->isNotEmpty()) {
+            // Get the ID of the last matched entry
+            $lastEntryId = $data->last()->id;
+
+            // Query all entries with an ID greater than the last matched entry
+            $additionalData = DB::table('log_entries')
+                                ->select('id', 'date', 'time', 'code', 'thread', 'log_message', 'created_at', 'updated_at')
+                                ->where('id', '>', $lastEntryId)
+                                ->get();
+
+            // Concatenate the additional data with the matched data
+            $data = $data->concat($additionalData);
+        }
+        return response()->json(['data' => $data]);
+    }
+
+    // list only status device
+    public function DeviceTime(Request $request)
+    {
+        $date= $request->input('date');
+
+        $data = DB::table('log_entries')
+                ->where('date', $date)
+                ->where('log_message', 'like', '%DeviceStatusPacD : parseData result%')
+                ->get();
+        return response()->json(['data' => $data]);
+    }
 }
