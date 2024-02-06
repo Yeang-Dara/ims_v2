@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'clientLog'], function () {
-    // Route::post('create', 'AttendanceController@create');
-    // Route::post('process-log', 'LogFile@create');
     Route::post('convert-file','LogFile@convertFile');
     Route::post('upload-file', 'LogFile@uploadfile');
     Route::get('getData', 'LogFile@getAll');

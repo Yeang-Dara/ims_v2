@@ -4,11 +4,11 @@ import getters from "./getters";
 
 export default {
     namespaced: true,
-    state() {
-        return {
-            name: 'Hello khuoch'
-        };
-    },
+    // state() {
+    //     return {
+    //         name: 'Hello khuoch'
+    //     };
+    // },
     mutations,
     getters,
     actions,

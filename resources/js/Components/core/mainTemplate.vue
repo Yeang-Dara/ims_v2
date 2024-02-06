@@ -413,7 +413,7 @@ export default {
         this.startTimer()
         document.addEventListener('mousemove', this.resetTimer)
         document.addEventListener('keypress', this.resetTimer)
-        // console.log(localStorage)
+        console.log(localStorage)
         this.isLoggedIn = !!localStorage.getItem("token");
         const token = localStorage.getItem("token");
 
@@ -430,7 +430,6 @@ export default {
                     this.$router.push('/hr-sys/applyLeave');
                 }
                 axios.get('/api/hr/HR/staff/notification/' + this.user.id)
-                // Staff.Notification(this.user.id)
                 .then(res => {
                     this.notifications = res.data
                     console.log(this.notifications)
@@ -442,7 +441,7 @@ export default {
             })
 
             const count = this.activeNotificationCount;
-            console.log(count);
+            // console.log(count);
       },
       methods: {
         logout () {

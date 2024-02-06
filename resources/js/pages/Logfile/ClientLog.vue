@@ -173,7 +173,6 @@
                 indeterminate
             ></v-progress-circular>
             </div>
-
         </v-dialog>
     </v-container>
  </template>
@@ -247,7 +246,7 @@
             }
 
             // If neither search_data nor list_device is available, filter datas and push filtered items to filteredData
-            if (!this.search_data && !this.list_device) {
+            if (this.filters.from_time) {
                 filteredData = this.datas.filter(item => {
                     const itemDateTime = new Date(`${item.date} ${item.time}`);
                     const filterFromDateTime = new Date(`${this.filters.date} ${this.filters.from_time}`);
@@ -338,7 +337,6 @@
             .then(response => {
                 if (response.data && Array.isArray(response.data.data)) {
                     this.datas = response.data.data;
-                    // console.log(this.datas);
                     this.dialog1 = false;
                 } else {
                     console.log('Invalid data structure received from the server');
@@ -350,12 +348,11 @@
         },
 
         searchData(){
-
+            // check when user choose option
             if (this.choose === 'scan'){
                 axios.post('/api/Log/clientLog/list-qr', { date: this.filters.date })
                 .then(res => {
                     this.list_time = res.data.data;
-                    console.log(this.list_time);
                     alert("Now, you can select time!");
                 })
                 .catch(err => {
@@ -371,16 +368,12 @@
                 .then(([deviceRes, listRes]) => {
                     this.list_device = deviceRes.data.data;
                     this.list_time = listRes.data.data;
-                    // console.log(this.list_device);
-                    // console.log(this.list_time);
                     alert("If you want detail time. Please select time!")
                 })
                 .catch(err => {
                     console.log(err);
                 });
             }
-
-
         },
 
         handleTimeChange() {
