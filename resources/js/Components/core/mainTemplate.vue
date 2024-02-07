@@ -35,7 +35,7 @@
                             :class="[{'active': selectedIndex === 3}, 'item-title' ]"
                     >{{ ('Manage Employee') }}</v-list-item>
                     </v-list-group>
-                </span>
+                    </span>
                     <v-list-group value="Leave">
                         <template v-slot:activator="{ props }">
                             <v-list-item
@@ -265,15 +265,6 @@
                         >
                         {{ ('QRScan ClientLog') }}
                         </v-list-item>
-                        <!-- <v-list-item
-                            @click="changeRoute('viewDetail', 22)"
-                            prepend-icon="mdi-file-find"
-                            style="font-size: 14px;"
-                            value="View Detail"
-                            :class="[{'active': selectedIndex === 22}, 'item-title' ]"
-                        >
-                        {{ ('View Detail') }}
-                        </v-list-item> -->
                     </v-list-group>
             </v-list>
         </v-navigation-drawer>
