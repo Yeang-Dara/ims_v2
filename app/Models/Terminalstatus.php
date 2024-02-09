@@ -33,4 +33,8 @@ class Terminalstatus extends Model
     {
         return $this->hasMany(Allterminal::class,'status_id','id');
     }
+    public function orderstatuses():HasMany
+    {
+        return $this->hasMany(Ordermachine::class,'status_id','id');
+    }
 }

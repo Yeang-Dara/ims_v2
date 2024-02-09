@@ -27,6 +27,7 @@ import Status from '../pages/IMS/admin/Status.vue'
 import Allterminal from '../pages/IMS/admin/Allterminal.vue'
 import Updateterminal from '../pages/IMS/admin/Updateterminal.vue'
 import Viewdetailterminal from '../pages/IMS/admin/Viewdetailterminal.vue'
+import Order from '../pages/IMS/admin/Order.vue'
 
 // HR
 import HR from '../Components/HR/HRmainTemplate.vue'
@@ -226,6 +227,11 @@ const routes = [
                 path : 'atm',
                 name : 'atm_page',
                 component : ATM
+            },
+            {
+                path : 'order',
+                name : 'order_page',
+                component : Order
             },
             {
                 path : 'addnewatm',
