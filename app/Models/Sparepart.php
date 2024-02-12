@@ -11,12 +11,11 @@ class Sparepart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'spareparts_name',
+        'model_id',
+        'sparepart_name',
         'quantity',
         'quantity_used',
         'quantity_remain',
-        'for_machine_model',
         'part_number',
     ];
     public static function rulesToCreate(): array
@@ -37,6 +36,6 @@ class Sparepart extends Model
     }
     public function spareparts():BelongsTo
     {
-        return $this->belongsTo(Users::class, 'user_id', 'id');
+        return $this->belongsTo(Terminalmodel::class, 'model_id', 'id');
     }
 }

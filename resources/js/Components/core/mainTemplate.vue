@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <v-navigation-drawer v-model="drawer" app color="grey-darken-2">
-
             <v-list nav  dense>
                     <v-list-item
                         @click="changeRoute('Dashboard', 1)"
@@ -362,7 +361,7 @@
         <!-- page -->
       <v-main>
         <div class="content">
-            <breadcrumbs />
+            <!-- <breadcrumbs /> -->
             <router-view></router-view>
         </div>
       </v-main>

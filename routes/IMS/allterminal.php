@@ -6,5 +6,6 @@ Route::group(['prefix' =>'terminal'], function(){
     Route::put('update/{id}','AllterminalController@update');
     Route::get('get','AllterminalController@get');
     Route::get('getid/{id}','AllterminalController@getID');
+    Route::get('getviewdetail/{id}','AllterminalController@getViewdetail');
 
 });

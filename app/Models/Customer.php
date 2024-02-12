@@ -38,5 +38,9 @@ class Customer extends Model
     {
         return $this->hasMany(Banklocation::class,'bank_name_id','id');
     }
+    public function customers():HasMany
+    {
+        return $this->hasMany(Ordermachine::class,'customer_id','id');
+    }
  
 }

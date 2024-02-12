@@ -7,6 +7,7 @@ use App\Services\SparepartService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SparepartController extends ParentController
 {
@@ -25,12 +26,21 @@ class SparepartController extends ParentController
 
    public function create(Request  $request):JsonResponse
    {
-    if($request['quantity_used'] == null )
-    {
-        $request['quantity_used'] = 0;
-        $request['quantity_remain'] = $request['quantity'];
-        return parent::create($request);
+
+    $validator = Validator::make($request->all(),[
+            'model_id' => 'required',
+            'sparepart_name' =>'required',
+            'quantity' =>'required',
+    ]);
+    if($validator->fails()) {
+        $response =[
+            'success' =>false,
+            'status' => 402,
+            'message' =>"Please input all information",
+        ];
+        return response()->json($response, 402);
     }
+
 
     $request['quantity_remain'] = $request['quantity']- $request['quantity_used'];
     return parent::create($request);

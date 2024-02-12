@@ -26,6 +26,8 @@ import Warehouse from '../pages/IMS/admin/Warehouse.vue'
 import Status from '../pages/IMS/admin/Status.vue'
 import Allterminal from '../pages/IMS/admin/Allterminal.vue'
 import Updateterminal from '../pages/IMS/admin/Updateterminal.vue'
+import Viewdetailterminal from '../pages/IMS/admin/Viewdetailterminal.vue'
+import Order from '../pages/IMS/admin/Order.vue'
 
 // HR
 import HR from '../Components/HR/HRmainTemplate.vue'
@@ -227,6 +229,11 @@ const routes = [
                 component : ATM
             },
             {
+                path : 'order',
+                name : 'order_page',
+                component : Order
+            },
+            {
                 path : 'addnewatm',
                 name : 'addnewatm_page',
                 component : Addnewatm
@@ -310,6 +317,11 @@ const routes = [
                 path:'Updateterminal/:id',
                 name: 'updateterminal_page',
                 component: Updateterminal
+              },
+              {
+                path:'Viewdetailterminal/:id',
+                name: 'viewdetailterminal_page',
+                component: Viewdetailterminal
               },
               {
                 path:'QRScan_ClientLog',

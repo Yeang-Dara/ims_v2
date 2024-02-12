@@ -18,6 +18,7 @@
                         <div class="d-flex align-end">
                             <v-spacer></v-spacer>
                             <v-text-field
+                                clearable
                                 v-model="search"
                                 label="Search"
                                 prepend-inner-icon="mdi-magnify"
@@ -35,13 +36,19 @@
                         :search="search"
                     >
                         <template v-slot:[`item.actions`]="{ item }">
+                            <router-link :to="'/portal/viewdetailterminal/'+item.id">
+                                <v-icon size="small"
+                                    class="me-2"
+                                    color="blue">mdi-eye
+                                </v-icon>
+                            </router-link>
                             <router-link :to="'/portal/updateterminal/'+item.id">
                                 <v-icon size="small"
                                     class="me-2"
-                                    color="blue">mdi-pencil
+                                    color="orange">mdi-pencil
                                 </v-icon>
-                            </router-link>     
-                       
+                            </router-link> 
+                               
                         </template>
                     </v-data-table>
                 </v-card>
@@ -83,6 +90,10 @@ export default {
                 {
                     key: "siteID",
                     title: "Site ID",
+                },
+                {
+                    key: "site_name",
+                    title: "Site Name",
                 },
                 {
                     key: "address",

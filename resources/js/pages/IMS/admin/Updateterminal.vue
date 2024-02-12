@@ -44,7 +44,7 @@
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Warranty Days <a style="color: red;">*</a></label>
-                        <v-text-field v-model="warrenty" label="" outlined variant="outlined"></v-text-field>
+                        <v-text-field v-model="update.warrenty" label="" outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Status<a style="color: red;">*</a></label>
@@ -58,7 +58,7 @@
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="4">
                         <label for="alias_id">Android Version<a style="color: red;">*</a></label>
-                        <v-text-field v-model="android_version" label="" outlined variant="outlined"></v-text-field>
+                        <v-text-field v-model="update.android_version" label="" outlined variant="outlined"></v-text-field>
                     </v-col>
                     <v-col class="py-0" cols="12" sm="6" md="6">
                         <label for="alias_id">SiteID <a style="color: red;">*</a></label>
@@ -224,7 +224,7 @@ export default {
                         position: "top",
                         showConfirmButton: false,
                         timer: 1500
-                    });
+                        });
                     }
                     else{
                         Swal.fire({
