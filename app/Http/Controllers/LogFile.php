@@ -305,6 +305,7 @@ class LogFile extends Controller
         }
     }
 
+    // neet to get faster data
     public function getAll()
     {
         $data = LogEntry::orderBy('date')->orderBy('time')->get();

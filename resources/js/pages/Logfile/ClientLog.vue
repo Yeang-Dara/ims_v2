@@ -31,17 +31,11 @@
                         <v-radio class="ma-2" label="Device Status" value="device"></v-radio>
                         <div class="ma-2 pa-3">
                             <v-btn class="pa-2" color="indigo-darken-1" @click="searchData"
-                                :disabled="NonData">Search</v-btn>
+                                :disabled="searchDisabled || NonData">Search</v-btn>
                         </div>
-
-
-
                     </v-radio-group>
                 </v-card>
             </div>
-
-
-
         </div>
         <div class="ma-0 pb-2">
             <v-row class="d-flex justify-end">
@@ -229,6 +223,11 @@ export default {
             return this.datas.length === 0;
         },
 
+        searchDisabled() {
+            // Disable search button if either 'from_time' or 'to_time' is not selected
+            return this.filters.from_time || this.filters.to_time;
+        }
+
     },
 
     methods: {
@@ -284,13 +283,16 @@ export default {
         },
 
         searchData() {
-
             if (this.choose === 'scan') {
                 axios.post('/api/Log/clientLog/list-qr', { date: this.filters.date })
                     .then(res => {
-                        this.list_time = res.data.data;
-                        console.log(this.list_time);
-                        alert("Now, you can select time!");
+                        if (!res.data.data || res.data.data.length === 0) {
+                            alert("Data is empty!");
+                        } else {
+                            this.list_time = res.data.data;
+                            console.log(this.list_time);
+                            alert("Now, you can select time!");
+                        }
                     })
                     .catch(err => {
                         console.log(err);
@@ -303,15 +305,22 @@ export default {
                     axios.post('/api/Log/clientLog/list-device', { date: this.filters.date })
                 ])
                     .then(([deviceRes, listRes]) => {
-                        this.list_device = deviceRes.data.data;
-                        this.list_time = listRes.data.data;
-                        // console.log(this.list_device);
-                        // console.log(this.list_time);
-                        alert("If you want detail time. Please select time!")
+                        if (deviceRes.data.data.length === 0 || listRes.data.data.length === 0) {
+                            // If either deviceRes.data.data or listRes.data.data is empty
+                            alert("Data is empty!");
+                        } else {
+                            this.list_device = deviceRes.data.data;
+                            this.list_time = listRes.data.data;
+                            alert("If you want detail time. Please select time!")
+                        }
+
                     })
                     .catch(err => {
                         console.log(err);
                     });
+            }
+            else {
+                alert("Please select Search Option!");
             }
         },
 
