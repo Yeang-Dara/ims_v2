@@ -269,7 +269,7 @@ class LogFile extends Controller
         fclose($handle);
 
         // Optionally, return a response or redirect as needed
-        return response()->download(storage_path("app/$outputFilePath"));
+        return response()->download(storage_path("app/$outputFilePath"),200);
     }
 
     // codition add by line
