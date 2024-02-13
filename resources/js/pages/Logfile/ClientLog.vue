@@ -33,15 +33,9 @@
                             <v-btn class="pa-2" color="indigo-darken-1" @click="searchData"
                                 :disabled="NonData">Search</v-btn>
                         </div>
-
-                   
-
                     </v-radio-group>
                 </v-card>
             </div>
-        
-      
-
         </div>
         <div class="ma-0 pb-2">
             <v-row class="d-flex justify-end">
@@ -81,9 +75,7 @@
                         :disabled="NonData" density="comfortable" clearable @update:modelValue="handleTimeChange">
                     </v-select>
                 </v-col>
-
             </v-row>
-
         </div>
         <span v-if="shouldDisplayContent">
             <v-card class="rounded-0 mx-auto">
@@ -99,7 +91,6 @@
                 </v-data-table>
             </v-card>
         </span>
-
         <span v-else>
             <!-- Optional: Message or content to display when there is no data -->
             <p>No data available.</p>
@@ -111,7 +102,6 @@
             <div class="text-center">
                 <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
             </div>
-
         </v-dialog>
     </v-container>
 </template>
@@ -129,14 +119,14 @@ export default {
         headers: [
             {
                 title: 'Date',
-                align: 'start',
-                width: '120px',
+            
+                width: '70px',
                 key: 'date',
             },
-            { title: 'Time', align: 'start', key: 'time' },
-            { title: 'Thread', align: 'start', key: 'thread' },
-            { title: 'Code', align: 'start', key: 'code' },
-            { title: 'Message', key: 'log_message', width: '500px', },
+            { title: 'Time',  key: 'time', width:'70px'},
+            { title: 'Thread',  key: 'thread',width:'70px' },
+            { title: 'Code', key: 'code',width:'30px' },
+            { title: 'Message', key: 'log_message', width:'30%'},
         ],
         datas: [],
         search_data: [],
@@ -258,14 +248,18 @@ export default {
             this.dialog1 = true,
                 axios.post('/api/Log/clientLog/upload-file', formData)
                     .then(res => {
-                        console.log(res.data)
+                        console.log(res.status)
+                        if(res.status==200){
+                            this.dialog1 = false;
+                        }
                         setTimeout(function () {
                             alert('Uploaded successfuly...');
-                        });
-                        this.dialog1 = false;
+                        });  
                     })
             this.dialog = false;
-            this.getData();
+                setTimeout(function() {
+                        window.location.reload();
+                    }, 5000);
         },
 
         getData() {
