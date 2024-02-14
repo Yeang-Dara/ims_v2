@@ -12,7 +12,7 @@
                     <label for="atm_id">From Time<a style="color: blue;">*</a></label>
                     <v-text-field v-model="filters.from_time" class="pr-1" label="" :value="formattedFromTime"
                         :disabled="NonData" variant="outlined" outlined density="compact" color="blue" autocomplete="false"
-                        type="time" @input="formatTime" />
+                        type="time" @input="formatTime"/>
                 </div>
                 <div class="ma-2 pa-2" style="width:200px;">
                     <label for="atm_id">To Time<a style="color: blue;">*</a></label>
@@ -119,7 +119,7 @@ export default {
         headers: [
             {
                 title: 'Date',
-            
+
                 width: '70px',
                 key: 'date',
             },
@@ -242,6 +242,9 @@ export default {
             this.filters.to_time = '';
             this.choose = '';
             this.time = '';
+            this.search_data = '';
+            this.list_device = '';
+            this.list_time = '';
         },
         handleFileUpload(event) {
             this.file = event.target.files[0];
@@ -259,7 +262,7 @@ export default {
                         }
                         setTimeout(function () {
                             alert('Uploaded successfuly...');
-                        });  
+                        });
                     })
             this.dialog = false;
                 setTimeout(function() {
@@ -365,6 +368,10 @@ export default {
     cursor: pointer;
     text-decoration: underline;
 }
+
+/* add */
+
+
 </style>
 
 
