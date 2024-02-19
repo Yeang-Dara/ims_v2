@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('type_id');
             $table->integer('model_id');
             $table->integer('quantity');
-            $table->integer('warehouse_id')->nullable();
+            $table->integer('warehouse_id');
             $table->integer('status_id');
             $table->timestamps();
 

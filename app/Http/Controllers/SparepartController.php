@@ -40,21 +40,24 @@ class SparepartController extends ParentController
         ];
         return response()->json($response, 402);
     }
-
-
-    $request['quantity_remain'] = $request['quantity']- $request['quantity_used'];
+        $data1 =DB::table('spareparts')->where('model_id','=',$request['model_id'])
+                                       ->where('sparepart_name','=',$request['sparepart_name'])->count();
+        if($data1 >0){
+            $response =[
+                'success' =>false,
+                'status' => 403,
+                'message' =>"This sparepart is exit",
+            ];
+            return response()->json($response, 403);
+        }
+    $request['quantity_remain'] = $request['quantity'];
+    $request['quantity_used']=0;
     return parent::create($request);
    }
    public function updateData(Request $request, $id)
    {
-
     $data = Sparepart::find($id);
 
-    if($request['quantity']==null)
-    {
-        $request['quantity_remain'] = $data['quantity']- $request['quantity_used'];
-        return parent::update($request, $id);
-    }
         $request['quantity_remain'] = $request['quantity']- $request['quantity_used'];
         return parent::update($request, $id);
 
@@ -65,7 +68,10 @@ class SparepartController extends ParentController
    }
    public function getData()
    {
-     $data = DB::table('spareparts')->orderBy('id')->get();
+     $data = DB::table('spareparts')
+                ->join('terminalmodels','terminalmodels.id','=','spareparts.model_id')
+                ->select('spareparts.*','terminalmodels.terminal_model')
+        ->orderBy('id')->get();
      return $data;
    }
 }
