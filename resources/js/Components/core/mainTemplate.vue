@@ -221,15 +221,32 @@
                     >
                     {{ ('Report') }}
                     </v-list-item>
-                    <v-list-item
+                    <v-list-group value="Spare Part">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                            v-bind="props"
+                            style="font-size: 14px;"
+                            prepend-icon="mdi-file-cog "
+                            class="item-title"
+                            >{{ ('Spart Part') }} </v-list-item>
+                        </template>
+                        <v-list-item
                         @click="changeRoute('spare_part_page', 19)"
-                        prepend-icon="mdi-toolbox"
                         value="Spare parts"
                         style="font-size: 14px;"
                         :class="[{'active': selectedIndex === 19}, 'item-title' ]"
                     >
-                    {{ ('Spare parts') }}
+                    {{ ('List sparepart') }}
                     </v-list-item>
+                        <v-list-item
+                        @click="changeRoute('spare_part_page', 30)"
+                        value="Spare parts"
+                        style="font-size: 14px;"
+                        :class="[{'active': selectedIndex === 30}, 'item-title' ]"
+                    >
+                    {{ ('Add repalce') }}
+                    </v-list-item>
+                    </v-list-group>
                     <v-list-item
                         @click="changeRoute('ticketRecord', 2)"
                         prepend-icon="mdi-ticket-percent"
@@ -264,6 +281,7 @@
                         >
                         {{ ('QRScan ClientLog') }}
                         </v-list-item>
+
                     </v-list-group>
             </v-list>
         </v-navigation-drawer>

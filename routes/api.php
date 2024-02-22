@@ -87,6 +87,7 @@ Route::group(['prefix' => 'IMS'], function () {
     require __DIR__ . '/IMS/categorie.php';
     require __DIR__ . '/IMS/terminatstatus.php';
     require __DIR__ . '/IMS/allterminal.php';
+    require __DIR__ . '/IMS/ordermachine.php';
 });
 
 Route::group(['prefix' => 'HR'], function () {

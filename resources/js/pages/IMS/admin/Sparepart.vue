@@ -14,7 +14,7 @@
                   <v-dialog v-model="dialog" max-width="700px">
                       <template v-slot:activator="{ props }">
                           <v-btn color="primary" class="mb-2" v-bind="props"
-                              >New Location</v-btn
+                              >Add New</v-btn
                           >
                       </template>
                       <v-card>
@@ -30,41 +30,43 @@
                               <v-container>
                                   <v-row>
                                       <v-col cols="12" md="6" sm="12">
-                                          <v-select
-                                              :items="banks"
-                                              item-value="id"
-                                              item-title="customer_name"
-                                              v-model="editedItem.bank_name_id"
-                                              label="Bank Name"
-                                              variant="outlined"
-                                          >
-                                          </v-select>
-                                      </v-col>
-                                      <v-col cols="12" md="6" sm="12">
-                                          <v-select
-                                              :items="sites"
-                                              item-value="id"
-                                              item-title="site_name"
-                                              v-model="editedItem.site_name_id"
-                                              label="Site Name"
-                                              variant="outlined"
-                                          >
-                                          </v-select>
-                                      </v-col>
-                                      <v-col cols="12" md="6" sm="12">
+                                        <label for="atm_id">Sparepart Name<a style="color: red;">*</a></label>
                                           <v-text-field
+                                              item-title="customer_name"
+                                              v-model="editedItem.sparepart_name"
+                                              label=""
                                               variant="outlined"
-                                              v-model="editedItem.siteID"
-                                              label="Site ID"
                                           >
                                           </v-text-field>
                                       </v-col>
-                                      <v-col cols="12" md="12" sm="12">
+                                      <v-col cols="12" md="6" sm="12">
+                                        <label for="atm_id">Model<a style="color: red;">*</a></label>
+                                          <v-select
+                                              :items="sites"
+                                              item-value="id"
+                                              item-title="terminal_model"
+                                              v-model="editedItem.model_id"
+                                              label=""
+                                              variant="outlined"
+                                          >
+                                          </v-select>
+                                      </v-col>
+                                      <v-col cols="12" md="6" sm="12">
+                                        <label for="atm_id">Quantity<a style="color: red;">*</a></label>
+                                          <v-text-field
+                                              variant="outlined"
+                                              v-model="editedItem.quantity"
+                                              label=""
+                                          >
+                                          </v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" md="6" sm="12">
+                                        <label for="atm_id">Part Number<a style="color: blue;">*</a></label>
                                           <v-text-field
                                           width="100%"
                                               variant="outlined"
-                                              v-model="editedItem.address"
-                                              label="Address"
+                                              v-model="editedItem.part_number"
+                                              label=""
                                           >
                                           </v-text-field>
                                       </v-col>
@@ -120,13 +122,6 @@
                               >
                                   mdi-pencil
                               </v-icon>
-                              <!-- <v-icon
-                                  small
-                                  @click="deleteItem(item)"
-                                  color="red"
-                              >
-                                  mdi-delete
-                              </v-icon> -->
                       </template>
                   </v-data-table>
               </v-card>
@@ -134,7 +129,6 @@
       </v-row>
   </v-main>
 </template>
-
 <script scope>
 import axios from "axios";
 import moment from "moment";
@@ -148,28 +142,29 @@ export default {
           headers: [
               {
                   align: "start",
-                  key: "customer_name",
+                  key: "sparepart_name",
                   sortable: false,
                   title: "Sparepart Name",
               },
               {
-                  key: "site_name",
-                  title: "Part Number",
-              },
-              {
-                  key: "site_name",
+                  key: "terminal_model",
                   title: "Model",
               },
               {
-                  key: "siteID",
+                  key: "part_number",
+                  title: "Part Number",
+              },
+          
+              {
+                  key: "quantity",
                   title: "Quantity",
               },
               {
-                  key: "site_name",
+                  key: "quantity_used",
                   title: "Qty_Used",
               },
               {
-                  key: "address",
+                  key: "quantity_remain",
                   title: "Qty_Remain",
               },
               { title: "Actions", key: "actions", class: " white--text" },
@@ -184,25 +179,25 @@ export default {
           ],
           editedIndex: -1,
           editedItem: {
-              site_name_id: "",
-              bank_name_id:"",
-              siteID:"",
-              address:"",
+            model_id: "",
+              sparepart_name:"",
+              quantity:"",
+              part_number:"",
        
           },
           defaultItem: {
-              site_name_id: "",
-              bank_name_id:"",
-              siteID:"",
-              address:"",
+              model_id: "",
+              sparepart_name:"",
+              quantity:"",
+              part_number:"",
           },
       };
   },
   computed: {
       formTitle() {
           return this.editedIndex === -1
-              ? "Add new location"
-              : "Update location information";
+              ? "Add new sparepart"
+              : "Update sparte part information";
       },
   },
   watch: {
@@ -218,7 +213,7 @@ export default {
   methods: {
       getbanklocation() {
           axios
-              .get("/api/IMS/banklocation/getall")
+              .get("/api/IMS/spareparts/getdata")
               .then((Response) => {
                   this.banklocations = Response.data;
                   console.log(this.banklocations);
@@ -244,11 +239,11 @@ export default {
         
         if(this.editedIndex >-1){
           Object.assign(this.banklocations[this.editedIndex], this.editedItem)
-          axios.put("/api/IMS/banklocation/updatebanklocation/" +this.editedItem.id,this.editedItem)
+          axios.put("/api/IMS/spareparts/update/" +this.editedItem.id,this.editedItem)
               .then((Response) => {
                   if (Response.status == 200) {
                       Swal.fire({
-                          title: Response.data.message,
+                          title: "Update information successfully",
                           icon: "success",
                       });
                       this.closedialog();
@@ -265,16 +260,16 @@ export default {
               });
         }
         else{
-          axios.post("/api/IMS/banklocation/addbanklocation",this.editedItem)
+          axios.post("/api/IMS/spareparts/create",this.editedItem)
               .then((Response) => {
-                      if (Response.status == 200) {
+                   
                           Swal.fire({
-                              title: Response.data.message,
+                              title: "Add new spare part successful",
                               icon: "success",
                           });
                           this.closedialog();
                           console.log(Response.data);
-                      }
+                      
                   })
                   .catch((error) => {
                           Swal.fire({
@@ -292,16 +287,9 @@ export default {
       }
   },
   mounted: function(){
-      this.banks = axios.get("/api/IMS/customer/getallcustomer")
-              .then((Response) => {
-                  this.banks = Response.data;
-                  console.log(this.banks);
-              })
-              .catch((error) => {
-                  console.log(error);
-              });
+  
 
-      this.sites = axios.get("/api/IMS/site/getallsite")
+      this.sites = axios.get("/api/IMS/terminalmodel/getallmodel")
               .then((Response) => {
                   this.sites = Response.data;
                   console.log(this.sites);

@@ -123,10 +123,10 @@ export default {
                 width: '70px',
                 key: 'date',
             },
-            { title: 'Time',  key: 'time', width:'70px'},
-            { title: 'Thread',  key: 'thread',width:'70px' },
-            { title: 'Code', key: 'code',width:'30px' },
-            { title: 'Message', key: 'log_message', width:'30%'},
+            { title: 'Time', key: 'time', width: '70px' },
+            { title: 'Thread', key: 'thread', width: '70px' },
+            { title: 'Code', key: 'code', width: '30px' },
+            { title: 'Message', key: 'log_message', width: '30%' },
         ],
         datas: [],
         search_data: [],
@@ -257,7 +257,7 @@ export default {
                 axios.post('/api/Log/clientLog/upload-file', formData)
                     .then(res => {
                         console.log(res.status)
-                        if(res.status==200){
+                        if (res.status == 200) {
                             this.dialog1 = false;
                         }
                         setTimeout(function () {
@@ -265,9 +265,9 @@ export default {
                         });
                     })
             this.dialog = false;
-                setTimeout(function() {
-                        window.location.reload();
-                    }, 5000);
+            setTimeout(function () {
+                window.location.reload();
+            }, 5000);
         },
 
         getData() {
