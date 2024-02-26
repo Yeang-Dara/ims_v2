@@ -12,16 +12,31 @@ class Ordermachine extends Model
 
     protected $table = 'ordermachines';
     protected $fillable = [
-        'customer_id',
+        'bank_id',
         'type_id',
         'model_id',
         'quantity',
         'warehouse_id',
         'status_id',
     ];
+    public static function rulesToCreate(): array
+    {
+        return[];
+    }
+    public static function rulesToCreateMessages(){
+        return [];
+    }
+    public static function rulesToUpdate($id = null): array
+    {
+        return [];
+    }
+    public static function rulesToUpdateMessages(): array
+    {
+        return [];
+    }
     public function customers():BelongsTo
     {
-        return $this->belongsTo(Customer::class,'customer_id','id');
+        return $this->belongsTo(Customer::class,'bank_id','id');
     }
     public function ordertypes():BelongsTo
     {

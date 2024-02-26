@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sparepart extends Model
 {
@@ -37,5 +38,9 @@ class Sparepart extends Model
     public function spareparts():BelongsTo
     {
         return $this->belongsTo(Terminalmodel::class, 'model_id', 'id');
+    }
+    public function re_sparepart():HasMany
+    {
+        return $this->hasMany(Addreplace::class,'sparepart_id','id');
     }
 }

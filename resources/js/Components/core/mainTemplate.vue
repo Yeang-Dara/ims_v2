@@ -166,10 +166,10 @@
                         >{{ ('Warehouses') }}</v-list-item>
                         </v-list-group>
                         <v-list-item
-                                @click="changeRoute('engineer_page', 18)"
+                                @click="changeRoute('engineer_page', 31)"
                                 value="engineer_page"
                                 style="font-size: 14px;"
-                                :class="[{'active': selectedIndex === 18}, 'item-title' ]"
+                                :class="[{'active': selectedIndex === 31}, 'item-title' ]"
                         >{{ ('Engineers Master') }}</v-list-item>
                         <v-list-item
                                 @click="changeRoute('Site_page', 19)"
@@ -231,16 +231,16 @@
                             >{{ ('Spart Part') }} </v-list-item>
                         </template>
                         <v-list-item
-                        @click="changeRoute('spare_part_page', 19)"
-                        value="Spare parts"
+                        @click="changeRoute('spare_part_page', 29)"
+                        value="spare_part_page"
                         style="font-size: 14px;"
-                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                        :class="[{'active': selectedIndex === 29}, 'item-title' ]"
                     >
                     {{ ('List sparepart') }}
                     </v-list-item>
                         <v-list-item
-                        @click="changeRoute('spare_part_page', 30)"
-                        value="Spare parts"
+                        @click="changeRoute('addreplace_page', 30)"
+                        value="addreplace_page"
                         style="font-size: 14px;"
                         :class="[{'active': selectedIndex === 30}, 'item-title' ]"
                     >
@@ -281,7 +281,6 @@
                         >
                         {{ ('QRScan ClientLog') }}
                         </v-list-item>
-                   
                     </v-list-group>
             </v-list>
         </v-navigation-drawer>

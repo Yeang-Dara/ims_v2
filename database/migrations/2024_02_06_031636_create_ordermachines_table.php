@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ordermachines', function (Blueprint $table) {
             $table->id();
-            $table->integer('customer_id');
+            $table->integer('bank_id');
             $table->integer('type_id');
             $table->integer('model_id');
             $table->integer('quantity');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('status_id');
             $table->timestamps();
 
-            $table->foreign('customer_id')
+            $table->foreign('bank_id')
                 ->references('id')
                 ->on('customers')
                 ->onDelete('CASCADE');

@@ -2,67 +2,112 @@
     <v-main style="padding: 20px 20px 20px 20px; background-color: #f2f7ff">
         <v-row style="padding: 10px; height: 90%">
             <v-card class="rounded-0" width="100%">
-                <v-card class="d-flex align-center rouned-0" height="65px" style="padding: 15px" outlined>
+                <v-card
+                    class="d-flex align-center rouned-0"
+                    height="65px"
+                    style="padding: 15px"
+                    outlined
+                >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        INCOMING MACHINE INFORMATION
+                        ORDER INFORMATION
                     </v-card-text>
                     <v-dialog v-model="dialog" max-width="700px">
                         <template v-slot:activator="{ props }">
-                            <v-btn color="primary" class="mb-2" v-bind="props">New Incoming</v-btn>
+                            <v-btn color="primary" class="mb-2" v-bind="props"
+                                >New Incoming</v-btn
+                            >
                         </template>
                         <v-card>
-                            <v-card-title style="
-                                  background-color: blue;
-                                  text-align: center;
-                                  color: white;
-                              ">{{ formTitle }}</v-card-title>
+                            <v-card-title
+                                style="
+                                    background-color: blue;
+                                    text-align: center;
+                                    color: white;
+                                "
+                                >{{ formTitle }}</v-card-title
+                            >
                             <v-card-text>
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" md="6" sm="12">
-                                            <v-select 
+                                            <v-select
                                                 :items="banks"
                                                 item-value="id"
                                                 item-title="customer_name"
-                                                v-model="editedItem.customer_id"
+                                                v-model="editedItem.bank_id"
                                                 label="Bank Name"
-                                                variant="outlined">
+                                                variant="outlined"
+                                            >
+                                            </v-select>
+                                        </v-col>
+                                        <v-col>
+                                            <v-select
+                                                :items="types"
+                                                item-value="id"
+                                                item-title="terminal_type"
+                                                v-model="editedItem.type_id"
+                                                label="Machine Type"
+                                                variant="outlined"
+                                            >
                                             </v-select>
                                         </v-col>
                                         <v-col cols="12" md="6" sm="12">
-                                            <v-select :items="types" item-value="id" item-title="terminal_type"
-                                                v-model="editedItem.type_id" label="Type" variant="outlined">
-                                            </v-select>
+                                            <v-select
+                                                :items="models"
+                                                item-value="id"
+                                                item-title="terminal_model"
+                                                v-model="editedItem.model_id"
+                                                label=" Machine Model"
+                                                variant="outlined"
+                                            
+                                            ></v-select>
                                         </v-col>
                                         <v-col cols="12" md="6" sm="12">
-                                            <v-select :items="model" item-value="id" item-title="terminal_model"
-                                                 v-model="editedItem.model_id" variant="outlined"  label="Model">
-                                            </v-select>
+                                            <v-text-field
+                                                v-model="editedItem.quantity"
+                                                label="Quantity"
+                                                variant="outlined"
+                                            ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" md="6" sm="12">
-                                            <v-text-field variant="outlined" v-model="editedItem.quantity" label="Quantity">
-
-                                            </v-text-field>
+                                            <v-select
+                                                :items="statuses"
+                                                item-value="id"
+                                                item-title="status"
+                                                v-model="editedItem.status_id"
+                                                label=" Status"
+                                                variant="outlined"
+                                            
+                                            ></v-select>
                                         </v-col>
                                         <v-col cols="12" md="6" sm="12">
-                                            <v-select :items="statuses" item-value="id" item-title="status" variant="outlined" v-model="editedItem.status_id"
-                                                label="Status">
-                                            </v-select>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-select :items="warehouses" item-value="id" item-title="warehouse_name" variant="outlined" v-model="editedItem.warehouse_id"
-                                                label="Warehouse">
-                                            </v-select>
+                                            <v-select
+                                                :items="warehouses"
+                                                item-value="id"
+                                                item-title="warehouse_name"
+                                                v-model="editedItem.warehouse_id"
+                                                label=" Warehouse"
+                                                variant="outlined"
+                                            
+                                            ></v-select>
                                         </v-col>
                                     </v-row>
                                 </v-container>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="red-darken-1" variant="text" @click="closedialog">
+                                <v-btn
+                                    color="red-darken-1"
+                                    variant="text"
+                                    @click="closedialog"
+                                >
                                     Close
                                 </v-btn>
-                                <v-btn color="blue-darken-1" variant="text" @click="savesite">
+                                <v-btn
+                                    color="blue-darken-1"
+                                    variant="text"
+                                    @click="savebank"
+                                >
                                     Save
                                 </v-btn>
                             </v-card-actions>
@@ -73,22 +118,35 @@
                     <template v-slot:text>
                         <div class="d-flex align-end">
                             <v-spacer></v-spacer>
-                            <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" single-line
-                                variant="outlined" hide-details width="70px"></v-text-field>
+                            <v-text-field
+                                v-model="search"
+                                label="Search"
+                                prepend-inner-icon="mdi-magnify"
+                                single-line
+                                variant="outlined"
+                                hide-details
+                                width="70px"
+                            ></v-text-field>
                         </div>
                     </template>
-                    <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="banklocations" :search="search">
+                    <v-data-table
+                        :items-per-page="itemsPerPage"
+                        :headers="headers"
+                        :items="orders"
+                        :search="search"
+                    >
+                        <template v-slot:[`item.created_at`]="{ item }">
+                            {{ formatDate(item.created_at) }}
+                        </template>
+
                         <template v-slot:[`item.actions`]="{ item }">
-                            <v-icon small @click="editItem(item)" color="cyan">
-                                mdi-pencil
-                            </v-icon>
-                            <!-- <v-icon
-                                  small
-                                  @click="deleteItem(item)"
-                                  color="red"
-                              >
-                                  mdi-delete
-                              </v-icon> -->
+                                <v-icon
+                                    small
+                                    color="cyan"
+                                    @click="editItem(item)"
+                                >
+                                    mdi-pencil
+                                </v-icon>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -108,7 +166,7 @@ export default {
             itemsPerPage: 10,
             search: "",
             headers: [
-                {
+            {
                     align: "start",
                     key: "customer_name",
                     sortable: false,
@@ -136,23 +194,10 @@ export default {
                 },
                 { title: "Actions", key: "actions", class: " white--text" },
             ],
-            banklocations: [],
-            types: [
-                { title: 'terminal_type' }
-            ],
-            model: [
-                { title: 'terminal_model' }
-            ],
-
-            banks: [
-                { title: 'customer_name' }
-            ],
-            statuses:[
-                {title:'status'}
-            ],
+            orders: [],
             editedIndex: -1,
             editedItem: {
-                customer_id:"",
+                bank_id:"",
                 model_id:"",
                 type_id:"",
                 warehouse_id:"",
@@ -160,44 +205,49 @@ export default {
                 quantity:"",
             },
             defaultItem: {
-                customer_id:"",
+                bank_id:"",
                 model_id:"",
                 type_id:"",
                 warehouse_id:"",
                 status_id:"",
                 quantity:"",
             },
+            banks:[{title:'customer_name'}],
+            types:[{title:'terminal_type'}],
+            models:[{title:'terminal_model'}],
+            warehouses:[{title:'warehouse_name'}],
+            statuses:[{title:'status'}],
         };
     },
     computed: {
         formTitle() {
             return this.editedIndex === -1
                 ? "Add new incoming machine"
-                : "Update imcoming machine information";
+                : "Update information";
         },
     },
     watch: {
         dialog(val) {
             val || this.closedialog();
         },
-
     },
     created() {
-        this.getbanklocation();
+        this.getBank();
     },
 
     methods: {
-        getbanklocation() {
+        getBank() {
             axios
                 .get("/api/IMS/order/getorder")
                 .then((Response) => {
-                    this.banklocations = Response.data;
-                    console.log(this.banklocations);
+                    this.orders = Response.data;
+                    console.log(this.orders);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
+
         closedialog() {
             this.dialog = false;
             this.$nextTick(() => {
@@ -205,104 +255,110 @@ export default {
                 this.editedIndex = -1;
             });
         },
-
+        formatDate(value) {
+            return moment(value).format("YYYY-MM-DD");
+        },
         editItem(item) {
-            this.editedIndex = this.banklocations.indexOf(item);
+            this.editedIndex = this.orders.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
-        savesite() {
+        savebank() {
             if (this.editedIndex > -1) {
-                Object.assign(this.banklocations[this.editedIndex], this.editedItem)
-                // axios.put("/api/IMS/banklocation/updatebanklocation/" + this.editedItem.id, this.editedItem)
-                //     .then((Response) => {
-                //         if (Response.status == 200) {
-                //             Swal.fire({
-                //                 title: Response.data.message,
-                //                 icon: "success",
-                //             });
-                //             this.closedialog();
-                //             console.log(Response.data);
-                //         }
-                //     })
-                    // .catch((error) => {
-                    //     Swal.fire({
-                    //         title: error.response.data.message,
-                    //         position: "top",
-                    //         showConfirmButton: false,
-                    //         timer: 1500
-                    //     });
-                    // });
-                    console.log(this.editedItem);
-            }
-            else {
-                axios.post("/api/IMS/order/addorder", this.editedItem)
+                Object.assign(this.orders[this.editedIndex], this.editedItem);
+                axios.put("/api/IMS/order/updateorder/"+ this.editedItem.id, this.editedItem)
                     .then((Response) => {
+                       
                             Swal.fire({
-                                title: Response.data.message,
+                                title: "Updated successfully",
                                 icon: "success",
                             });
-                            this.closedialog();
                             console.log(Response.data);
+                            this.closedialog();
+                        
                     })
                     .catch((error) => {
                         Swal.fire({
                             title: error.response.data.message,
+                            icon: "warning",
                             position: "top",
                             showConfirmButton: false,
                             timer: 1500
                         });
+                        console.log(error.response.status);
                     });
+                console.log(this.editedItem.id);
             }
-            this.getbanklocation();
+            else{
+                axios
+                .post( "/api/IMS/order/addorder/",this.editedItem )
+                .then((Response) => {
+                    if (Response.status == 200) {
+                        Swal.fire({
+                            title: Response.data.message,
+                            icon: "success",
+                        });
+                        this.closedialog();
+                        console.log(Response.data);
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: error.response.data.message,
+                        icon: "warning",
+                        position: "top",
+                        showConfirmButton: false,
+                        
+                    });
+                    console.log(error.response.data.message);
+                });
+            }
+            this.getBank();
         },
-        deleteItem(item) {
-
-        }
     },
-    mounted: function () {
+    mounted:function(){
+
         this.banks = axios.get("/api/IMS/customer/getallcustomer")
             .then((Response) => {
-                this.banks = Response.data;
-                console.log(this.banks);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-     this.type = axios.get("/api/IMS/terminaltype/allterminaltype")
-            .then((Response) => {
-                this.types = Response.data;
-                console.log(this.types);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        axios.get("/api/IMS/terminalmodel/getallmodel")
-            .then((Response) => {
-                this.model = Response.data;
-                console.log("model", this.model);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-            axios.get("/api/IMS/status/all")
-            .then((Response) => {
-                this.statuses = Response.data;
-                console.log("status", this.statuses);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-            axios
-                .get("/api/IMS/warehouse/getallwarehouse")
-                .then((Response) => {
-                    this.warehouses = Response.data;
-                    console.log(this.warehouses);
+                    this.banks = Response.data;
+                    console.log("bank",this.banks);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-    },
+       
+        this.types = axios.get("/api/IMS/terminaltype/allterminaltype")
+            .then((Response) => {
+                    this.types = Response.data;
+                    console.log("type",this.types);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        this.models=axios.get("/api/IMS/terminalmodel/getallmodel")
+            .then((Response) => {
+                    this.models = Response.data;
+                    console.log("model", this.models);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        this.warehouses = axios.get("/api/IMS/warehouse/getallwarehouse")
+            .then((Response) => {
+                        this.warehouses = Response.data;
+                        console.log("warehouse",this.warehouses);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+        this.statuses = axios.get("/api/IMS/status/all")
+            .then((Response) => {
+                    this.statuses = Response.data;
+                    console.log("status", this.statuses);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
 };
 </script>

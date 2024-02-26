@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('bank_name_id');
             $table->integer('site_name_id');
             $table->string('siteID')->unique();
-            $table->string('address');
+            $table->text('address', 1000);
             $table->timestamps();
             $table->foreign('bank_name_id')
                 ->references('id')

@@ -120,13 +120,6 @@
                                 >
                                     mdi-pencil
                                 </v-icon>
-                                <!-- <v-icon
-                                    small
-                                    @click="deleteItem(item)"
-                                    color="red"
-                                >
-                                    mdi-delete
-                                </v-icon> -->
                         </template>
                     </v-data-table>
                 </v-card>

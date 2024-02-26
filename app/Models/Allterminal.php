@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Allterminal extends Model
 {
@@ -59,6 +60,11 @@ class Allterminal extends Model
     public function statuses():BelongsTo
     {
         return $this->belongsTo(Terminalstatus::class,'status_id','id');
+    }
+
+    public function re_terminal():HasMany
+    {
+        return $this->hasMany(Addreplace::class,'terminal_id','id');
     }
 
 }
