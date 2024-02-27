@@ -1,41 +1,42 @@
 <template>
     <v-container fluid grid-list-xl>
-        <v-card color="#E8EAF6">
+        <v-card>
         <v-form ref="form" @submit.prevent="submitHandler" >
             <v-card-title>Create New Employee</v-card-title>
             <v-container>
-                <v-row>
-                    <v-col cols="12" sm="4">
+                <v-row class="pt-2">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="last_name">Last Name<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="user.last_name"
                         :rules="lastnNameRules"
-                        label="Last Name"
-                        variant="solo"
+                        variant="outlined"
                         prepend-inner-icon="mdi-account"
                         required
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="first_name">First Name<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="user.first_name"
                         :rules="FirstnameRules"
-                        label="First Name"
-                        variant="solo"
+                        variant="outlined"
                         prepend-inner-icon="mdi-account"
                         required
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="name">User Name<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="user.name"
                         :rules="UsernameRules"
-                        label="User Name"
-                        variant="solo"
+                        variant="outlined"
                         prepend-inner-icon="mdi-account"
                         required
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="gender">Gender<a style="color: rgb(36, 111, 233);">*</a></label>
                         <v-radio-group
                             v-model="user.gender"
                             :rules="[rules.gender]"
@@ -53,23 +54,23 @@
                             ></v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="name">Family Status<a style="color: red;">*</a></label>
                         <v-select
                         v-model="user.family_status"
                         :items="status"
                         item-value="id"
                         item-title="dept_name"
-                        label="Family Status"
-                        variant="solo"
+                        variant="outlined"
                         required
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="password">Password<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="user.password"
                         :rules="passwordRules"
-                        label="Password"
-                        variant="solo"
+                        variant="outlined"
                         :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="visible ? 'text' : 'password'"
                         prepend-inner-icon="mdi-lock"
@@ -80,11 +81,11 @@
                             {{ errors.password }}
                         </div>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="con_password">Confirm Password<a style="color: red;">*</a></label>
                         <v-text-field
                             v-model="user.con_password"
-                            label="Confirm Password"
-                            variant="solo"
+                            variant="outlined"
                             prepend-inner-icon="mdi-lock"
                             :rules="[v => user.password === v || 'Passwords do not match']"
                             :type="showConfirmPassword ? 'text' : 'password'"
@@ -96,66 +97,66 @@
                             {{ errors.password}}
                          </div>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="email">E-mail<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="user.email"
-                        label="E-mail"
-                        variant="solo"
+                        variant="outlined"
                         prepend-inner-icon="mdi-email"
                         required
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="phone">Phone<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="user.phone"
                         :rules="[rules.phone]"
-                        label="Phone"
-                        variant="solo"
+                        variant="outlined"
                         @input="formatPhoneNumber"
                         prepend-inner-icon="mdi-phone"
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="12">
+                    <v-col class="pb-0 py-0 " cols="12" sm="12">
+                        <label for="address">Address<a style="color: red;">*</a></label>
                         <v-text-field
                             v-model="user.address"
                             :rules="[v => !!v || 'Address is required']"
-                            label="Address"
                             prepend-inner-icon="mdi-map-marker"
-                            variant="solo"
+                            variant="outlined"
                             required
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="start_date">Start Date<a style="color: red;">*</a></label>
                         <v-text-field
                         class="pr-1"
-                        label="Start Date"
                         v-model="user.start_date"
-                        variant="solo"
+                        variant="outlined"
                         :rules="[v => !!v || 'Start date is required']"
                         autocomplete="false"
                         required outlined dense
                         type="date" />
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="dept_id">Department<a style="color: red;">*</a></label>
                         <v-select
                         v-model="user.dept_id"
                         :rules="[v => !!v || 'Department is required']"
                         :items="depts"
                         item-value="id"
                         item-title="dept_name"
-                        label="Department"
-                        variant="solo"
+                        variant="outlined"
                         required
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="role_id">Position<a style="color: red;">*</a></label>
                         <v-select
                         v-model="user.role_id"
                         :items="roles"
                         item-value="id"
                         item-title="role_name"
-                        label="Position"
-                        variant="solo"
+                        variant="outlined"
                         required
                         ></v-select>
                     </v-col>
@@ -165,35 +166,35 @@
             <v-card-title>Family Information</v-card-title>
             <v-container>
                 <v-row>
-                <v-col cols="12" sm="6">
+                <v-col class="pb-0 py-0 " cols="12" sm="6">
+                    <label for="family_phone">Family Phone Number<a style="color: rgb(36, 111, 233);">*</a></label>
                         <v-text-field
                         v-model="user.family_phone"
                         :rules="[rules.phone]"
-                        label="Family Phone Number"
-                        variant="solo"
+                        variant="outlined"
                         @input="formatPhoneNumber"
                         prepend-inner-icon="mdi-phone"
                         ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col class="pb-0 py-0 " cols="12" sm="6">
+                    <label for="family_name">Family Name<a style="color: rgb(36, 111, 233);">*</a></label>
                         <v-text-field
                         v-model="user.family_name"
-                        label="Family Name"
-                        variant="solo"
+                        variant="outlined"
                         prepend-inner-icon="mdi-account"
                         required
                         ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col class="pb-0 py-0 " cols="12" sm="6">
+                    <label for="family_member">Family Member<a style="color: rgb(36, 111, 233);">*</a></label>
                         <v-text-field
                         v-model="user.family_member"
-                        label="Family Member"
-                        variant="solo"
+                        variant="outlined"
                         prepend-inner-icon="mdi-account"
                         required
                         ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12">
+                <v-col  cols="12" sm="12">
                         <v-btn
                         color="blue"
                         class="me-4"

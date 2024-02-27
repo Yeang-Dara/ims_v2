@@ -21,9 +21,10 @@
                     </tbody>
                 </v-table>
         </v-card>
-        <v-form>
+        <v-card>
+            <v-form>
             <div class="pb-4">
-                <h3>Apply Leave</h3>
+                <v-card-title>Apply Leave</v-card-title>
             </div>
 
             <v-container>
@@ -31,119 +32,119 @@
                     v-model="form"
                     @submit.prevent="onSubmit(user)"
                 >
-                <v-row>
-                    <v-col cols="12" sm="4">
+                <v-row class="pt-2">
+                    <v-col class="pb-0 py-0" cols="12" sm="4">
+                        <label for="name">Employee Name<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="fullName"
                         type="name"
-                        label="Employee Name"
-                        variant="solo"
+                        variant="outlined"
                         prepend-inner-icon="mdi-account"
                         required
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="accept_id">Reporting Line<a style="color:blue;">*</a></label>
                         <v-select
                         v-model="atten.accept_id"
                         :items="users"
-                        label="Reporting Line"
                         :readonly="isLoading"
                         item-value="user_id"
                         item-title="full_name"
-                        variant="solo"
+                        variant="outlined"
                         required
                         clearable
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="approve_id">Approver<a style="color: red;">*</a></label>
                         <v-select
                         v-model="atten.approve_id"
                         :items="dr"
                         type="name"
-                        label="Approver"
                         :readonly="isLoading"
                         item-value="user_id"
                         item-title="full_name"
-                        variant="solo"
+                        variant="outlined"
                         required
                         clearable
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="leave_annual_id">Leave Type<a style="color: red;">*</a></label>
                         <v-select
                         v-model="atten.leave_annual_id"
                         :items="leaves"
-                        label="Leave Type"
                         :readonly="isLoading"
                         item-value="id"
                         item-title="leave_name"
-                        variant="solo"
+                        variant="outlined"
                         :rules="[v => !!v || 'leave type is required']"
                         required
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="shiftime">Shift Time<a style="color: red;">*</a></label>
                         <v-select
                         v-model="atten.shiftime"
                         :items="days"
-                        label="Shift Time"
                         :readonly="isLoading"
-                        variant="solo"
+                        variant="outlined"
                         required
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="date_request">Date Request<a style="color: red;">*</a></label>
                         <v-text-field
                         class="pr-1"
-                        label="Date Request"
                         v-model="atten.date_request"
                         :readonly="isLoading"
-                        variant="solo"
+                        variant="outlined"
                         :rules="[v => !!v || 'Start date is required']"
                         required outlined dense
                         color="blue" type="date"
                         :value="new Date().toISOString().substr(0, 10)"/>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="from_date">From<a style="color: red;">*</a></label>
                         <v-text-field
                         class="pr-1"
-                        label="From"
                         v-model="atten.from_date"
                         :readonly="isLoading"
-                        variant="solo"
+                        variant="outlined"
                         :rules="[v => !!v || 'Start date is required']"
                         required outlined dense
                         color="blue" autocomplete="false" type="date" />
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col class="pb-0 py-0 " cols="12" sm="4">
+                        <label for="to_date">To<a style="color: red;">*</a></label>
                         <v-text-field
                         class="pr-1"
-                        label="To"
                         v-model="atten.to_date"
                         :readonly="isLoading"
-                        variant="solo"
+                        variant="outlined"
                         :rules="[v => !!v || 'Start date is required']"
                         required outlined dense
                         color="blue" autocomplete="false" type="date" />
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="reason">Reason<a style="color: blue;">*</a></label>
                         <v-textarea
                             v-model="atten.reason"
-                            label="Reason"
-                            variant="solo"
+                            variant="outlined"
                             :readonly="isLoading"
                             rows="2"
                             row-height="20"
                             autocomplete="false">
                         </v-textarea>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col class="pb-0 py-0 " cols="12" sm="6">
+                        <label for="attachment">File Input<a style="color: blue;">*</a></label>
                         <v-file-input
                             v-model="atten.attachment"
                             type="file"
                             accept="image/*"
-                            label="File input"
-                            variant="solo"
+                            variant="outlined"
                             :readonly="isLoading"
                             @change="onFileChange"></v-file-input>
                     </v-col>
@@ -154,7 +155,6 @@
                         :disabled="!form"
                         :loading="isLoading"
                         type="submit"
-
                         >
                         submit
                         </v-btn>
@@ -163,6 +163,8 @@
                 </v-form>
             </v-container>
         </v-form>
+        </v-card>
+
     </v-container>
 </template>
 

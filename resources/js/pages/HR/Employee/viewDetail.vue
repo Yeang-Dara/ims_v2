@@ -80,12 +80,7 @@
            <v-card>
             <div class="text-center text-grey-darken-3">
                 <v-avatar size="150" class="ma-6">
-                    <span v-if="user.image">
-                        <v-img :src="getImageUrl(user.image)" />
-                    </span>
-                    <!-- <span v-else>
-                        <v-img src="../../../assets/man_avatar.png" />
-                    </span> -->
+                    <v-img :src="getImageUrl(user.image)" />
                 </v-avatar>
                 <h3>{{ user.last_name }} {{ user.first_name }}</h3>
             </div>

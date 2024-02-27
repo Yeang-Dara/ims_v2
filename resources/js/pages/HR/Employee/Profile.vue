@@ -5,9 +5,10 @@
              <v-card>
               <div class="text-center text-grey-darken-3">
                   <v-avatar size="150" class="ma-6">
-                    <span v-if="user.image">
+                    <v-img :src="getImageUrl(user.image)" />
+                    <!-- <span v-if="user.image">
                         <v-img :src="getImageUrl(user.image)" />
-                    </span>
+                    </span> -->
                     <!-- <span v-else>
                         <v-img src="../../../assets/man_avatar.png" />
                     </span> -->
@@ -79,34 +80,37 @@
                 </v-card-title>
                 <v-container>
                     <v-form ref="form">
+                        <label for="old_password">Old Password<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="pass.old_password"
+                        variant="outlined"
                         :rules="[v => !!v || 'Old password is required']"
                         :type="visible ? 'text' : 'password'"
                         :append-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
                         @click:append="visible = !visible"
-                        label="Old Password"
                         required
                         ></v-text-field>
 
+                        <label for="password">New Password<a style="color: red;">*</a></label>
                         <v-text-field
                         v-model="pass.password"
-                        label="New Password"
                         :rules="[v => !!v || 'Password is required']"
                         :type="showConfirmPassword ? 'text' : 'password'"
                         :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         @click:append="showConfirmPassword = !showConfirmPassword"
                         required
+                        variant="outlined"
                         ></v-text-field>
 
+                        <label for="con_password">Confirm Password<a style="color: red;">*</a></label>
                         <v-text-field
                             v-model="pass.con_password"
-                            label="Confirm Password"
                             :rules="[v => !!v || 'Confirm password is required', v => pass.password === v || 'Passwords do not match']"
                             :type="showConfirmPassword ? 'text' : 'password'"
                             :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             @click:append="showConfirmPassword = !showConfirmPassword"
                             required
+                            variant="outlined"
                         ></v-text-field>
 
                         <div class="mt-4">
@@ -176,10 +180,10 @@
                 console.log(this.user)
             })
           this.id = this.$route.params.id;
-          axios.get('http://localhost:8000/api/v1/staff/getStaff/'+this.id)
+          axios.get('http://localhost:8000/api/hr/HR/staff/getStaff/'+this.id)
           .then(res => {
               this.user = res.data[0];
-            //   console.log('this user:', this.user);
+              console.log('this user:', this.user);
           }).catch(err => {
               console.log("create error", err);
           })
@@ -225,7 +229,7 @@
                 formData.append('id', this.id);
                 formData.append('image', this.imageFile);
 
-                axios.post('http://localhost:8000/api/v1/staff/uploadImg', formData)
+                axios.post('http://localhost:8000/api/hr/HR/staff/uploadImg', formData)
                 .then(res => {
                     this.staff = res.data
                     console.log(this.staff)

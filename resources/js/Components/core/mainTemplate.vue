@@ -343,9 +343,9 @@
 
                 <v-btn icon large flat :ripple="false" v-bind="props">
                 <v-avatar size="42px">
-                    <v-img src="../../../assets/man_avatar.png" />
+                    <v-img :src="getImageUrl(user.image)"/>
                     <!-- <span v-if="user.image">
-                        <v-img :src="getImageUrl(user.image)"/>
+
                     </span>
                     <span v-else>
                         <v-img src="../../../assets/man_avatar.png" />
@@ -357,7 +357,7 @@
                 <v-list-item color="primary">
                     <v-icon class="text-grey-darken-3">mdi-account-circle</v-icon>
                     <router-link
-                    :to="'/Profile/'+ user.id"
+                    :to="'/portal/Profile/'+ user.id"
                     class="pr-4 ml-2 text-grey-darken-3"
                     style="text-decoration: none"
                     >
