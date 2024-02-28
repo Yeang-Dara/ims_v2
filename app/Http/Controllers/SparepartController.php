@@ -58,7 +58,7 @@ class SparepartController extends ParentController
    {
     $data = Sparepart::find($id);
 
-        $request['quantity_remain'] = $request['quantity']- $request['quantity_used'];
+        $request['quantity_remain'] = $request['quantity']- $data['quantity_used'];
         return parent::update($request, $id);
 
    }
@@ -71,7 +71,7 @@ class SparepartController extends ParentController
      $data = DB::table('spareparts')
                 ->join('terminalmodels','terminalmodels.id','=','spareparts.model_id')
                 ->select('spareparts.*','terminalmodels.terminal_model')
-        ->orderBy('id')->get();
+                ->orderBy('id')->get();
      return $data;
    }
 }

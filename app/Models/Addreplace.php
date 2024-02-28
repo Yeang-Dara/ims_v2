@@ -17,6 +17,7 @@ class Addreplace extends Model
         'sparepart_id',
         'replace_date',
         'engineer_id',
+        'quantity',
     ];
     public static function rulesToCreate(): array
     {

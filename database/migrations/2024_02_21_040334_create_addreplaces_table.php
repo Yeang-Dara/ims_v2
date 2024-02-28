@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('sparepart_id');
             $table->date('replace_date');
             $table->integer('engineer_id');
+            $table->integer('quantity');
             $table->timestamps();
 
             $table->foreign('terminal_id')
