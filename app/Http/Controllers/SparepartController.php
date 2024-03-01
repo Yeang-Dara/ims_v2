@@ -58,6 +58,14 @@ class SparepartController extends ParentController
    {
     $data = Sparepart::find($id);
 
+        if($request['quantity']<$data['quantity_used']){
+            $response =[
+                'success' =>false,
+                'status' => 403,
+                'message' =>"The total quantity is smaller than quantity used",
+            ];
+            return response()->json($response, 403);
+        }
         $request['quantity_remain'] = $request['quantity']- $data['quantity_used'];
         return parent::update($request, $id);
 
