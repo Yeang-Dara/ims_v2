@@ -9,7 +9,7 @@
                     outlined
                 >
                     <v-card-text style="font-size: 20px; text-align: start">
-                        SITES INFORMATION
+                        ENGINEER INFORMATION
                     </v-card-text>
                   
                     <v-dialog v-model="dialog" max-width="500px">

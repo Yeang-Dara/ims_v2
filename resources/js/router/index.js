@@ -28,6 +28,7 @@ import Allterminal from '../pages/IMS/admin/Allterminal.vue'
 import Updateterminal from '../pages/IMS/admin/Updateterminal.vue'
 import Viewdetailterminal from '../pages/IMS/admin/Viewdetailterminal.vue'
 import Order from '../pages/IMS/admin/Order.vue'
+import Addreplace from '../pages/IMS/admin/Addreplace.vue'
 
 // HR
 import HR from '../Components/HR/HRmainTemplate.vue'
@@ -275,7 +276,7 @@ const routes = [
               },
               {
                 path: 'Engineer',
-                nam: 'engineer_page',
+                name: 'engineer_page',
                 component: Engineer
               },
               {
@@ -327,6 +328,11 @@ const routes = [
                 path:'QRScan_ClientLog',
                 name: 'QRScan',
                 component: QRScan
+              },
+              {
+                path:'Addreplace',
+                name:'addreplace_page',
+                component:Addreplace
               }
 
         ]

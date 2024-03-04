@@ -24,10 +24,13 @@ class DatabaseSeeder extends Seeder
         $this->call(UsingSeeder::class);
         $this->call(CustomerSeeder::class);
         $this->call(SiteSeeder::class);
+        $this->call(BanklocationSeeder::class);
         $this->call(TerminalTypeSeeder::class);
         $this->call(TerminalmodelSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(TerminalstatusSeeder::class);
-        $this->call(BanklocationSeeder::class);
+        $this->call(AllterminalSeeder::class);
+      
+       
     }
 }

@@ -166,10 +166,10 @@
                         >{{ ('Warehouses') }}</v-list-item>
                         </v-list-group>
                         <v-list-item
-                                @click="changeRoute('engineer_page', 18)"
+                                @click="changeRoute('engineer_page', 31)"
                                 value="engineer_page"
                                 style="font-size: 14px;"
-                                :class="[{'active': selectedIndex === 18}, 'item-title' ]"
+                                :class="[{'active': selectedIndex === 31}, 'item-title' ]"
                         >{{ ('Engineers Master') }}</v-list-item>
                         <v-list-item
                                 @click="changeRoute('Site_page', 19)"
@@ -231,16 +231,16 @@
                             >{{ ('Spart Part') }} </v-list-item>
                         </template>
                         <v-list-item
-                        @click="changeRoute('spare_part_page', 19)"
-                        value="Spare parts"
+                        @click="changeRoute('spare_part_page', 29)"
+                        value="spare_part_page"
                         style="font-size: 14px;"
-                        :class="[{'active': selectedIndex === 19}, 'item-title' ]"
+                        :class="[{'active': selectedIndex === 29}, 'item-title' ]"
                     >
                     {{ ('List sparepart') }}
                     </v-list-item>
                         <v-list-item
-                        @click="changeRoute('spare_part_page', 30)"
-                        value="Spare parts"
+                        @click="changeRoute('addreplace_page', 30)"
+                        value="addreplace_page"
                         style="font-size: 14px;"
                         :class="[{'active': selectedIndex === 30}, 'item-title' ]"
                     >
@@ -281,7 +281,6 @@
                         >
                         {{ ('QRScan ClientLog') }}
                         </v-list-item>
-
                     </v-list-group>
             </v-list>
         </v-navigation-drawer>
@@ -320,12 +319,12 @@
                             <v-list-item v-else :key="item.name" ripple @click="Notification">
                                 <template v-slot:prepend>
                                     <v-avatar size="42px">
-                                        <span v-if="item.image">
+                                        <span v-if="item.image == null">
+                                            <v-img src="../../../assets/man_avatar.png" />
+                                        </span>
+                                        <span v-else>
                                             <v-img :src="getImageUrl(item.image)" />
                                         </span>
-                                        <!-- <span v-else>
-                                            <v-img src="/../../../assets/avatar_female.png" />
-                                        </span> -->
                                     </v-avatar>
                                 </template>
                                 <v-list-item-content>
@@ -343,13 +342,12 @@
 
                 <v-btn icon large flat :ripple="false" v-bind="props">
                 <v-avatar size="42px">
-                    <v-img :src="getImageUrl(user.image)"/>
-                    <!-- <span v-if="user.image">
-
+                    <span v-if="user.image == null">
+                        <v-img src="../../../assets/man_avatar.png" />
                     </span>
                     <span v-else>
-                        <v-img src="../../../assets/man_avatar.png" />
-                    </span> -->
+                        <v-img :src="getImageUrl(user.image)"/>
+                    </span>
                 </v-avatar>
                 </v-btn>
             </template>
@@ -434,6 +432,7 @@ export default {
         axios.get('/api/user', auth)
             .then(res => {
                 this.user = res.data
+                console.log('user',this.user)
                 if (this.user.role_id  == 2) {
                     this.$router.push('/hr-sys/applyLeave');
                 }

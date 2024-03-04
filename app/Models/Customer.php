@@ -40,7 +40,7 @@ class Customer extends Model
     }
     public function customers():HasMany
     {
-        return $this->hasMany(Ordermachine::class,'customer_id','id');
+        return $this->hasMany(Ordermachine::class,'bank_id','id');
     }
  
 }

@@ -94,7 +94,6 @@ class AllterminalController extends Controller
             ];
             return response()->json($response,403);
         }
-   
         Allterminal::where('id','=',$id)->update($input);
         $response = [
             'success' => true,
