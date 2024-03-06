@@ -110,7 +110,7 @@ class AllterminalController extends Controller
                 ->join('sites','sites.id','=','banklocations.site_name_id')
                 ->join('customers','customers.id','=','banklocations.bank_name_id')
                 ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
-                ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+                ->join('terminaltypes','terminaltypes.id','=','allterminals.type_id')
                 ->join('categories','categories.id','=','allterminals.category_id')
                 ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
                 ->select('customers.customer_name',
@@ -152,6 +152,199 @@ class AllterminalController extends Controller
                     'allterminals.*',)       
         ->where('allterminals.id','=',$id)->get();
         return response()->json($data);
+    }
+
+    public function getFilter(Request $request)
+    {
+       if($request->model_id && $request->type_id && $request->bank_id){
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'banklocations.bank_name_id',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('allterminals.model_id','=',$request->model_id)
+        ->where('banklocations.bank_name_id','=',$request->bank_id)
+        ->where('allterminals.type_id','=',$request->type_id)
+        ->orderBy('allterminals.id')->get();
+        return response()->json($data);
+       }
+       else if($request->model_id && $request->type_id ){
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'banklocations.bank_name_id',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('allterminals.model_id','=',$request->model_id)
+        ->where('allterminals.type_id','=',$request->type_id)
+        ->orderBy('allterminals.id')->get();
+        return response()->json($data);
+       }
+       else if($request->model_id && $request->bank_id ){
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'banklocations.bank_name_id',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('allterminals.model_id','=',$request->model_id)
+        ->where('banklocations.bank_name_id','=',$request->bank_id)
+        ->orderBy('allterminals.id')->get();
+        return response()->json($data);
+       }
+       else if($request->type_id && $request->bank_id)
+       {
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'banklocations.bank_name_id',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('banklocations.bank_name_id','=',$request->bank_id)
+        ->where('allterminals.type_id','=',$request->type_id)
+        ->orderBy('allterminals.id')->get();
+        return response()->json($data);
+       }
+       else if($request->type_id)
+       {
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'banklocations.bank_name_id',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('allterminals.type_id','=',$request->type_id)
+        ->orderBy('allterminals.id')->get();
+        return response()->json($data);
+       }
+       else if($request->model_id)
+       {
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'banklocations.bank_name_id',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('allterminals.model_id','=',$request->model_id)
+        ->orderBy('allterminals.id')->get();
+        return response()->json($data);
+       }
+       else if($request->bank_id)
+       {
+        $data =  DB::table('allterminals')
+        ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+        ->join('customers','customers.id','=','banklocations.bank_name_id')
+        ->join('sites','sites.id','=','banklocations.site_name_id')
+        ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+        ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+        ->join('categories','categories.id','=','allterminals.category_id')
+        ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+        ->select('customers.customer_name',
+                    'banklocations.siteID',
+                    'banklocations.address',
+                    'banklocations.bank_name_id',
+                    'sites.site_name',
+                    'terminalmodels.terminal_model',
+                    'terminaltypes.terminal_type',
+                    'categories.category_name',
+                    'terminalstatuses.status',
+                    'allterminals.*',)       
+        ->where('banklocations.bank_name_id','=',$request->bank_id)
+        ->orderBy('allterminals.id')->get();
+        return response()->json($data);
+       }
+       $data =  DB::table('allterminals')
+       ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+       ->join('sites','sites.id','=','banklocations.site_name_id')
+       ->join('customers','customers.id','=','banklocations.bank_name_id')
+       ->join('terminalmodels','terminalmodels.id','=','allterminals.model_id')
+       ->join('terminaltypes','terminaltypes.id','=','terminalmodels.terminaltype_id')
+       ->join('categories','categories.id','=','allterminals.category_id')
+       ->join('terminalstatuses','terminalstatuses.id','=','allterminals.status_id')
+       ->select('customers.customer_name',
+                   'banklocations.siteID',
+                   'banklocations.address',
+                   'sites.site_name',
+                   'terminalmodels.terminal_model',
+                   'terminaltypes.terminal_type',
+                   'categories.category_name',
+                   'terminalstatuses.status',
+                   'allterminals.*',)
+       ->orderBy('allterminals.id')->get();
+       return response()->json($data);
     }
     
 }

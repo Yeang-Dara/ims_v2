@@ -7,5 +7,6 @@ Route::group(['prefix' =>'terminal'], function(){
     Route::get('get','AllterminalController@get');
     Route::get('getid/{id}','AllterminalController@getID');
     Route::get('getviewdetail/{id}','AllterminalController@getViewdetail');
+    Route::post('filter','ALlterminalController@getFilter');
 
 });

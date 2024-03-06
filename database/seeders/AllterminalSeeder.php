@@ -10,7 +10,7 @@ class AllterminalSeeder extends Seeder
 {
     public function run(): void{
         Allterminal::truncate();
-        $datas = fopen(base_path('database/csv/DataTerminal.csv'), 'r');
+        $datas = fopen(base_path('database/csv/DataTerminal1.csv'), 'r');
         $transRow = true;
   
         while(($data = fgetcsv($datas,'1000', ',')) !== false){

@@ -140,7 +140,7 @@
             </v-card>
         </v-row>
     </v-main>
-  </template>
+</template>
   <script scope>
   import axios from "axios";
   import moment from "moment";
