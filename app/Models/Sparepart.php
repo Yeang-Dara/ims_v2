@@ -18,6 +18,7 @@ class Sparepart extends Model
         'quantity_used',
         'quantity_remain',
         'part_number',
+        'remark'
     ];
     public static function rulesToCreate(): array
     {

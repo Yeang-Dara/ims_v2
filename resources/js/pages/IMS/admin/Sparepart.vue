@@ -70,6 +70,16 @@
                                           >
                                           </v-text-field>
                                       </v-col>
+                                      <v-col cols="12"  sm="12">
+                                        <label for="atm_id">Remark<a style="color: blue;">*</a></label>
+                                          <v-text-field
+                                          width="100%"
+                                              variant="outlined"
+                                              v-model="editedItem.remark"
+                                              label=""
+                                          >
+                                          </v-text-field>
+                                      </v-col>
                                   </v-row>
                               </v-container>
                           </v-card-text>
@@ -167,6 +177,10 @@ export default {
                   key: "quantity_remain",
                   title: "Qty_Remain",
               },
+              {
+                  key: "remark",
+                  title: "Remark",
+              },
               { title: "Actions", key: "actions", class: " white--text" },
           ],
           banklocations: [],
@@ -183,6 +197,7 @@ export default {
               sparepart_name:"",
               quantity:"",
               part_number:"",
+              remark:"",
        
           },
           defaultItem: {
@@ -190,6 +205,7 @@ export default {
               sparepart_name:"",
               quantity:"",
               part_number:"",
+              remark:"",
           },
       };
   },

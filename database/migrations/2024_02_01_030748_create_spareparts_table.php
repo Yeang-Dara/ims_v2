@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity_used')->nullable();
             $table->integer('quantity_remain')->nullable();
             $table->string('part_number')->nullable();
+            $table->string('remark')->nullable();
             $table->timestamps();
             $table->foreign('model_id')
                 ->references('id')
