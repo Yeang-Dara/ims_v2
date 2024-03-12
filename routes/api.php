@@ -39,33 +39,8 @@ Route::post('/import', [TicketController::class, 'import']);
 Route::post('ticket/import', [TicketController::class, 'processCsv']);
 Route::post('/terminal/import', [TerminalController::class, 'import']);
 
-Route::get('/terminals', function () {
-    $users = Terminal::all();
-    $count = $users->count();
-    $atm = DB::table('terminals')->where('atm_type', '=', 'ATM ')->count();
-    $crm = DB::table('terminals')->where('atm_type', '=', 'CRM')->count();
-    $dc = DB::table('terminals')->where('atm_type', '=', 'DC365')->count();
 
-    return response()->json([
-        'terminal' => $count,
-        'atm' => $atm,
-        'crm' => $crm,
-        'dc' => $dc,
-        'data' => $users
-    ]);
-});
 
-Route::get('/pieChart', function() {
-    $amk = DB::table('terminals')->where('bank', '=', 'AMK')->count();
-    $wing = DB::table('terminals')->where('bank', '=', 'Wing')->count();
-    $aba = DB::table('terminals')->where('bank', '=', 'ABA')->count();
-
-    return response()->json([
-        'amk' => $amk,
-        'wing' => $wing,
-        'aba' => $aba
-    ]);
-});
 
 Route::get('using/all', [UsingController::class, 'getAll']);
 

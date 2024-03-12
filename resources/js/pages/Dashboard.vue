@@ -72,37 +72,39 @@
         </v-row>
         <v-row class="py-0">
             <v-col cols="12" sm="6" md="6">
-                <v-card class="ma-6 rounded-lg"  style="width: 400px;">
+                <v-card class="ma-6 rounded-lg"  style="width: 500px; height: 400px">
                     <PieChart/>
+                    <!-- <BarChart/> -->
                 </v-card>
             </v-col>
         </v-row>
     </v-container>
 </template>
 <script>
+import axios from 'axios';
 import PieChart from '../Components/chart/PieChart.vue'
+import BarChart from '../Components/chart/BarChart.vue'
 export default {
     name: 'dashbord',
     components: {
         PieChart,
+        BarChart,
     },
   data: () => ({
     terminals: [],
   }),
   mounted() {
-    this.getTerminals()
-  },
-  methods: {
-    getTerminals() {
-            axios.get('/api/terminals')
+    axios.get('/api/IMS/terminal/countTerminal')
                 .then(response => {
                     this.terminals = response.data;
-                    console.log(this.terminals);
+                    console.log("machine", this.terminals);
                 })
                 .catch(error => {
                     console.log(error);
                 })
-        },
+  },
+  methods: {
+
   },
 }
 </script>

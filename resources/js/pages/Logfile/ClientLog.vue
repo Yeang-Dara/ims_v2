@@ -100,6 +100,9 @@
         </span>
         <v-dialog v-model="dialog1">
             <div class="text-center">
+                <!-- <v-progress-circular :model-value="value" :rotate="360" :size="100" :width="15" color="primary">
+                    <template v-slot:default> {{ value }} % </template>
+                </v-progress-circular> -->
                 <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
             </div>
         </v-dialog>
@@ -141,6 +144,7 @@ export default {
         ],
         list_device: [],
         filteredData: [], // Store filtered data
+        value: 0,
     }),
     created() {
         this.getData();
@@ -254,29 +258,39 @@ export default {
             formData.append('file', this.file);
             console.log(this.file)
             this.dialog1 = true,
-                axios.post('/api/Log/clientLog/upload-file', formData)
+                axios.post('/api/Log/clientLog/upload-file', formData, {
+                    // Configure Axios to track upload progress
+                    onUploadProgress: progressEvent => {
+                    this.value = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                    }
+                })
                     .then(res => {
                         console.log(res.status)
                         if (res.status == 200) {
                             this.dialog1 = false;
+                             // Close dialog or perform other actions
+                            setTimeout(function () {
+                                alert('Uploaded successfuly...');
+                            });
+                            setTimeout(function () {
+                               window.location.reload();
+                           }, 5000);
                         }
-                        setTimeout(function () {
-                            alert('Uploaded successfuly...');
-                        });
+
+                    })
+                    .catch(error => {
+                        console.error('Upload failed:', error);
+                        this.value = 0; // Reset progress value
+                        // Handle error here
                     })
             this.dialog = false;
-            setTimeout(function () {
-                window.location.reload();
-            }, 5000);
         },
 
         getData() {
-            this.dialog1 = true;
             axios.get('/api/Log/clientLog/getData')
                 .then(response => {
                     if (response.data && Array.isArray(response.data.data)) {
                         this.datas = response.data.data;
-                        this.dialog1 = false;
                     } else {
                         console.log('Invalid data structure received from the server');
                     }
@@ -344,33 +358,35 @@ export default {
 </script>
 
 <style>
-.table td {
-    font-size: x-small !important;
-    height: 0 !important;
-    /* padding: 1px!important; */
-}
+    .table td {
+        font-size: x-small !important;
+        height: 0 !important;
+        /* padding: 1px!important; */
+    }
 
-.table th {
-    font-size: small !important;
-    height: 0 !important;
-    background-color: #3c519c !important;
-    color: white !important;
-    border: 0.1px solid rgb(230, 228, 228) !important;
-}
+    .table th {
+        font-size: small !important;
+        height: 0 !important;
+        background-color: #3c519c !important;
+        color: white !important;
+        border: 0.1px solid rgb(230, 228, 228) !important;
+    }
 
-.table td {
-    border: 0.1px solid rgb(230, 228, 228) !important;
-    border-collapse: collapse !important;
-}
+    .table td {
+        border: 0.1px solid rgb(230, 228, 228) !important;
+        border-collapse: collapse !important;
+    }
 
-.see-more-link {
-    color: blue;
-    cursor: pointer;
-    text-decoration: underline;
-}
+    .see-more-link {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+    }
 
 /* add */
-
+    .v-progress-circular {
+        margin: 1rem;
+    }
 
 </style>
 

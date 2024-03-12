@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AllterminalController extends Controller
 {
-    
+
     public function add(Request $request)
     {
         $validator = Validator::make($request -> all(),[
@@ -85,7 +85,7 @@ class AllterminalController extends Controller
         $input = $request->all();
         $data = DB::table('allterminals')->where('atm_id','=',$request['atm_id'])
                                         ->where('id','!=',$id)->count();
-        
+
         if($data >0){
             $response =[
                 'success' =>false,
@@ -127,7 +127,7 @@ class AllterminalController extends Controller
     }
     public function getID($id)
     {
-       
+
         $data =  DB::table('allterminals')->where('allterminals.id','=',$id)->get();
         return response()->json($data);
     }
@@ -149,9 +149,50 @@ class AllterminalController extends Controller
                     'terminaltypes.terminal_type',
                     'categories.category_name',
                     'terminalstatuses.status',
-                    'allterminals.*',)       
+                    'allterminals.*',)
         ->where('allterminals.id','=',$id)->get();
         return response()->json($data);
     }
-    
+
+    public function CountTerminal() {
+        $users = Allterminal::all();
+        $count = $users->count();
+        $atm = DB::table('allterminals')->where('type_id', '=', 1)->count();
+        $crm = DB::table('allterminals')->where('type_id', '=', 2)->count();
+        $dc = DB::table('allterminals')->where('type_id', '=', 3)->count();
+
+        return response()->json([
+            'terminal' => $count,
+            'atm' => $atm,
+            'crm' => $crm,
+            'dc' => $dc,
+            'data' => $users
+        ]);
+    }
+
+    public function PieChart(){
+        $amk = DB::table('allterminals')
+            ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+            ->where('bank_name_id', '=', 2)->count();
+        $wing = DB::table('allterminals')
+            ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+            ->where('bank_name_id', '=', 5)->count();
+        $aba = DB::table('allterminals')
+            ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+            ->where('bank_name_id', '=', 1)->count();
+        $phillip = DB::table('allterminals')
+            ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+            ->where('bank_name_id', '=', 4)->count();
+        $bti = DB::table('allterminals')
+            ->join('banklocations','banklocations.id','=','allterminals.banklocation_id')
+            ->where('bank_name_id', '=', 3)->count();
+        return response()->json([
+            'amk' => $amk,
+            'wing' => $wing,
+            'aba' => $aba,
+            'phillip' => $phillip,
+            'bti' => $bti
+        ]);
+    }
+
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' =>'terminal'], function(){
@@ -8,4 +8,7 @@ Route::group(['prefix' =>'terminal'], function(){
     Route::get('getid/{id}','AllterminalController@getID');
     Route::get('getviewdetail/{id}','AllterminalController@getViewdetail');
 
+    // Dashboard
+    Route::get('countTerminal','AllterminalController@CountTerminal');
+    Route::get('pieChart','AllterminalController@PieChart');
 });

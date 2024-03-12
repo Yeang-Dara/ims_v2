@@ -187,7 +187,7 @@ class LogFile extends Controller
     try {
         // Validate the uploaded file
         $request->validate([
-            'file' => 'required|mimes:txt|max:20480', // 20 MB limit
+            'file' => 'required|mimes:txt|max:64000', // 20 MB limit
         ]);
 
         // Retrieve the uploaded file
@@ -243,9 +243,15 @@ class LogFile extends Controller
     // final can upload file clientLog and split text
     public function uploadFile(Request $request)
     {
+
         $request->validate([
-            'file' => 'required|mimes:txt|max:20480', // 20 MB limit
+            'file' => 'required|mimes:txt|max:100000', // 100 MB in kilobytes
         ]);
+
+           // Check if the uploaded file size exceeds the maximum allowed size
+        if ($request->file('file')->getSize() > 100000000) { // 100 MB in bytes
+            return response()->json(['error' => 'The file size cannot exceed 100 MB.'], 422);
+        }
 
         // Retrieve the uploaded file
         $file = $request->file('file');
@@ -305,7 +311,10 @@ class LogFile extends Controller
     // neet to get faster data
     public function getAll()
     {
-        $data = LogEntry::orderBy('date')->orderBy('time')->get();
+        // $data = LogEntry::orderBy('date')->orderBy('time')->get();
+
+        // return response()->json(['data' => $data]);
+        $data = LogEntry::orderBy('id')->take(100)->get();
 
         return response()->json(['data' => $data]);
     }
